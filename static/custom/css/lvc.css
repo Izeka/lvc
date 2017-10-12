@@ -1,3 +1,19 @@
 .ingredientes, .ingredientes th{
   text-align: center;
 }
+#compras th, #compras td{
+  text-align: center !important;
+}
+.actionBar{
+  border: 0px !important;
+}
+.nuevo{
+  margin-right: -30px;
+}
+.nuevo, .nuevo i{
+  font-size: 12px !important;
+  color: white !important;
+}
+.nuevo small{
+  margin-left: -8px;
+}

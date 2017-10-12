@@ -2508,7 +2508,6 @@ if (typeof NProgress != 'undefined') {
 			};
 
 		/* DATA TABLES */
-
 			function init_DataTables() {
 
 				console.log('run_datatables');
@@ -2520,6 +2519,7 @@ if (typeof NProgress != 'undefined') {
 				  if ($("#datatable-buttons").length) {
 					$("#datatable-buttons").DataTable({
 					  dom: "Bfrtip",
+
 					  buttons: [
 						{
 						  extend: "copy",

@@ -16,16 +16,24 @@ Including another URLconf
 from django.conf.urls import url
 from django.views.generic import RedirectView
 from django.contrib import admin
-from inventario.views import Ingredientes, Equipamiento, Insumos, Proveedores, Clientes
-
+from inventario.views import *
+from contabilidad.views import Compras
+from produccion.views import *
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', RedirectView.as_view(permanent=False, url='/ingredientes/')),
 
     url(r'^ingredientes/$', Ingredientes.as_view()),
+    url(r'^ingredientes/editar/(?P<pk>\d+)/$', Editar_ingrediente.as_view(),),
+    url(r'^ingredientes/lupulo/nuevo$', Nuevo_lupulo.as_view()),
+    url(r'^ingredientes/malta/nueva$', Nueva_malta.as_view()),
     url(r'^equipamiento/$', Equipamiento.as_view()),
     url(r'^insumos/$', Insumos.as_view()),
 
     url(r'^proveedores/$', Proveedores.as_view()),
     url(r'^clientes/$', Clientes.as_view()),
+
+    url(r'^compras/$', Compras.as_view()),
+    url(r'^recetas/$', Recetas.as_view()),
+    url(r'^recetas/nueva$', Nueva_receta.as_view(),name='add_receta'),
 ]

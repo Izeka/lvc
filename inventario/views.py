@@ -2,8 +2,10 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render
-from django.views.generic import ListView
-from .models import Insumo, Proveedor, Cliente
+from django.http import HttpResponseRedirect
+from django.views.generic import ListView, CreateView, UpdateView
+from .models import *
+from .forms import *
 
 # Create your views here.
 class Ingredientes(ListView):
@@ -17,10 +19,55 @@ class Ingredientes(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(Ingredientes, self).get_context_data(**kwargs)
+
         context['maltas'] = Insumo.objects.all().filter(malta__Tipo=2)
         context['levaduras'] = Insumo.objects.all().filter(levadura__Tipo=2)
-        context['clarificantes'] = Insumo.objects.all().filter(clarificante__Tipo=2)
+        context['agregados'] = Insumo.objects.all().filter(agregado__Tipo=2)
         return context
+
+class Editar_ingrediente(UpdateView):
+    model = Insumo
+    fields= '__all__'
+    template_name="inventario/ingrediente_form.html"
+    form_class = {
+        Lupulo: LupuloForm,
+        Malta: MaltaForm,
+        Levadura: LevaduraForm,
+        Agregado: AgregadoForm,
+    }
+
+    def get_form_class(self):
+       return self.form_class[self.object.__class__]
+
+    def get_queryset(self):
+      return self.model.objects.select_subclasses()
+
+    def get_context_data(self, **kwargs):
+        context = super(Editar_ingrediente, self).get_context_data(**kwargs)
+        context['insumo'] = self.kwargs['pk']
+        return context
+
+    def form_valid(self, form):
+       form.save()
+       return HttpResponseRedirect('/ingredientes')
+
+class Nuevo_lupulo(CreateView):
+    model= Lupulo
+    fields= '__all__'
+    template_name="inventario/ingrediente_nuevo.html"
+
+    def form_valid(self, form):
+        form.save()
+        return HttpResponseRedirect('/ingredientes')
+
+class Nueva_malta(CreateView):
+    model = Malta
+    fields= '__all__'
+    template_name="inventario/ingrediente_nuevo.html"
+
+    def form_valid(self, form):
+        form.save()
+        return HttpResponseRedirect('/ingredientes')
 
 class Equipamiento(ListView):
     model = Insumo
@@ -51,20 +98,11 @@ class Insumos(ListView):
         return queryset
 
 class Proveedores(ListView):
-    model = Insumo
+    model = Proveedor
     template_name = "inventario/proveedores.html"
     context_object_name = 'proveedores'
 
-    def get_queryset(self):
-        queryset=Proveedor.objects.all()
-        return queryset
-
 class Clientes(ListView):
-    model = Insumo
+    model = Cliente
     template_name = "inventario/clientes.html"
     context_object_name = 'clientes'
-
-    def get_queryset(self):
-        queryset=Cliente.objects.all()
-        return queryset
-
