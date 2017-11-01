@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_addanother',
+    'extra_views',
     'widget_tweaks',
     'inventario',
     'contabilidad',

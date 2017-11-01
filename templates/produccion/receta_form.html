@@ -1,17 +1,58 @@
 {% extends 'index.html' %}
+{% load widget_tweaks %}
+
 {% block extra_js %}
   <!-- jQuery Smart Wizard -->
     <script src="/static/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
+    <script src="/static/custom/js/jquery.validate.js"></script>
+    <script>
+    $(function() {
+        {% for formset in inlines %}
+        $('div#{{ formset.prefix }}').formset({
+            prefix: '{{ formset.prefix }}',
+            addText: 'Agregar',
+            deleteText: 'Eliminar',
+            addCssClass: 'col-md-1 col-sm-1 col-xs-1 btn btn-info btn-sm agregar',
+            deleteCssClass: 'col-md-1 col-sm-1 col-xs-1 btn btn-info btn-sm eliminar',
+        });
+        {% endfor %}
+    })
+function abrir_modal(url)
+{
+        $('#popup').load(url, function()
+        {
+                $(this).modal('show');
+        });
+        return false;
+}
+
+function cerrar_modal()
+{
+	      var url      = window.location.href;
+        $('#popup').modal('hide');
+        window.location.replace(url);
+}
+    $(document).ready(function(){
+
+    $('#wizard_verticle').smartWizard({
+      labelNext:'Siguiente',
+      labelPrevious:'Volver',
+      labelFinish:'Finalizar',
+      onFinish:onFinishCallback
+    });
+
+    function onFinishCallback(objs, context){
+            $('form').submit();
+    }
+    });
+    </script>
 {% endblock %}
 {% block content %}
-
     <!-- page content -->
     <div class="right_col" role="main">
       <div class="">
         <div class="clearfix"></div>
-
         <div class="row">
-
           <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
               <div class="x_title">
@@ -30,119 +71,236 @@
               <div class="x_content">
 
                 <!-- Smart Wizard -->
-                <div id="wizard_verticle" class="form_wizard wizard_verticle">
-                  <ul class="list-unstyled wizard_steps">
-                    <li>
-                      <a href="#step-11">
-                        <span class="step_no">1</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#step-22">
-                        <span class="step_no">2</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#step-33">
-                        <span class="step_no">3</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#step-44">
-                        <span class="step_no">4</span>
-                      </a>
-                    </li>
-                  </ul>
+                   <form action="" method="post" class="form-horizontal form-label-left">{% csrf_token %}
+                    <!-- SmartWizard html -->
+                    <div id="wizard_verticle" class="form_wizard wizard_verticle">
+                      <ul class="list-unstyled wizard_steps anchor">
+                        <li>
+                          <a href="#step-1">
+                            <span class="step_no">1</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#step-2">
+                            <span class="step_no">2</span>
+                         </a>
+                        </li>
+                        <li>
+                          <a href="#step-3">
+                            <span class="step_no">3</span>
 
-                  <div id="step-11">
-                    <h2 class="StepTitle">Paso 1</h2>
-                  <form class="form-horizontal form-label-left">
-                      <span class="section">Personal Info</span>
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3" for="first-name">{{form.Nombre.label}} <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6">
-                          <input type="text" id="first-name2" required="required" class="form-control col-md-7 col-xs-12">
-                        </div>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#step-4">
+                            <span class="step_no">4</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#step-5">
+                            <span class="step_no">5</span>
+                          </a>
+                        </li>
+
+                      </ul>
+                     <form class="form-horizontal form-label-left">
+                      <div class="stepContainer" >
+
+                      <div id="step-1" class="content" style="display: block;">
+                        <h2 class="StepTitle">Paso 1</h2>
+                        <span class="section">Valores Generales</span>
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">{{form.Nombre.label}} <span class="required"></span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              {{form.Nombre | append_attr:"class:form-control" }}
+                              {{form.Nombre.errors}}
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">{{form.Tipo.label}} <span class="required"></span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                {{form.Tipo | append_attr:"class:form-control"}}
+                                {{form.Tipo.errors}}
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.Litros.label}}</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              {{form.Litros | append_attr:"class:form-control" }}
+                              {{form.Litros.errors}}
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.DI.label}}</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              {{form.DI | append_attr:"class:form-control" }}
+                              {{form.DI.errors}}
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.DF.label}}</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              {{form.DF | append_attr:"class:form-control" }}
+                              {{form.DF.errors}}
+                            </div>
+                          </div>
+
+
                       </div>
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3" for="last-name">Estilo <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6">
-                          <select class="form-control">
-                            {% for id, name in form.Tipo.field.choices %}
-                              <option value="{{ id }}">{{ name }}</option>
-                            {% endfor %}
-                          </select>
-                        </div>
+
+                      <div id="step-2">
+                        <h2 class="StepTitle">Paso 2</h2>
+                        <span class="section">Valores Opcionales</span>
+
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">{{form.IBUs.label}} <span class="required"></span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              {{form.IBUs | append_attr:"class:form-control" }}
+                              {{form.IBUs.errors}}
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.EBC.label}}</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              {{form.EBC | append_attr:"class:form-control" }}
+                              {{form.EBC.errors}}
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.Eficiencia.label}}</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              {{form.Eficiencia | append_attr:"class:form-control" }}<span>%</span>
+                              {{form.Eficiencia.errors}}
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.Alcohol.label}}</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              {{form.Alcohol | append_attr:"class:form-control" }}
+                              {{form.Alcohol.errors}}
+                            </div>
+                          </div>
+
+
                       </div>
-                      <div class="form-group">
-                        <label for="middle-name" class="control-label col-md-3 col-sm-3">{{form.IBUs.label}}</label>
-                        <div class="col-md-6 col-sm-6">
-                          <input id="middle-name2" class="form-control col-md-7 col-xs-12" type="text" name="middle-name">
+
+                      <div id="step-3">
+                        <h2 class="StepTitle">Paso 3</h2>
+                        <span class="section">Cocción</span>
+                        <div id="{{ inlines.0.prefix }}" class="form-group">
+                             {% for form in inlines.0 %}
+                             {{form.id}}
+                             <div class="col-md-6 col-sm-6 col-xs-6">
+                                 <label for="middle-name">{{form.Malta.label}}</label>
+                                 {{form.Malta | append_attr:"class:form-control"}}
+                             </div>
+                             <div class="col-md-6 col-sm-6 col-xs-6">
+                                 <label for="middle-name">{{form.Cantidad.label}}</label>
+                                 {{form.Cantidad | append_attr:"class:form-control"}}
+                             </div>
+                            {{ form.management_form }}
+                             {% endfor %}
                         </div>
+
+
+                          <div class="form-group">
+                            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.Temp_Coccion.label}}</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              {{form.Temp_Coccion | append_attr:"class:form-control" }}
+                              {{form.Temp_Coccion.errors}}
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.Tiempo_Coccion.label}}</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              {{form.Tiempo_Coccion  | append_attr:"class:form-control" }}
+                              {{form.Tiempo_Coccion.errors}}
+                            </div>
+                          </div>
+
+                          </div>
+
+
                       </div>
-                      <div class="form-group">
-                        <label for="middle-name" class="control-label col-md-3 col-sm-3">{{form.DI.label}}</label>
-                        <div class="col-md-6 col-sm-6">
-                          <input id="middle-name2" class="form-control col-md-7 col-xs-12" type="text" name="middle-name">
+
+                      <div id="step-4">
+                        <h2 class="StepTitle">Paso 4</h2>
+                        <span class="section">Valores Maceración</span>
+                        <div class="form-group">
+                          <div class="col-md-6 col-sm-6 col-xs-12">
+                            <label for="middle-name">{{form.Temp_Maceracion.label}}</label>
+                            {{form.Temp_Maceracion | append_attr:"class:form-control" }}
+                            {{form.Temp_Maceracion.errors}}
+                          </div>
+                          <div class="col-md-6 col-sm-6 col-xs-12">
+                          <label for="middle-name" >{{form.Tiempo_Maceracion.label}}</label>
+                            {{form.Tiempo_Maceracion | append_attr:"class:form-control" }}
+                            {{form.Tiempo_Maceracion.errors}}
+                          </div>
                         </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="middle-name" class="control-label col-md-3 col-sm-3">{{form.DF.label}}</label>
-                        <div class="col-md-6 col-sm-6">
-                          <input id="middle-name2" class="form-control col-md-7 col-xs-12" type="text" name="middle-name">
+                        &nbsp;
+                        &nbsp;
+                        <div id="{{ inlines.1.prefix }}" class="form-group">
+                             {% for form in inlines.1 %}
+                             {{form.id}}
+                             <div class="col-md-4 col-sm-4 col-xs-4">
+                                 <label for="middle-name">{{form.Lupulo.label}}</label>
+                                 {{form.Lupulo | append_attr:"class:form-control"}}
+                             </div>
+                             <div class="col-md-4 col-sm-4 col-xs-4">
+                                 <label for="middle-name">{{form.Cantidad.label}}</label>
+                                 {{form.Cantidad | append_attr:"class:form-control"}}
+                             </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                 <label for="middle-name">{{form.Tiempo.label}}</label>
+                                 {{form.Tiempo | append_attr:"class:form-control"}}
+                             </div>
+
+                             {% endfor %}
+
+                            {{ inlines.1.management_form }}
+                            {{ inlines.0.management_form }}
                         </div>
+
+
+
                       </div>
+
+                      <div id="step-5">
+                        <h2 class="StepTitle">Paso 5</h2>
+                        <span class="section">Valores Fermentacion</span>
+
+                          <div class="form-group">
+                            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.Temp_Fermantacion.label}}</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              {{form.Temp_Fermantacion | append_attr:"class:form-control" }}
+                              {{form.Temp_Fermantacion.errors}}
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.Tiempo_Fermentacion.label}}</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              {{form.Tiempo_Fermentacion | append_attr:"class:form-control" }}
+                              {{form.Tiempo_Fermentacion.errors}}
+                            </div>
+                          </div>
+
+
+                      </div>
+                    </div>
                     </form>
                   </div>
-                  <div id="step-22">
-                    <h2 class="StepTitle">Step 2 Content</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                      Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </p>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                      in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </p>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                      in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </p>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                      in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </p>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                      in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </p>
-                  </div>
-                  <div id="step-33">
-                    <h2 class="StepTitle">Step 3 Content</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                      Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </p>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                      in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </p>
-                  </div>
-                  <div id="step-44">
-                    <h2 class="StepTitle">Step 4 Content</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                      Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </p>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                      in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </p>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                      in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </p>
-                  </div>
-                </div>
                 <!-- End SmartWizard Content -->
               </div>
             </div>

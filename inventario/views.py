@@ -87,7 +87,6 @@ class Equipamiento(ListView):
 
         return context
 
-
 class Insumos(ListView):
     model = Insumo
     template_name = "inventario/insumos.html"

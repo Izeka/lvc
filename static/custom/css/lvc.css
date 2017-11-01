@@ -17,3 +17,23 @@
 .nuevo small{
   margin-left: -8px;
 }
+#step-3 .eliminar{
+  margin-top: 5px;
+  margin-left: 10px;
+}
+#step-3 .agregar{
+  margin-top: -34px;
+  margin-left: 110px;
+}
+#step-4 .eliminar{
+  margin-top: 5px;
+  margin-left: 10px;
+}
+#step-4 .agregar{
+  margin-top: -35px;
+  margin-left: 135px;
+}
+.stepContainer{
+  overflow: visible !important;
+  height: auto !important;
+}

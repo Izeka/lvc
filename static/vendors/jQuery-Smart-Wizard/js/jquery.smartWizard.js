@@ -74,8 +74,9 @@ function SmartWizard(target, options) {
                         return false;
                     }
                 }else{
-                    var frm = $this.target.parents('form');
+                    var frm = $('#receta');//$this.target.parents('form');
                     if(frm && frm.length){
+                        alert(frm);
                         frm.submit();
                     }
                 }

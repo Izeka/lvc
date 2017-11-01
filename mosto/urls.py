@@ -35,5 +35,7 @@ urlpatterns = [
 
     url(r'^compras/$', Compras.as_view()),
     url(r'^recetas/$', Recetas.as_view()),
+    url(r'^recetas/editar/(?P<pk>\d+)/$', Update_receta.as_view()),
     url(r'^recetas/nueva$', Nueva_receta.as_view(),name='add_receta'),
+    url(r'^recetas/nueva/malta$', Malta_Receta.as_view(),name='add_malta'),
 ]

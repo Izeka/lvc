@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from .models import Unidad_medida, Forma, Tipo, Proveedor, Insumo, Barril, Botella, Fermentador, Lupulo, Malta, Levadura, Agregado
+from .models import *
 
 # Register your models here.
 admin.site.register(Unidad_medida)
