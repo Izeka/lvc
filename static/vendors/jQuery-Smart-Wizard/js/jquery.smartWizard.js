@@ -21,7 +21,7 @@ function SmartWizard(target, options) {
     this.elmStepContainer = $('<div></div>').addClass("stepContainer");
     this.loader = $('<div>Loading</div>').addClass("loader");
     this.buttons = {
-        next : $('<a>'+options.labelNext+'</a>').attr("href","#").addClass("buttonNext"),
+        next : $('<a >'+options.labelNext+'</a>').attr("href","#").addClass("buttonNext"),
         previous : $('<a>'+options.labelPrevious+'</a>').attr("href","#").addClass("buttonPrevious"),
         finish  : $('<a>'+options.labelFinish+'</a>').attr("href","#").addClass("buttonFinish")
     };
@@ -303,6 +303,9 @@ function SmartWizard(target, options) {
      */
 
     SmartWizard.prototype.goForward = function(){
+        if (this.curStepIdx == 1){
+          $('.timer').countimer('start');
+        }
         var nextStepIdx = this.curStepIdx + 1;
         if (this.steps.length <= nextStepIdx){
             if (! this.options.cycleSteps){
@@ -436,7 +439,7 @@ $.fn.smartWizard.defaults = {
     contentCache:true, // cache step contents, if false content is fetched always from ajax url
     cycleSteps: false, // cycle step navigation
     enableFinishButton: false, // make finish button enabled always
-	hideButtonsOnDisabled: false, // when the previous/next/finish buttons are disabled, hide them instead?
+	  hideButtonsOnDisabled: false, // when the previous/next/finish buttons are disabled, hide them instead?
     errorSteps:[],    // Array Steps with errors
     labelNext:'Next',
     labelPrevious:'Previous',
