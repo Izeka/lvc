@@ -27,8 +27,8 @@
         {% endfor %}
     })
     {% if receta %}
-    document.getElementById("id_Litros").value = {{receta.Litros}};
-    document.getElementById("id_Litros").value = {{receta.Litros}};
+      document.getElementById("id_Litros").value = {{receta.Litros}};
+      document.getElementById("id_Temp_Maceracion").value = {{receta.Temp_Maceracion}};
     {% endif %}
     function abrir_modal(url)
     {
@@ -37,14 +37,14 @@
                 $(this).modal('show');
         });
         return false;
-}
+    }
 
-function cerrar_modal()
-{
+    function cerrar_modal()
+    {
 	      var url      = window.location.href;
         $('#popup').modal('hide');
         window.location.replace(url);
-}
+    }
     $(document).ready(function(){
 
     $('#wizard_verticle').smartWizard({
@@ -60,6 +60,7 @@ function cerrar_modal()
     });
     </script>
 {% endblock %}
+
 {% block content %}
     <!-- page content -->
     <div class="right_col" role="main">
@@ -68,7 +69,8 @@ function cerrar_modal()
         <div class="row">
           <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
-     <!-- top tiles -->
+
+            <!-- top tiles -->
              <div id="top" class="row tile_count">
                <div style="margin-left:170px;"class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
                  <span class="count_top"><i class="fa fa-clock-o"></i> Tiempo Total</span>
@@ -93,7 +95,7 @@ function cerrar_modal()
              </div>
              <!-- /top tiles -->
 
-              <div class="x_content">
+            <div class="x_content">
 
                 <!-- Smart Wizard -->
                    <form action="" method="post" class="form-horizontal form-label-left">{% csrf_token %}
@@ -203,38 +205,38 @@ function cerrar_modal()
                       </div>
 
                       <div id="step-3">
-                        <div class="row">
-                         <div class="StepTitle col-sm-4"><h2>Maceracion</h2></div>
-                         <div class="StepTitle col-sm-4"><h2>Filtrado</h2></div>
-                         <div class="StepTitle col-sm-4"><h2>Lavado</h2></div>
-                       </div>
-                         <span class="section"></span>
-                       <div class="row">
-                        <div class="StepTitle col-sm-4">
-                              <div class="col-md-6 col-sm-6 col-xs-6">
-                              <button class="start  btn btn-success" onclick="$('.timer_maceracion').countimer('start');">Iniciar</button>
-                              <button class="end btn btn-success" onclick="$('.timer_maceracion').countimer('stop');">Finalizar</button>
-                              </div>
-                              <div class=" maceracion col-md-6 col-sm-6 col-xs-6">
-                                  <label for="middle-name">{{form.Temp_Maceracion.label}}</label>
-                                  <span class="unidad-maceracion">C°</span>
-                                  {{form.Temp_Maceracion | append_attr:"class: maceracion  form-control" }}
-                              </div>
+
+                        <h2 class="StepTitle">Maceracion </h2> {{receta.Tiempo_Maceracion}} minutos
+                        <span class="section"></span>
+                        <div class="form-group">
+                          <div class="buttons-maceracion col-md-2 col-sm-2 col-xs-2">
+                            <button class="start  btn btn-success" onclick="$('.timer_maceracion').countimer('start');">Iniciar</button>
+                            <button class="end btn btn-success" onclick="$('.timer_maceracion').countimer('stop');">Finalizar</button>
+                          </div>
+                          <div class="col-md-4 col-sm-4 col-xs-4">
+                            <label for="middle-name">{{form.Temp_Maceracion.label}}</label>
+                            <span class="unidad-maceracion">C°</span>
+                            {{form.Temp_Maceracion | append_attr:"class:   form-control" }}
+                          </div>
+
                         </div>
-                        <div class="StepTitle col-sm-4">
-                          <button class="start btn btn-success" onclick="$('.timer_filtrado').countimer('start');">Iniciar</button>
-                          <button class="start btn btn-success" onclick="$('.timer_filtrado').countimer('stop');">Finalizar</button>
-                       </div>
-                        <div class="StepTitle col-sm-4">
-                          <button class="start btn btn-success" onclick="$('.timer_lavado').countimer('start');">Iniciar</button>
-                          <button class="end btn btn-success" onclick="$('.timer_lavado').countimer('stop');">Finalizar</button>
-                       </div>
+                        &nbsp;
+                        &nbsp;
+                        <h2 class="StepTitle">Filtrado </h2> {{receta.Tiempo_Maceracion}} minutos
+                        <span class="section"></span>
+                        <button class="start btn btn-success" onclick="$('.timer_filtrado').countimer('start');">Iniciar</button>
+                        <button class="start btn btn-success" onclick="$('.timer_filtrado').countimer('stop');">Finalizar</button>
+                        &nbsp;
+                        &nbsp;
+                        <h2 class="StepTitle">Lavado </h2>{{receta.Tiempo_Filtrado}} minutos
+                        <span class="section"></span>
+                        <button class="start btn btn-success" onclick="$('.timer_lavado').countimer('start');">Iniciar</button>
+                        <button class="end btn btn-success" onclick="$('.timer_lavado').countimer('stop');">Finalizar</button>
                       </div>
 
-                      </div>
 
                      <div id="step-4">
-                       <h2 class="StepTitle">Coccion</h2>
+                       <h2 class="StepTitle">Coccion</h2>{{receta.Tiempo_Lavado}} minutos
                        <span class="section"></span>
                        <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -245,6 +247,29 @@ function cerrar_modal()
                         &nbsp;
                         &nbsp;
                         <h2 class="StepTitle">Lupulos</h2>
+                        {% if lupulos %}
+                        <span class="section"></span>
+                        <div id="{{ inlines.1.prefix }}" class="form-group">
+                             {% for form in lupulos %}
+                             {{form.id}}
+                             <div class="col-md-4 col-sm-4 col-xs-4">
+                                 <label for="middle-name">{{form.Lupulo.label}}</label>
+                                 {{form.Lupulo | append_attr:"class:form-control"}}
+                             </div>
+                             <div class="col-md-4 col-sm-4 col-xs-4">
+                                 <label for="middle-name">{{form.Cantidad.label}} </label>
+                                 <span class="unidad-inlines">g</span>
+                                 {{form.Cantidad | append_attr:"class:form-control"}}
+                             </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                 <label for="middle-name">{{form.Tiempo.label}} de Coccion</label>
+                                 <span class="unidad-inlines">minutos</span>
+                                 {{form.Tiempo | append_attr:"class:form-control"}}
+                             </div>
+                             {% endfor %}
+                        </div>
+                        {% else %}
+
                         <span class="section"></span>
                         <div id="{{ inlines.1.prefix }}" class="form-group">
                              {% for form in inlines.1 %}
@@ -265,10 +290,33 @@ function cerrar_modal()
                              </div>
                              {% endfor %}
                         </div>
+                        {% endif %}
                         &nbsp;
                         &nbsp;
                         <h2 class="StepTitle">Agregados</h2>
                         <span class="section"></span>
+                        {% if agregrados %}
+                        <div id="{{ inlines.2.prefix }}" >
+                             {% for form in Agregados%}
+                             {{form.id}}
+                             <div class="col-md-4 col-sm-4 col-xs-4">
+                                 <label for="middle-name">{{form.Agregados.label}} de Coccion</label>
+                                 {{form.Agregados | append_attr:"class:form-control"}}
+                             </div>
+                             <div class="col-md-4 col-sm-4 col-xs-4">
+                                 <label for="middle-name">{{form.Cantidad.label}}</label>
+                                 <span class="unidad-inlines">g</span>
+                                 {{form.Cantidad | append_attr:"class:form-control"}}
+                             </div>
+                            <div  class="col-md-4 col-sm-4 col-xs-4">
+                                 <label for="middle-name">{{form.Tiempo.label}}</label>
+                                 <span class="unidad-inlines">minutos</span>
+                                 {{form.Tiempo | append_attr:"class:form-control"}}
+                             </div>
+                             {% endfor %}
+
+                        </div>
+                        {% else %}
                         <div id="{{ inlines.2.prefix }}" >
                              {% for form in inlines.2 %}
                              {{form.id}}
@@ -292,7 +340,7 @@ function cerrar_modal()
                             {{ inlines.1.management_form }}
                             {{ inlines.2.management_form }}
                         </div>
-
+                        {% endif %}
                       </div>
 
                       <div id="step-5">

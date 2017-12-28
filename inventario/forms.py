@@ -20,3 +20,18 @@ class AgregadoForm(forms.ModelForm):
      class Meta:
         fields = "__all__"
         model = Agregado
+
+class FermentadorForm(forms.ModelForm):
+     class Meta:
+        fields = "__all__"
+        model = Fermentador
+
+class BotellaForm(forms.ModelForm):
+     class Meta:
+        fields = "__all__"
+        model = Botella
+
+class BarrilForm(forms.ModelForm):
+     class Meta:
+        fields = "__all__"
+        model = Barril

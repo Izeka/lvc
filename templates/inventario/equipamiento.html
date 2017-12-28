@@ -1,23 +1,31 @@
 {% extends 'index.html' %}
-{% block content %}
 
+{% block extra_js %}
+    <!-- bootstrap-progressbar -->
+    <script src="/static/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    <script src="/static/custom/js/jquery.form.js"></script>
+
+    <script>
+    $('#modal').on('show.bs.modal', function (event) {
+        var modal = $(this);
+        var url = $(event.relatedTarget).attr('href');
+        $.ajax({
+            url: url,
+            context: document.body
+        }).done(function(response) {
+            modal.html(response);
+        });
+    })
+    </script>
+
+{% endblock %}
+
+{% block content %}
   <!-- page content -->
         <div class="right_col" role="main">
-          <div class="">
             <div class="page-title">
               <div class="title_left">
                 <h3>Equipamiento <small></small></h3>
-              </div>
-
-              <div class="title_right">
-                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                  <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">Go!</button>
-                    </span>
-                  </div>
-                </div>
               </div>
             </div>
 
@@ -31,14 +39,20 @@
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
-                      <li class="dropdown">
-                        <a href="nuevo" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa  fa-plus-square"></i></a>
+                      <li claps="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a data-toggle="modal"  data-target="#modal"  href="nuevo/fermentador" >Nuevo</a>
+                          </li>
+                          </li>
+                        </ul>
                       </li>
                       <li><a class="close-link"><i class="fa fa-close"></i></a>
                       </li>
                     </ul>
                     <div class="clearfix"></div>
                   </div>
+                  <div class="modal fade" id="modal"></div>
                   <div class="x_content">
 
                     <table class="ingredientes table table-striped">
@@ -47,6 +61,7 @@
                           <th style="text-align: left;" >Nombre</th>
                           <th>N° serie</th>
                           <th>Lleno</th>
+                          <th></th>
                         </tr>
                       </thead>
                       <tbody>
@@ -56,6 +71,10 @@
                             <td style="text-align: left;" >{{dato.Nombre}}</td>
                             <td >{{dato.fermentador.Numero_serie}}</td>
                             <td>{{dato.fermentador.Lleno}}</td>
+                            <td>
+                              <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="editar/{{dato.id}}" title="editar"><i class="fa fa-edit"></i></a>
+                              <a href="eliminar/{{dato.id}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
+                            </td>
                           </tr>
                         {% endfor %}
                         </tbody>
@@ -72,9 +91,12 @@
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                      <li claps="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
                         <ul class="dropdown-menu" role="menu">
+                          <li><a data-toggle="modal"  data-target="#modal"  href="nuevo/barril" >Nuevo</a>
+                          </li>
+                          </li>
                         </ul>
                       </li>
                       <li><a class="close-link"><i class="fa fa-close"></i></a>
@@ -89,6 +111,7 @@
                           <th style="text-align: left;" >Nombre</th>
                           <th>N° Serie</th>
                           <th>Lleno</th>
+                          <th></th>
                         </tr>
                       </thead>
                       <tbody>
@@ -98,6 +121,10 @@
                             <td style="text-align: left;" >{{dato.Nombre}}</td>
                             <td >{{dato.barril.Numero_serie}}</td>
                             <td>{{dato.barril.Lleno}}</td>
+                            <td>
+                              <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="editar/{{dato.id}}" title="editar"><i class="fa fa-edit"></i></a>
+                              <a href="eliminar/{{dato.id}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
+                            </td>
                           </tr>
                         {% endfor %}
                         </tbody>
@@ -106,10 +133,7 @@
                   </div>
                 </div>
               </div>
-
             </div>
-
-              <div class="clearfix"></div>
 
             <div class="row">
               <div class="col-md-6 col-sm-6 col-xs-12">
@@ -119,9 +143,12 @@
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                      <li claps="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
                         <ul class="dropdown-menu" role="menu">
+                          <li><a data-toggle="modal"  data-target="#modal"  href="nuevo/botella" >Nuevo</a>
+                          </li>
+                          </li>
                         </ul>
                       </li>
                       <li><a class="close-link"><i class="fa fa-close"></i></a>
@@ -137,6 +164,7 @@
                           <th>N° Serie</th>
                           <th>Cantidad</th>
                           <th>Llenas</th>
+                          <th></th>
                         </tr>
                       </thead>
                       <tbody>
@@ -147,6 +175,10 @@
                             <td >{{dato.botella.Numero_serie}}</td>
                             <td>{{dato.botella.Cantidad}}</td>
                             <td>{{dato.botella.Llenas}}</td>
+                            <td>
+                              <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="editar/{{dato.id}}" title="editar"><i class="fa fa-edit"></i></a>
+                              <a href="eliminar/{{dato.id}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
+                            </td>
                           </tr>
                         {% endfor %}
                         </tbody>
@@ -163,9 +195,12 @@
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                      <li claps="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
                         <ul class="dropdown-menu" role="menu">
+                          <li><a data-toggle="modal"  data-target="#modal"  href="nuevo/insumo" >Nuevo</a>
+                          </li>
+                          </li>
                         </ul>
                       </li>
                       <li><a class="close-link"><i class="fa fa-close"></i></a>
@@ -180,6 +215,7 @@
                           <th style="text-align: left;" >Nombre</th>
                           <th>N° Serie</th>
                           <th>Cantidad</th>
+                          <th></th>
                         </tr>
                       </thead>
                       <tbody>
@@ -189,6 +225,11 @@
                             <td style="text-align: left;" >{{dato.Nombre}}</td>
                             <td >{{dato.Numero_serie}}</td>
                             <td>{{dato.Cantidad}}</td>
+                            <td>
+                              <a >
+                              <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="editar/{{dato.id}}" title="editar"><i class="fa fa-edit"></i></a>
+                              <a href="eliminar/dato.id}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
+                            </td>
                           </tr>
                         {% endfor %}
                         </tbody>
@@ -196,9 +237,7 @@
                   </div>
                 </div>
               </div>
-
-                </div>
-              </div>
             </div>
+        </div>
         <!-- /page content -->
 {% endblock %}

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <!-- Bootstrap core CSS     -->
+  <link href="/static/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/custom/css/login.css" rel="stylesheet" />
+
+</head>
+
+<body>
+<div class="login">
+{% if form.errors %}
+<p>El usuario y password no coinciden. Por favor intente de nuevo.</p>
+{% endif %}
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>Su cuenta no posee permisos para acceder a esta pagina. Para proceder,
+    ingrese con una cuenta con permisos</p>
+    {% endif %}
+{% endif %}
+<div class="row">
+  <div class="col-md-6 col-sm-6 col-xs-6 logo">
+      <img src="/static/custom/images/keñua-com.png" alt="..." class="logo">
+  </div>
+  <div class="col-md-4 col-sm-4 col-xs-4 form">
+   <form method="post" action="">
+   {% csrf_token %}
+   <div class="form-row">
+     {{ form.username.label_tag }}
+     {{ form.username }}
+   </div>
+   <div class="form-row">
+     {{ form.password.label_tag }}
+     {{ form.password }}
+   </div>
+   <div class="submit-row">
+    <input type="submit" value="Ingresar" />
+   </div>
+  </div>
+</div>

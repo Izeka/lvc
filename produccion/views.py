@@ -7,7 +7,6 @@ from .forms import *
 from datetime import date
 # Create your views here.
 
-
 class MaltaInline(InlineFormSet):
     model = Malta_x_Receta
     fields="__all__"
@@ -34,16 +33,15 @@ class Nueva_receta(CreateWithInlinesView):
     fields = "__all__"
     success_url = "/recetas"
 
-class Update_receta(UpdateWithInlinesView):
+class Editar_receta(UpdateWithInlinesView):
     model = Receta
     inlines = [MaltaInline, LupuloInline, AgregadosInline]
     fields = "__all__"
     success_url = "/recetas"
 
-
-class View_receta(UpdateView):
+class Ver_receta(UpdateView):
     model = Receta
-    template_name = "produccion/view_receta.html"
+    template_name = "produccion/ver_receta.html"
     fields = "__all__"
 
     def get_context_data(self, **kwargs):
@@ -87,17 +85,18 @@ class Nueva_coccion(CreateWithInlinesView):
            context['receta'] = Receta.objects.get(pk=receta)
            maltasFormset = modelformset_factory(Malta_x_Receta, fields="__all__")
            context['maltas']= maltasFormset(queryset=Malta_x_Receta.objects.filter(Receta=receta))
-        context['hoy'] = date.today()
+           context['lupulos']= maltasFormset(queryset=Lupulo_x_Receta.objects.filter(Receta=receta))
+           context['agregados']= maltasFormset(queryset=Agregados_x_Receta.objects.filter(Receta=receta))
+           context['hoy'] = date.today()
         return context
 
-
-class Update_coccion(UpdateWithInlinesView):
+class Editar_coccion(UpdateWithInlinesView):
     model = Coccion
     inlines = [MaltaCoccionInline, LupuloCoccionInline, AgregadosCoccionInline]
     fields = "__all__"
     success_url = "/cocciones"
 
-class View_coccion(UpdateView):
+class Ver_coccion(UpdateView):
     model = Coccion
     template_name = "produccion/view_coccion.html"
     fields = "__all__"

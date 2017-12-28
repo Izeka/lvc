@@ -1,183 +1,109 @@
 {% extends 'index.html' %}
-{% block content %}
 
+{% block extra_css %}
+  <!-- bootstrap-progressbar -->
+    <link href="/static/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block extra_js %}
+    <!-- bootstrap-progressbar -->
+    <script src="/static/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    <script src="/static/custom/js/jquery.form.js"></script>
+
+    <script>
+    $('#modal').on('show.bs.modal', function (event) {
+        var modal = $(this);
+        var url = $(event.relatedTarget).attr('href');
+        $.ajax({
+            url: url,
+            context: document.body
+        }).done(function(response) {
+            modal.html(response);
+        });
+    })
+    </script>
+
+{% endblock %}
+
+{% block content %}
   <!-- page content -->
         <div class="right_col" role="main">
-          <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Ingredientes <small></small></h3>
-              </div>
-
-              <div class="title_right">
-                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                  <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">Go!</button>
-                    </span>
-                  </div>
-                </div>
+                <h3>Insumos<small></small></h3>
               </div>
             </div>
-
             <div class="clearfix"></div>
-
             <div class="row">
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Lúpulos <small></small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-
-                    <table class="ingredientes table table-striped">
-                      <thead>
-                        <tr>
-                          <th style="text-align: left;" >Nombre</th>
-                          <th>Cantidad</th>
-                          <th>Precio Unitario</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tbody>
-                        {% for dato in lupulos %}
-                          <tr>
-                            <td style="text-align: left;" >{{dato.Nombre}}</td>
-                            <td >
-                               <div class="progress">
-                                <span>{{dato.Cantidad}} Kgs</span>
-                                <div class="progress-bar {% if dato.Cantidad < 0.5 %} progress-bar-danger{% else %} progress-bar-info {% endif %}" data-transitiongoal="{{dato.Cantidad}}" aria-valuemin="0" aria-valuemax="2"></div>
-                               </div>
-                            </td>
-
-                            <td>$ {{dato.lupulo.Precio_unidad}}</td>
-                          </tr>
-                        {% endfor %}
-                        </tbody>
-                       </table>
-
-                  </div>
-                </div>
-              </div>
-
+              <div class="modal fade" id="modal"></div>
 
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Maltas <small></small></h2>
+                    <h2>Acidos <small></small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                      <li claps="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
                         <ul class="dropdown-menu" role="menu">
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    <table class="ingredientes table table-striped">
-                      <thead>
-                        <tr>
-                          <th style="text-align: left;" >Nombre</th>
-                          <th>Cantidad</th>
-                          <th>Precio Unitario</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tbody>
-                        {% for dato in maltas %}
-                          <tr>
-                            <td style="text-align: left;" >{{dato.Nombre}}</td>
-                            <td >
-                               <div class="progress">
-                                <span>{{dato.Cantidad}} Kgs</span>
-                                <div class="progress-bar {% if dato.Cantidad < 50 %} progress-bar-danger{% else %} progress-bar-info {% endif %}" data-transitiongoal="{{dato.Cantidad}}" aria-valuemin="0" aria-valuemax="100"></div>
-                               </div>
-                            </td>
-                            <td>$ {{dato.malta.Precio_unidad}}</td>
-                          </tr>
-                        {% endfor %}
-                        </tbody>
-                       </table>
-
-                  </div>
-                </div>
-              </div>
-
-              <div class="clearfix"></div>
-
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Levaduras <small></small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    <table class="ingredientes table table-striped">
-                      <thead>
-                        <tr>
-                          <th style="text-align: left;" >Nombre</th>
-                          <th>Cantidad</th>
-                          <th>Precio Unitario</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tbody>
-                        {% for dato in levaduras %}
-                          <tr>
-                            <td style="text-align: left;" >{{dato.Nombre}}</td>
-                            <td >
-                               <div class="progress">
-                                <span>{{dato.Cantidad}} g</span>
-                                <div class="progress-bar {% if dato.Cantidad < 500 %} progress-bar-danger{% else %} progress-bar-info {% endif %}" data-transitiongoal="{{dato.Cantidad}}" aria-valuemin="0" aria-valuemax="1000"></div>
-                               </div>
-                            </td>
-
-                            <td>$ {{dato.levadura.Precio_unidad}}</td>
-                          </tr>
-                        {% endfor %}
-                        </tbody>
-                       </table>
-
-                  </div>
-                </div>
-              </div>
-
-
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Agregados <small></small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Settings 1</a>
+                          <li><a data-toggle="modal"  data-target="#modal"  href="nuevo/acido" >Nuevo</a>
                           </li>
-                          <li><a href="#">Settings 2</a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content ">
+                    <table class="ingredientes table table-striped ">
+                      <thead>
+                        <tr>
+                          <th style="text-align: left;" >Nombre</th>
+                          <th>Cantidad</th>
+                          <th>Precio Unitario</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tbody>
+                        {% for dato in acidos %}
+                          <tr>
+                            <td style="text-align: left;" >{{dato.Nombre}}</td>
+                            <td class="project_progress">
+                             <div class="progress progress_sm">
+                              <div class="progress-bar  {% if dato.Cantidad < 0.5 %} progress-bar-danger{% else %} progress-bar-info {% endif %}" role="progressbar" data-transitiongoal="{{dato.Cantidad}}" aria-valuemin="0" aria-valuemax="2"></div>
+                             </div>
+                             <small>{{dato.Cantidad}} Kgs</small>
+                            </td>
+                            <td>$ {{dato.acido.Precio_unidad}}</td>
+                            <td>
+                              <a >
+                              <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="editar/{{dato.id}}" title="editar"><i class="fa fa-edit"></i></a>
+                              <a href="eliminar/{{dato.id}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
+                            </td>
+                          </tr>
+                        {% endfor %}
+                        </tbody>
+                       </table>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Clarificantes <small></small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li claps="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a data-toggle="modal"  data-target="#modal"  href="nuevo/clarificante">Nueva</a>
+                          </li>
                           </li>
                         </ul>
                       </li>
@@ -187,28 +113,31 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-
                     <table class="ingredientes table table-striped">
                       <thead>
                         <tr>
                           <th style="text-align: left;" >Nombre</th>
                           <th>Cantidad</th>
                           <th>Precio Unitario</th>
+                          <th></th>
                         </tr>
                       </thead>
                       <tbody>
                         <tbody>
-                        {% for dato in agreagados %}
+                        {% for dato in clarificantes %}
                           <tr>
                             <td style="text-align: left;" >{{dato.Nombre}}</td>
-                            <td >
-                               <div class="progress">
-                                <div>{{dato.Cantidad}} g</div>
-                                <div class="progress-bar {% if dato.Cantidad < 250 %} progress-bar-danger{% else %} progress-bar-info {% endif %}" data-transitiongoal="{{dato.Cantidad}}" aria-valuemin="0" aria-valuemax="500"></div>
-                               </div>
+                            <td class="project_progress">
+                             <div class="progress progress_sm">
+                              <div class="progress-bar  {% if dato.Cantidad < 2 %} progress-bar-danger{% else %} progress-bar-info {% endif %}" role="progressbar" data-transitiongoal="{{dato.Cantidad}}" aria-valuemin="0" aria-valuemax="50"></div>
+                             </div>
+                             <small>{{dato.Cantidad}} Kgs</small>
                             </td>
-
                             <td>$ {{dato.clarificante.Precio_unidad}}</td>
+                            <td>
+                              <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="editar/{{dato.id}}"  title="editar"><i class="fa fa-edit"></i></a>
+                              <a href="eliminar/{{dato.id}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
+                            </td>
                           </tr>
                         {% endfor %}
                         </tbody>
@@ -218,16 +147,119 @@
                 </div>
               </div>
 
-              <div class="clearfix"></div>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Accesorios <small></small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li claps="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a data-toggle="modal"  data-target="#modal"  href="nuevo/accesorio">Nueva</a>
+                          </li>
+                          </li>
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <table class="ingredientes table table-striped ">
+                      <thead>
+                        <tr>
+                          <th style="text-align: left;" >Nombre</th>
+                          <th>Cantidad</th>
+                          <th>Precio Unitario</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tbody>
+                        {% for dato in accesorios %}
+                          <tr>
+                            <td style="text-align: left;" >{{dato.Nombre}}</td>
+                            <td class="project_progress">
+                             <div class="progress progress_sm">
+                              <div class="progress-bar  {% if dato.Cantidad < 200 %} progress-bar-danger{% else %} progress-bar-info {% endif %}" role="progressbar" data-transitiongoal="{{dato.Cantidad}}" aria-valuemin="0" aria-valuemax="1000"></div>
+                             </div>
+                             <small>{{dato.Cantidad}} g</small>
+                            </td>
 
+                            <td>$ {{dato.accesorio.Precio_unidad}}</td>
+                            <td>
+                              <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="editar/{{dato.id}}" title="editar"><i class="fa fa-edit"></i></a>
+                              <a href="eliminar/{{dato.id}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
+                            </td>
+                          </tr>
+                        {% endfor %}
+                        </tbody>
+                       </table>
 
+                  </div>
+                </div>
+              </div>
 
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Varios <small></small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li claps="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a data-toggle="modal"  data-target="#modal"  href="nuevo/insumo">Nuevo</a>
+                          </li>
+                          </li>
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+
+                    <table class="ingredientes table table-striped ">
+                      <thead>
+                        <tr>
+                          <th style="text-align: left;" >Nombre</th>
+                          <th>Cantidad</th>
+                          <th>Precio Unitario</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tbody>
+                        {% for dato in insumos %}
+                          <tr>
+                            <td style="text-align: left;" >{{dato.Nombre}}</td>
+                            <td class="project_progress">
+                             <div class="progress progress_sm">
+                              <div class="progress-bar  {% if dato.Cantidad < 200 %} progress-bar-danger{% else %} progress-bar-info {% endif %}" role="progressbar" data-transitiongoal="{{dato.Cantidad}}" aria-valuemin="0" aria-valuemax="500"></div>
+                             </div>
+                             <small>{{dato.Cantidad}} g</small>
+                            </td>
+                            <td>$ {{dato.insumo.Precio_unidad}}</td>
+                            <td>
+                              <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="editar/{{dato.id}}"  title="editar"><i class="fa fa-edit"></i></a>
+                              <a href="eliminar/{{dato.id}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
+                            </td>
+                          </tr>
+                        {% endfor %}
+                        </tbody>
+                       </table>
 
                   </div>
                 </div>
               </div>
             </div>
-          </div>
         </div>
-        <!-- /page content -->
+ <!-- /page content -->
+
 {% endblock %}

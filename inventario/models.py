@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
 from django.db import models
 from django.contrib.auth.models import User
 from model_utils.managers import InheritanceManager
@@ -49,7 +48,6 @@ class Cliente(models.Model):
 
     def __str__(self):
        return self.Nombre
-
 
 class Insumo(models.Model):
     Nombre            = models.CharField(max_length=100, error_messages=my_default_errors)

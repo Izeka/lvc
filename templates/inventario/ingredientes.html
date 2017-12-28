@@ -28,7 +28,6 @@
 {% block content %}
   <!-- page content -->
         <div class="right_col" role="main">
-          <div class="">
             <div class="page-title">
               <div class="title_left">
                 <h3>Ingredientes <small></small></h3>
@@ -36,6 +35,8 @@
             </div>
             <div class="clearfix"></div>
             <div class="row">
+              <div class="modal fade" id="modal"></div>
+
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
@@ -46,7 +47,7 @@
                       <li claps="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
                         <ul class="dropdown-menu" role="menu">
-                          <li><a data-toggle="modal"  data-target="#modal"  href="lupulo/nuevo" >Nuevo</a>
+                          <li><a data-toggle="modal"  data-target="#modal"  href="nuevo/lupulo" >Nuevo</a>
                           </li>
                           </li>
                         </ul>
@@ -56,8 +57,6 @@
                     </ul>
                     <div class="clearfix"></div>
                   </div>
-
-                       <div class="modal fade" id="modal"></div>
                   <div class="x_content ">
                     <table class="ingredientes table table-striped ">
                       <thead>
@@ -82,9 +81,8 @@
                             <td>$ {{dato.lupulo.Precio_unidad}}</td>
                             <td>
                               <a >
-                              <i class="fa fa-eye"></i></a>
                               <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="editar/{{dato.id}}" title="editar"><i class="fa fa-edit"></i></a>
-                              <a href="eliminar/dato.id}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
+                              <a href="eliminar/{{dato.id}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
                             </td>
                           </tr>
                         {% endfor %}
@@ -104,7 +102,7 @@
                       <li claps="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
                         <ul class="dropdown-menu" role="menu">
-                          <li><a data-toggle="modal"  data-target="#modal"  href="malta/nueva">Nueva</a>
+                          <li><a data-toggle="modal"  data-target="#modal"  href="nuevo/malta">Nueva</a>
                           </li>
                           </li>
                         </ul>
@@ -137,9 +135,8 @@
                             </td>
                             <td>$ {{dato.malta.Precio_unidad}}</td>
                             <td>
-                              <a href="info/{{dato.id}}" title="+info"><i class="fa fa-eye"></i></a>
                               <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="editar/{{dato.id}}"  title="editar"><i class="fa fa-edit"></i></a>
-                              <a href="eliminar/dato.id}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
+                              <a href="eliminar/{{dato.id}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
                             </td>
                           </tr>
                         {% endfor %}
@@ -149,8 +146,6 @@
                   </div>
                 </div>
               </div>
-
-              <div class="clearfix"></div>
 
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="x_panel">
@@ -162,7 +157,7 @@
                       <li claps="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
                         <ul class="dropdown-menu" role="menu">
-                          <li><a href="nuevo">Nueva</a>
+                          <li><a data-toggle="modal"  data-target="#modal"  href="nuevo/levadura">Nueva</a>
                           </li>
                           </li>
                         </ul>
@@ -196,9 +191,8 @@
 
                             <td>$ {{dato.levadura.Precio_unidad}}</td>
                             <td>
-                              <a href="info/{{dato.id}}" title="+info"><i class="fa fa-eye"></i></a>
                               <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="editar/{{dato.id}}" title="editar"><i class="fa fa-edit"></i></a>
-                              <a href="eliminar/dato.id}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
+                              <a href="eliminar/{{dato.id}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
                             </td>
                           </tr>
                         {% endfor %}
@@ -208,7 +202,6 @@
                   </div>
                 </div>
               </div>
-
 
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="x_panel">
@@ -220,7 +213,7 @@
                       <li claps="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
                         <ul class="dropdown-menu" role="menu">
-                          <li><a data-toggle="modal"  data-target="#modal"  href="editar">Nuevo</a>
+                          <li><a data-toggle="modal"  data-target="#modal"  href="nuevo/agregado">Nuevo</a>
                           </li>
                           </li>
                         </ul>
@@ -254,9 +247,8 @@
                             </td>
                             <td>$ {{dato.agregado.Precio_unidad}}</td>
                             <td>
-                              <a href="info/{{dato.id}}" title="+info"><i class="fa fa-eye"></i></a>
                               <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="editar/{{dato.id}}"  title="editar"><i class="fa fa-edit"></i></a>
-                              <a href="eliminar/dato.id}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
+                              <a href="eliminar/{{dato.id}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
                             </td>
                           </tr>
                         {% endfor %}
@@ -266,13 +258,8 @@
                   </div>
                 </div>
               </div>
-              <div class="clearfix"></div>
-                  </div>
-                </div>
-              </div>
             </div>
-          </div>
         </div>
-        <!-- /page content -->
+ <!-- /page content -->
 
-    {% endblock %}
+{% endblock %}

@@ -16,18 +16,24 @@ Including another URLconf
 from django.conf.urls import url
 from django.views.generic import RedirectView
 from django.contrib import admin
+from django.contrib.auth.views import login
+
 from inventario.views import *
 from contabilidad.views import Compras
 from produccion.views import *
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^login/', login, {'template_name':'login.html'},),
     url(r'^$', RedirectView.as_view(permanent=False, url='/ingredientes/')),
 
     url(r'^ingredientes/$', Ingredientes.as_view()),
-    url(r'^ingredientes/editar/(?P<pk>\d+)/$', Editar_ingrediente.as_view(),),
-    url(r'^ingredientes/lupulo/nuevo$', Nuevo_lupulo.as_view()),
-    url(r'^ingredientes/malta/nueva$', Nueva_malta.as_view()),
+    url(r'^ingredientes/nuevo/(?P<insumo>\w+)/$', Nuevo_insumo.as_view()),
+    url(r'^ingredientes/editar/(?P<pk>\d+)/$', Editar_insumo.as_view(),),
+
     url(r'^equipamiento/$', Equipamiento.as_view()),
+    url(r'^equipamiento/nuevo/(?P<insumo>\w+)/$', Nuevo_insumo.as_view()),
+    url(r'^equipamiento/editar/(?P<pk>\d+)/$', Editar_insumo.as_view(),),
+
     url(r'^insumos/$', Insumos.as_view()),
 
     url(r'^proveedores/$', Proveedores.as_view()),
@@ -35,12 +41,12 @@ urlpatterns = [
 
     url(r'^compras/$', Compras.as_view()),
     url(r'^recetas/$', Recetas.as_view()),
-    url(r'^recetas/editar/(?P<pk>\d+)/$', Update_receta.as_view()),
-    url(r'^recetas/ver/(?P<pk>\d+)/$', View_receta.as_view()),
+    url(r'^recetas/editar/(?P<pk>\d+)/$', Editar_receta.as_view()),
+    url(r'^recetas/ver/(?P<pk>\d+)/$', Ver_receta.as_view()),
     url(r'^recetas/nueva$', Nueva_receta.as_view(),name='add_receta'),
 
     url(r'^cocciones/$', Cocciones.as_view()),
-    url(r'^cocciones/editar/(?P<pk>\d+)/$', Update_coccion.as_view()),
-    url(r'^cocciones/ver/(?P<pk>\d+)/$', View_coccion.as_view()),
+    url(r'^cocciones/editar/(?P<pk>\d+)/$', Editar_coccion.as_view()),
+    url(r'^cocciones/ver/(?P<pk>\d+)/$', Ver_coccion.as_view()),
     url(r'^cocciones/nueva$', Nueva_coccion.as_view(),name='add_coccion'),
 ]

@@ -18,71 +18,59 @@
 
 {% endblock %}
 {% block content %}
-  <!-- page content -->
+<!-- page content -->
 
   <div class="right_col" role="main">
 
    <div class="col-md-12 col-sm-12 col-xs-12">
       <div class="x_panel">
         <div class="x_title">
-                    <h2>Recetas <small></small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li claps="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="nueva">Nueva</a>
-                          </li>
-                          </li>
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
+          <h2>Recetas <small></small></h2>
+            <ul class="nav navbar-right panel_toolbox">
+              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+              <li claps="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                  <ul class="dropdown-menu" role="menu">
+                     <li><a href="nueva">Nueva</a>
+                     </li>
+                     </li>
+                  </ul>
+               </li>
+              <li><a class="close-link"><i class="fa fa-close"></i></a></li>
+            </ul>
+           <div class="clearfix"></div>
+        </div>
         <div class="modal fade" id="modal"></div>
         <div class="x_content">
-         <div class="table-responsive">
-         <table id="compras" class="table table-striped jambo_table bulk_action">
-           <thead>
-             <tr class="headings">
-               <th>
-                <input type="checkbox" id="check-all" class="flat">
-              </th>
-              <th style="text-align:left">Nombre </th>
-              <th >Estilo</th>
-              <th >Eficiencia</th>
-              <th >IBUs </th>
-              <th >EBC </th>
-              <th > </th>
-           </thead>
-           <tbody>
-             {% for dato in recetas %}
-            <tr class="even pointer">
-                <td >
-                  <input type="checkbox" class="flat" name="table_records">
-                </td>
-                <td >{{dato.Nombre}}</td>
-                <td >{{dato.Tipo}} </td>
-                <td >{{dato.IBUs}}</td>
-                <td >{{dato.EBC}}</td>
-                <td>
-                    <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="ver/{{dato.id}}" title="Ver"><i class="fa fa-eye"></i></a>
-                    <a href="editar/{{dato.id}}" title="Editar"><i class="fa fa-edit"></i></a>
-                    <a href="eliminar/dato.id}}" title="Eliminar"><i class="fa fa-trash-o"></i></a>
-                </td>
-              </tr>
-            {% endfor %}
-            </tbody>
-         </table>
-        </div>
+          {%for dato in recetas %}
+            <div style="width:30%" class="col-md-4 col-sm-4 col-xs-4 profile_details">
+              <div class="well profile_view">
+                <div class="col-sm-12">
+                  <h3 class="brief"><i>{{dato.Nombre}}</i></h3>
+                  <h4 class="brief"><i>{{dato.Tipo}}</i></h4>
+                  <div class="left col-xs-12">
+                    <h2>{{dato.Representante}}</h2>
+                    <p><strong>D.I.: </strong> {{dato.DI}} </p>
+                    <p><strong>D.F.: </strong> {{dato.DF}} </p>
+                    <p><strong>I.B.U: </strong> {{dato.IBUs}} </p>
+                    <p><strong>E.B.C: </strong> {{dato.EBC}} </p>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-xs-12 bottom text-center">
+                <div class="col-xs-12 col-sm-12 emphasis">
+                   <a href="editar/{{dato.id}}"  class="btn btn-success btn-xs"><i class="fa fa-edit"></i> </a>
+                    <a href="ver/{{dato.id}}" data-toggle="modal" data-id="{{dato.id}}" data-target="#modal"  class="btn btn-primary btn-xs">
+                      <i class="fa fa-eye"> </i>
+                   </a>
+                </div>
+              </div>
+              </div>
+            </div>
+          {% endfor %}
         </div>
       </div>
    </div>
-
-
   </div>
-        <!-- /page content -->
+<!-- /page content -->
 {% endblock %}
