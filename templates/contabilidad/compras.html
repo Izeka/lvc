@@ -1,4 +1,11 @@
 {% extends 'index.html' %}
+{% block extra_js %}
+    <!-- bootstrap-progressbar
+    <script src="/static/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    <script src="/static/custom/js/jquery.form.js"></script>
+-->
+{% endblock %}
+
 {% block content %}
 
   <!-- page content -->
@@ -15,6 +22,8 @@
                       <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
                       <ul class="dropdown-menu" role="menu">
+                          <li><a href="insumos" >Insumos</a>
+                          </li>
                       </ul>
                       </li>
                       <li><a class="close-link"><i class="fa fa-close"></i></a>
@@ -22,7 +31,7 @@
                     </ul>
                     <div class="clearfix"></div>
                   </div>
-        <div class="x_content">
+       <div class="x_content">
          <div class="table-responsive">
          <table id="compras" class="table table-striped jambo_table bulk_action">
            <thead>
@@ -30,27 +39,26 @@
                <th>
                 <input type="checkbox" id="check-all" class="flat">
               </th>
-              <th style="text-align:left">Producto </th>
-              <th >Fecha de Compra </th>
               <th >N° Factura </th>
+              <th >Fecha de Compra </th>
               <th >Proveedor </th>
               <th>Comprador </th>
+              <th style="text-align:left">Producto </th>
               <th >Cantidad </th>
-              <th >Precio Total </th>
+              <th >Importe Total </th>
            </thead>
            <tbody>
              {% for dato in compras %}
             <tr class="even pointer">
+                  <td >{{dato.Factura}}</td>
+                <td >{{dato.Fecha_compra}} </td>
+                <td >{{dato.Proveedor.Nombre}}</td>
+                <td >{{dato.Comprador.get_full_name}}</td>
                 <td >
                   <input type="checkbox" class="flat" name="table_records">
                 </td>
-                <td >{{dato.Producto.Nombre}}</td>
-                <td >{{dato.Fecha_compra}} </td>
-                <td >{{dato.Factura}}</td>
-                <td >{{dato.Proveedor.Nombre}}</td>
-                <td >{{dato.Comprador.get_full_name}}</td>
                 <td >{{dato.Cantidad}}</td>
-                <td >$ {{dato.Precio_total}}</td>
+                <td >$ {{dato.Importe_Total}}</td>
               </tr>
             {% endfor %}
             </tbody>

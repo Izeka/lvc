@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse,HttpResponseRedirect
 from django.views.generic import ListView, CreateView, UpdateView
 from django.forms import modelform_factory
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django_addanother.views import CreatePopupMixin
 from .models import *
 from .forms import *
 
@@ -16,27 +15,28 @@ class Ingredientes(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(Ingredientes, self).get_context_data(**kwargs)
-        context['lupulos'] = Insumo.objects.all().filter(lupulo__Tipo=2)
-        context['maltas'] = Insumo.objects.all().filter(malta__Tipo=2)
-        context['levaduras'] = Insumo.objects.all().filter(levadura__Tipo=2)
-        context['agregados'] = Insumo.objects.all().filter(agregado__Tipo=2)
+        context['lupulos'] = Lupulo.objects.all()
+        context['maltas'] = Malta.objects.all()
+        context['levaduras'] = Levadura.objects.all()
+        context['agregados'] = Agregado.objects.all()
         return context
 
-class Equipamiento(ListView):
-    model = Insumo
+class Equipamiento(LoginRequiredMixin, ListView):
+    model = Barril
+    login_url = "/login/"
     template_name = "inventario/equipamiento.html"
 
     def get_context_data(self, **kwargs):
         context = super(Equipamiento, self).get_context_data(**kwargs)
-        context['barriles'] = Insumo.objects.all().filter(barril__Tipo=1)
-        context['fermentadores'] = Insumo.objects.all().filter(fermentador__Tipo=1)
-        context['botellas'] = Insumo.objects.all().filter(botella__Tipo=1)
-        context['varios']= Insumo.objects.all().exclude(barril__Tipo=1).filter(fermentador__Tipo=1).filter(botella__Tipo=1)
+        context['barriles'] = Barril.objects.all()
+        context['fermentadores'] = Fermentador.objects.all()
+        context['botellas'] = Botella.objects.all()
 
         return context
 
-class Insumos(ListView):
+class Insumos(LoginRequiredMixin, ListView):
     model = Insumo
+    login_url = "/login/"
     template_name = "inventario/insumos.html"
     context_object_name = 'insumos'
 
@@ -44,18 +44,39 @@ class Insumos(ListView):
         queryset=Insumo.objects.all().filter(Tipo=3)
         return queryset
 
-class Proveedores(ListView):
-    model = Proveedor
-    template_name = "inventario/proveedores.html"
-    context_object_name = 'proveedores'
+class Editar_Barril(LoginRequiredMixin, UpdateView):
+    model = Barril
+    login_url = "/login/"
+    fields= '__all__'
+    template_name="inventario/insumo_form.html"
 
-class Clientes(ListView):
-    model = Cliente
-    template_name = "inventario/clientes.html"
-    context_object_name = 'clientes'
+    def form_valid(self, form):
+       form.save()
+       return HttpResponseRedirect("/equipamiento")
 
-class Editar_insumo(UpdateView):
+class Editar_Fermentador(LoginRequiredMixin, UpdateView):
+    model = Fermentador
+    login_url = "/login/"
+    fields= '__all__'
+    template_name="inventario/insumo_form.html"
+
+    def form_valid(self, form):
+       form.save()
+       return HttpResponseRedirect("/equipamiento")
+
+class Editar_Botella(LoginRequiredMixin, UpdateView):
+    model = Botella
+    login_url = "/login/"
+    fields= '__all__'
+    template_name="inventario/insumo_form.html"
+
+    def form_valid(self, form):
+       form.save()
+       return HttpResponseRedirect("/equipamiento")
+
+class Editar_insumo(LoginRequiredMixin, UpdateView):
     model = Insumo
+    login_url = "/login/"
     fields= '__all__'
     template_name="inventario/insumo_form.html"
     form_class = {
@@ -63,16 +84,13 @@ class Editar_insumo(UpdateView):
         Malta: MaltaForm,
         Levadura: LevaduraForm,
         Agregado: AgregadoForm,
-        Fermentador: FermentadorForm,
-        Barril : BarrilForm,
-        Botella : BotellaForm,
-
     }
 
     def get_form_class(self):
        return self.form_class[self.object.__class__]
 
     def get_queryset(self):
+
       return self.model.objects.select_subclasses()
 
     def get_context_data(self, **kwargs):
@@ -84,14 +102,39 @@ class Editar_insumo(UpdateView):
        form.save()
        return HttpResponseRedirect("")
 
-class Nuevo_insumo(CreateView):
-    model= Insumo
-    fields= '__all__'
+class Nuevo_insumo(LoginRequiredMixin, CreateView):
+    #fields ="__all__"
+    login_url = "/login/"
     template_name="inventario/insumo_nuevo.html"
+    form_class = InsumoForm
 
-    def form_valid(self, form):
+    def form_valid(self, form, insumo):
         form.save()
-        return HttpResponseRedirect('/ingredientes')
+        return HttpResponse(json.dumps({'message': message}))
+
+    def post(self, request, *args, **kwargs):
+        insumo = request.POST["insumo"]
+        if insumo == "lupulo":
+            form_class = LupuloForm
+        elif insumo == "malta":
+            form_class = MaltaForm
+        elif insumo == "levadura":
+            form_class = LevaduraForm
+        elif insumo == "agregado":
+            form_class = AgregadoForm
+        elif insumo == "fermentador":
+            form_class = FermentadorForm
+        elif insumo == "barril":
+            form_class = BarrilForm
+        elif insumo == "botella":
+            form_class = BotellaForm
+        else:
+            form_class = InsumoForm
+        form = self.get_form(form_class)
+        if form.is_valid():
+            return self.form_valid(form,insumo)
+        else:
+            return self.form_invalid(form,insumo)
 
     def get_context_data(self, **kwargs):
        context = super(Nuevo_insumo, self).get_context_data(**kwargs)
@@ -113,5 +156,4 @@ class Nuevo_insumo(CreateView):
            context["form"] = modelform_factory(Botella, fields="__all__")
        else:
            context["form"] = modelform_factory(Insumo, fields="__all__")
-
        return context

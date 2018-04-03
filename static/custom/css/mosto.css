@@ -48,7 +48,7 @@
 .unidad-inlines{
     position: absolute;
     bottom:  0px;
-    right: 50px;
+    left:  10px;
     padding: 6px 8px;
     border-left: 0;
     text-decoration: none;
@@ -125,8 +125,6 @@
   margin-left: 135px !important;
   margin-right: 1500px !important;
 }
-.start,.end{
-}
 #top{
   top: 40px;
   padding-top: 5px;
@@ -144,5 +142,6 @@
   margin-left: -10px;
 }
 .start,.end{
+  margin-left: 15px;
   margin-bottom: 50px;
 }

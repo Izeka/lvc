@@ -1,7 +1,29 @@
 {% load i18n widget_tweaks %}
 
+{% block extra_css %}
+
+<!-- Bootstrap -->
+<link href="/static/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Font Awesome -->
+<link href="/static/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="/static/custom/css/custom.css" rel="stylesheet">
+    <link href="/static/custom/css/mosto.css" rel="stylesheet">
+    <link href="/static/custom/css/datepicker.css" rel="stylesheet">
+{% endblock %}
+{% block extra_js %}
+
+<script>
+  $('#id_Vencimiento').datepicker({
+  });
+
+</script>
+
+{% endblock %}
+
 <div class="modal-dialog modal-lg" role="document">
-    <form action="editar/{{pk}}/" method="post" id="editar_insumo" class="form">{% csrf_token %}
+    <form action="{{ request.path }}" method="post" id="editar_insumo" class="form">{% csrf_token %}
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">

@@ -3,6 +3,7 @@
 
 {% block extra_js %}
   <!-- jQuery Smart Wizard -->
+    <script src="/static/custom/js/jquery.formset.js"></script>
     <script src="/static/custom/js/moment.js"></script>
     <script src="/static/custom/js/countimer.js"></script>
     <script src="/static/custom/js/coundown.js"></script>
@@ -58,6 +59,10 @@
             $('form').submit();
     }
     });
+    $('#id_Fecha').datepicker({
+      });
+
+
     </script>
 {% endblock %}
 
@@ -262,7 +267,7 @@
                                  {{form.Cantidad | append_attr:"class:form-control"}}
                              </div>
                             <div class="col-md-4 col-sm-4 col-xs-4">
-                                 <label for="middle-name">{{form.Tiempo.label}} de Coccion</label>
+                                 <label for="middle-name">{{form.Tiempo.label}}</label>
                                  <span class="unidad-inlines">minutos</span>
                                  {{form.Tiempo | append_attr:"class:form-control"}}
                              </div>
@@ -284,7 +289,7 @@
                                  {{form.Cantidad | append_attr:"class:form-control"}}
                              </div>
                             <div class="col-md-4 col-sm-4 col-xs-4">
-                                 <label for="middle-name">{{form.Tiempo.label}} de Coccion</label>
+                                 <label for="middle-name">{{form.Tiempo.label}}</label>
                                  <span class="unidad-inlines">minutos</span>
                                  {{form.Tiempo | append_attr:"class:form-control"}}
                              </div>

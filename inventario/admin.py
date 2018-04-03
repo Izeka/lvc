@@ -8,7 +8,6 @@ from .models import *
 admin.site.register(Unidad_medida)
 admin.site.register(Forma)
 admin.site.register(Tipo)
-admin.site.register(Proveedor)
 admin.site.register(Insumo)
 admin.site.register(Barril)
 admin.site.register(Botella)

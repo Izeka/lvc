@@ -16,30 +16,38 @@ Including another URLconf
 from django.conf.urls import url
 from django.views.generic import RedirectView
 from django.contrib import admin
-from django.contrib.auth.views import login
+from django.contrib.auth.views import login, logout
 
+from agenda.views import *
 from inventario.views import *
-from contabilidad.views import Compras
+from contabilidad.views import *
 from produccion.views import *
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^login/', login, {'template_name':'login.html'},),
+    url(r'^logout/', logout,{'template_name':'logout.html'},),
     url(r'^$', RedirectView.as_view(permanent=False, url='/ingredientes/')),
 
     url(r'^ingredientes/$', Ingredientes.as_view()),
-    url(r'^ingredientes/nuevo/(?P<insumo>\w+)/$', Nuevo_insumo.as_view()),
+    url(r'^ingredientes/nuevo/(?P<insumo>\w+)/$', Nuevo_insumo.as_view(),name='add_insumo'),
     url(r'^ingredientes/editar/(?P<pk>\d+)/$', Editar_insumo.as_view(),),
 
     url(r'^equipamiento/$', Equipamiento.as_view()),
     url(r'^equipamiento/nuevo/(?P<insumo>\w+)/$', Nuevo_insumo.as_view()),
     url(r'^equipamiento/editar/(?P<pk>\d+)/$', Editar_insumo.as_view(),),
+    url(r'^equipamiento/editar/barril/(?P<pk>\d+)/$', Editar_Barril.as_view(),),
+    url(r'^equipamiento/editar/botella/(?P<pk>\d+)/$', Editar_Botella.as_view(),),
+    url(r'^equipamiento/editar/fermentador/(?P<pk>\d+)/$', Editar_Fermentador.as_view(),),
 
     url(r'^insumos/$', Insumos.as_view()),
+    url(r'^insumos/nuevo/(?P<insumo>\w+)/$', Nuevo_insumo.as_view(), ),
 
     url(r'^proveedores/$', Proveedores.as_view()),
     url(r'^clientes/$', Clientes.as_view()),
 
     url(r'^compras/$', Compras.as_view()),
+    url(r'^compras/(?P<insumo>\w+)/$', Nueva_compra.as_view(),name='add_compra'),
     url(r'^recetas/$', Recetas.as_view()),
     url(r'^recetas/editar/(?P<pk>\d+)/$', Editar_receta.as_view()),
     url(r'^recetas/ver/(?P<pk>\d+)/$', Ver_receta.as_view()),

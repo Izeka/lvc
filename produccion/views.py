@@ -1,7 +1,8 @@
 from django.views.generic import ListView, UpdateView
 from django.forms import modelformset_factory
 from extra_views import InlineFormSet, CreateWithInlinesView, UpdateWithInlinesView, ModelFormSetView
-from extra_views.generic import GenericInlineFormSet
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from .models import *
 from .forms import *
 from datetime import date
@@ -22,25 +23,28 @@ class AgregadosInline(InlineFormSet):
     fields = "__all__"
     extra=1
 
-class Recetas(ListView):
+class Recetas(LoginRequiredMixin, ListView):
     model = Receta
     template_name = "produccion/recetas.html"
     context_object_name = 'recetas'
 
-class Nueva_receta(CreateWithInlinesView):
+class Nueva_receta(LoginRequiredMixin, CreateWithInlinesView):
     model = Receta
+    login_url = "/login/"
     inlines = [MaltaInline, LupuloInline, AgregadosInline]
     fields = "__all__"
     success_url = "/recetas"
 
-class Editar_receta(UpdateWithInlinesView):
+class Editar_receta(LoginRequiredMixin, UpdateWithInlinesView):
     model = Receta
+    login_url = "/login/"
     inlines = [MaltaInline, LupuloInline, AgregadosInline]
     fields = "__all__"
     success_url = "/recetas"
 
-class Ver_receta(UpdateView):
+class Ver_receta(LoginRequiredMixin, UpdateView):
     model = Receta
+    login_url = "/login/"
     template_name = "produccion/ver_receta.html"
     fields = "__all__"
 
@@ -66,14 +70,15 @@ class AgregadosCoccionInline(InlineFormSet):
     fields = "__all__"
     extra=1
 
-
-class Cocciones(ListView):
+class Cocciones(LoginRequiredMixin, ListView):
     model = Coccion
+    login_url = "/login/"
     template_name = "produccion/cocciones.html"
     context_object_name = 'cocciones'
 
-class Nueva_coccion(CreateWithInlinesView):
+class Nueva_coccion(LoginRequiredMixin, CreateWithInlinesView):
     model = Coccion
+    login_url = "/login/"
     inlines = [MaltaCoccionInline, LupuloCoccionInline, AgregadosCoccionInline]
     fields = "__all__"
     success_url = "/cocciones"
@@ -90,13 +95,15 @@ class Nueva_coccion(CreateWithInlinesView):
            context['hoy'] = date.today()
         return context
 
-class Editar_coccion(UpdateWithInlinesView):
+class Editar_coccion(LoginRequiredMixin, UpdateWithInlinesView):
     model = Coccion
+    login_url = "/login/"
     inlines = [MaltaCoccionInline, LupuloCoccionInline, AgregadosCoccionInline]
     fields = "__all__"
     success_url = "/cocciones"
 
-class Ver_coccion(UpdateView):
+class Ver_coccion(LoginRequiredMixin, UpdateView):
     model = Coccion
+    login_url = "/login/"
     template_name = "produccion/view_coccion.html"
     fields = "__all__"

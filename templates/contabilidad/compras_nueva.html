@@ -1,0 +1,140 @@
+{% extends 'index.html' %}
+{% load i18n widget_tweaks %}
+{% block extra_js %}
+<script src="/static/vendors/jquery-ui/jquery-ui.min.js"></script>
+<script src="/static/custom/js/jquery.formset.js"></script>
+<script src="/static/custom/js/jquery.form.js"></script>
+<script src="/static/vendors/jquery-keepFormData-master/jquery.keepFormData.js"></script>
+<script >
+      $('#id_Fecha_compra').datepicker({
+      });
+
+      $('#id_contact_info_table tbody tr').formset({
+              addText: 'Agregar',
+              deleteText: '',
+              deleteCssClass: 'delete-row fa fa-times-circle',
+          });
+      $('.add-row').addClass("fa fa-toggle-down")
+
+      $('#modal').on('show.bs.modal', function (event) {
+          var modal = $(this);
+          var url = $(event.relatedTarget).attr('href');
+          $.ajax({
+              url: url,
+              context: document.body
+          }).done(function(response) {
+              modal.html(response);
+          });
+      });
+
+</script>
+{% endblock %}
+<!-- Here's an example of how you can style add/delete buttons with CSS -->
+{% block extra_css %}
+<style type="text/css">
+.fa-toggle-down::before{
+  margin-right: 5px !important;
+}
+.fa-plus{
+   position: absolute;
+   color: #ECF0F1 !important;
+   margin-left: 4px;
+   margin-top: 3px;
+   font-size: 8px !important;
+}
+
+th.active{
+  background: #3f5367 !important;
+  color: #ECF0F1 !important;
+}
+.add-row {
+  font-size: 12px !important;
+}
+.delete-row {
+  position: absolute;
+  right: 15px;
+  padding: 6px 8px;
+  border-left: 0;
+  text-decoration: none;
+  text-align: center;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+  <!-- page content -->
+
+  <div class="right_col" role="main">
+
+   <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="x_panel">
+        <div class="x_title">
+            <h2>Compra Nuevos {{insumo|title }} <small></small></h2>
+            <div class="clearfix"></div>
+        </div>
+      <div class="modal fade" id="modal"></div>
+       <div class="x_content">
+      <form action="{{ request.path }}" class="keepFormData" method="post" id="nueva_compra" class="form">{% csrf_token %}
+
+         <fieldset class="form-group">
+             <label for="exampleInputEmail1">
+                N° Factura
+             </label>
+               {{ form.Factura |attr:"class:form-control" }}
+         </fieldset>
+           <fieldset class="form-group">
+               <label for="exampleInputEmail1">
+                  {{ form.Fecha_compra.label }}
+               </label>
+                 {{ form.Fecha_compra |attr:"class:form-control" }}
+            </fieldset>
+
+            <fieldset class="form-group">
+                <label for="exampleInputEmail1">
+                   {{ form.Proveedor.label }}
+                </label>
+                  {{ form.Proveedor |attr:"class:form-control" }}
+            </fieldset>
+            <fieldset class="form-group">
+                <label for="exampleInputEmail1">
+                   {{ form.Comprador.label }}
+                </label>
+                  {{ form.Comprador |attr:"class:form-control" }}
+            </fieldset>
+
+            {% for formset in inlines.0 %}
+            {{formset.id}}
+            {{ formset.media }}
+             <table  class="table table-striped jambo_table bulk_action" id="id_contact_info_table" border="0" cellpadding="0" cellspacing="5">
+                 <thead>
+                     <tr>
+                         <th scope="col"> Insumo <a class="fa fa-plus" data-toggle="modal"  data-target="#modal"  href="/insumos/nuevo/insumo"> </a></th>
+                         <th scope="col">{{formset.cantidad.label}}</th>
+                         <th scope="col">Precio Unitario</th>
+                         <th scope="col">{{formset.subtotal.label}}</th>
+                         <th scope="col"> </th>
+                     </tr>
+                 </thead>
+                 <tbody>
+
+                     <tr id="{{ formset.prefix }}-row">
+                         <td style="text-align:center;">{{ formset.insumo | append_attr:"class:form-control" }}</td>
+                         <td>{{ formset.cantidad | append_attr:"class:form-control" }}</td>
+                         <td>{{ formset.p_unitario | append_attr:"class:form-control" }}</td>
+                         <td>{{ formset.subtotal | append_attr:"class:form-control" }}</td>
+                         <td></td>
+                     </tr>
+
+                 </tbody>
+             </table>
+               {% endfor %}
+           {{ formset.management_form }}
+         </form>
+        </div>
+      </div>
+   </div>
+
+  </div>
+        <!-- /page content -->
+{% endblock %}

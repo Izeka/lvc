@@ -1,25 +1,95 @@
 {% load i18n widget_tweaks %}
+{% block extra_js %}
+
+<script>
+
+var list = ["lupulo","malta","levadura","agregado"];
+
+$("#id_Tipo").val("1").prop('selected', true);
+$("#id_Unidad_de_medida").val("1").prop('selected', true)
+
+$("#id_insumo").change(function(){
+  if(jQuery.inArray($(this).val(), list) != -1) {
+    $("#id_Tipo").val("1").prop('selected', true);
+    $("#id_Unidad_de_medida").val("1").prop('selected', true)
+  } else {
+    $("#id_Tipo").val("3").prop('selected', true);
+    $("#id_Unidad_de_medida").val("3").prop('selected', true)
+  };
+});
+
+  var form_options = { target: '#modal', success: function(response) { $("#modal").modal("toggle");} };
+  $('#nuevo_ingrediente').ajaxForm(form_options);
+
+  $('#nuevo_ingrediente').submit(function() {
+    $('#modal').modal('hide');
+  });
+
+</script>
+{% endblock %}
 
 <div class="modal-dialog modal-lg" role="document">
-    <form action="nuevo/{{ingrediente}}{{equipamiento}}/" method="post" id="nuevo_ingrediente" class="form">{% csrf_token %}
+    <form action="{{ request.path }}" method="post" id="nuevo_ingrediente" class="form">{% csrf_token %}
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                     <span class="sr-only">Cerrar</span>
                 </button>
-                <h4 class="modal-title">Nuevo {{ingrediente|title }}{{equipamiento|title }}</h4>
+                <h4 class="modal-title">Nuevo {{insumo|title }}</h4>
             </div>
+
             <div class="modal-body">
-                {{ form.media }}
-                {% for field in form.visible_fields %}
-                    <fieldset class="form-group">
-                        <label for="exampleInputEmail1">
-                          {{ field.label_tag }}
-                        </label>
-                         {{ field|attr:"class:form-control" }}
-                    </fieldset>
+
+              <div class="form-group">
+                <label for="id_insumo"> Insumo </label>
+                  <select id="id_insumo" class="form-control" name="insumo">
+                    <option value="malta">Malta</option>
+                    <option value="lupulo">Lupulo</option>
+                    <option value="agregado">Agregado</option>
+                    <option value="acido">Acido</option>
+                    <option value="clarificante">Clarificante</option>
+              </select>
+              </div>
+              {% load widget_tweaks %}
+
+             {% for hidden_field in form.hidden_fields %}
+                {{ hidden_field }}
+              {% endfor %}
+
+              {% if form.non_field_errors %}
+              <div class="alert alert-danger" role="alert">
+                {% for error in form.non_field_errors %}
+                  {{ error }}
                 {% endfor %}
+              </div>
+              {% endif %}
+
+              {% for field in form.visible_fields %}
+              <div class="form-group">
+                {{ field.label_tag }}
+
+                {% if form.is_bound %}
+                  {% if field.errors %}
+                    {% render_field field class="form-control is-invalid" %}
+                    {% for error in field.errors %}
+                      <div class="invalid-feedback">
+                        {{ error }}
+                      </div>
+                    {% endfor %}
+                  {% else %}
+                    {% render_field field class="form-control is-valid" %}
+                  {% endif %}
+              {% else %}
+                {% render_field field class="form-control" %}
+              {% endif %}
+
+              {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text }}</small>
+              {% endif %}
+             </div>
+             {% endfor %}
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -28,6 +98,3 @@
         </div><!-- /.modal-content -->
     </form>
 </div><!-- /.modal-dialog -->
-<script>
-    var form_options = { target: '#modal', success: function(response) {} };
-</script>

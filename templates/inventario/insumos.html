@@ -62,9 +62,9 @@
                       <thead>
                         <tr>
                           <th style="text-align: left;" >Nombre</th>
-                          <th>Cantidad</th>
+                          <th>Tipo</th>
+                          <th>EBC</th>
                           <th>Precio Unitario</th>
-                          <th></th>
                         </tr>
                       </thead>
                       <tbody>
@@ -72,13 +72,13 @@
                         {% for dato in acidos %}
                           <tr>
                             <td style="text-align: left;" >{{dato.Nombre}}</td>
+                            <td>$ {{dato.acido.EBC}}</td>
                             <td class="project_progress">
                              <div class="progress progress_sm">
                               <div class="progress-bar  {% if dato.Cantidad < 0.5 %} progress-bar-danger{% else %} progress-bar-info {% endif %}" role="progressbar" data-transitiongoal="{{dato.Cantidad}}" aria-valuemin="0" aria-valuemax="2"></div>
                              </div>
                              <small>{{dato.Cantidad}} Kgs</small>
                             </td>
-                            <td>$ {{dato.acido.Precio_unidad}}</td>
                             <td>
                               <a >
                               <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="editar/{{dato.id}}" title="editar"><i class="fa fa-edit"></i></a>

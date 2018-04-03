@@ -58,8 +58,8 @@
                     <table class="ingredientes table table-striped">
                       <thead>
                         <tr>
-                          <th style="text-align: left;" >Nombre</th>
                           <th>N° serie</th>
+                          <th style="text-align: left;" >Litros</th>
                           <th>Lleno</th>
                           <th></th>
                         </tr>
@@ -68,11 +68,11 @@
                         <tbody>
                         {% for dato in fermentadores %}
                           <tr>
-                            <td style="text-align: left;" >{{dato.Nombre}}</td>
-                            <td >{{dato.fermentador.Numero_serie}}</td>
-                            <td>{{dato.fermentador.Lleno}}</td>
+                            <td >{{dato.Numero_serie}}</td>
+                            <td style="text-align: left;" >{{dato.Litros}}</td>
+                            <td>{{dato.Lleno}}</td>
                             <td>
-                              <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="editar/{{dato.id}}" title="editar"><i class="fa fa-edit"></i></a>
+                              <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="editar/fermentador/{{dato.id}}" title="editar"><i class="fa fa-edit"></i></a>
                               <a href="eliminar/{{dato.id}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
                             </td>
                           </tr>
@@ -108,8 +108,8 @@
                     <table class="ingredientes table table-striped">
                       <thead>
                         <tr>
-                          <th style="text-align: left;" >Nombre</th>
                           <th>N° Serie</th>
+                          <th style="text-align: left;" >Litros</th>
                           <th>Lleno</th>
                           <th></th>
                         </tr>
@@ -118,11 +118,11 @@
                         <tbody>
                         {% for dato in barriles %}
                           <tr>
-                            <td style="text-align: left;" >{{dato.Nombre}}</td>
-                            <td >{{dato.barril.Numero_serie}}</td>
-                            <td>{{dato.barril.Lleno}}</td>
+                            <td >{{dato.Numero_serie}}</td>
+                            <td style="text-align: left;" >{{dato.Litros}}</td>
+                            <td>{{dato.Lleno}}</td>
                             <td>
-                              <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="editar/{{dato.id}}" title="editar"><i class="fa fa-edit"></i></a>
+                              <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="editar/barril/{{dato.id}}" title="editar"><i class="fa fa-edit"></i></a>
                               <a href="eliminar/{{dato.id}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
                             </td>
                           </tr>
@@ -160,10 +160,8 @@
                     <table class="ingredientes table table-striped">
                       <thead>
                         <tr>
-                          <th style="text-align: left;" >Nombre</th>
-                          <th>N° Serie</th>
+                          <th>Litros</th>
                           <th>Cantidad</th>
-                          <th>Llenas</th>
                           <th></th>
                         </tr>
                       </thead>
@@ -171,12 +169,10 @@
                         <tbody>
                         {% for dato in botellas %}
                           <tr>
-                            <td style="text-align: left;" >{{dato.Nombre}}</td>
-                            <td >{{dato.botella.Numero_serie}}</td>
-                            <td>{{dato.botella.Cantidad}}</td>
-                            <td>{{dato.botella.Llenas}}</td>
+                            <td >{{dato.Litros}}</td>
+                            <td>{{dato.Cantidad}}</td>
                             <td>
-                              <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="editar/{{dato.id}}" title="editar"><i class="fa fa-edit"></i></a>
+                              <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="editar/botella/{{dato.id}}" title="editar"><i class="fa fa-edit"></i></a>
                               <a href="eliminar/{{dato.id}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
                             </td>
                           </tr>

@@ -5,21 +5,20 @@ body {
 }
 .login {
     background: #fff none repeat scroll 0 0;
-    border: 1px solid #eaeaea;
-    border-radius: 4px;
-    margin: 200px auto;
-    min-height: 100px;
-    min-width: 100px;
     text-align: center;
-    overflow: hidden;
-    width: 70em;
+    height: 100vh;
+    background:#2A3F54;
+    display: flex;
+    align-items: center; /* align vertical */
+}
+form{
+  margin-left: 15%;
 }
 .login .form-row {
     border-bottom: medium none;
-    float: left;
     text-align:left;
     padding: 4px 0;
-    width: 100%;
+    width: 80%;
 }
 
 .login .form-row label {
@@ -35,7 +34,8 @@ body {
 }
 .login .submit-row {
     clear: both;
-    padding: 15px 0;
+    padding: 10px 0;
+    margin-left: -15%;
 }
 .submit-row input, a.button {
     background: #2A3F54 none repeat scroll 0 0;
@@ -50,9 +50,7 @@ body {
   background:#4383a3;
 }
 .form{
-  margin-top: 120px;
-  margin-left: 50px;
-}
-.logo{
-  background:#2A3F54;
-}
+  display: flex;
+  align-items: center;
+  background-color: white;
+  height: 100vh;
