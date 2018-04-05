@@ -20,11 +20,14 @@
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
                       <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-shopping-cart"></i></a>
                       <ul class="dropdown-menu" role="menu">
-                          <li><a href="insumos" >Insumos</a>
+                          <li><a href="insumo" >Insumo</a>
+                          </li>
+                           <li><a href="equipamiento" >Equipamiento</a>
                           </li>
                       </ul>
+
                       </li>
                       <li><a class="close-link"><i class="fa fa-close"></i></a>
                       </li>
@@ -36,28 +39,23 @@
          <table id="compras" class="table table-striped jambo_table bulk_action">
            <thead>
              <tr class="headings">
-               <th>
-                <input type="checkbox" id="check-all" class="flat">
-              </th>
-              <th >N° Factura </th>
               <th >Fecha de Compra </th>
-              <th >Proveedor </th>
               <th>Comprador </th>
+              <th >Proveedor </th>
+              <th >N° Factura </th>
               <th style="text-align:left">Producto </th>
-              <th >Cantidad </th>
               <th >Importe Total </th>
            </thead>
            <tbody>
              {% for dato in compras %}
             <tr class="even pointer">
-                  <td >{{dato.Factura}}</td>
                 <td >{{dato.Fecha_compra}} </td>
-                <td >{{dato.Proveedor.Nombre}}</td>
                 <td >{{dato.Comprador.get_full_name}}</td>
+                <td >{{dato.Proveedor.Nombre}}</td>
+                <td >{{dato.Factura}}</td>
                 <td >
                   <input type="checkbox" class="flat" name="table_records">
                 </td>
-                <td >{{dato.Cantidad}}</td>
                 <td >$ {{dato.Importe_Total}}</td>
               </tr>
             {% endfor %}

@@ -4,6 +4,7 @@ from django.views.generic import ListView, CreateView, UpdateView
 from django.forms import modelform_factory
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django_addanother.views import CreatePopupMixin
+import  json
 from .models import *
 from .forms import *
 
@@ -103,14 +104,18 @@ class Editar_insumo(LoginRequiredMixin, UpdateView):
        return HttpResponseRedirect("")
 
 class Nuevo_insumo(LoginRequiredMixin, CreateView):
-    #fields ="__all__"
     login_url = "/login/"
     template_name="inventario/insumo_nuevo.html"
     form_class = InsumoForm
 
     def form_valid(self, form, insumo):
+        message = "form valid"
         form.save()
         return HttpResponse(json.dumps({'message': message}))
+
+    def form_invalid(self, form, insumo):
+        message = "form invalid"
+        return HttpResponseRedirect("/insumos/nuevo/"+insumo)
 
     def post(self, request, *args, **kwargs):
         insumo = request.POST["insumo"]

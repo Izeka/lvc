@@ -3,7 +3,7 @@ from django.db import models
 
 # Create your models here.
 from django.contrib.auth.models import User
-from inventario.models import Proveedor, Insumo
+from inventario.models import *
 
 my_default_errors = {
     'required': 'Este valor es requerido',
@@ -22,9 +22,26 @@ class Compra(models.Model):
     def __str__(self):
       return str(self.id)
 
-class CompraItem(models.Model):
+PRESENTACIONES = (
+           ('U','Unidad'),
+           ('1K','1 Kg'),
+           ('10K','10 Kg'),
+           ('25K','25 Kg'),
+           ('1L','1 Litro'),
+           ('5L','5 Litros'),
+)
+class CompraInsumo(models.Model):
      compra          = models.ForeignKey(Compra, error_messages=my_default_errors)
      insumo          = models.ForeignKey(Insumo, error_messages=my_default_errors, related_name="add_insumo")
+     presentacion    = models.CharField(max_length=20, choices=PRESENTACIONES,error_messages=my_default_errors,default="U")
      cantidad        = models.FloatField(error_messages=my_default_errors)
      p_unitario      = models.FloatField(error_messages=my_default_errors)
-     subtotal       = models.FloatField(error_messages=my_default_errors)
+     subtotal        = models.FloatField(error_messages=my_default_errors)
+
+class CompraBarril(models.Model):
+     compra          = models.ForeignKey(Compra, error_messages=my_default_errors)
+     barril          = models.ForeignKey(Barril, error_messages=my_default_errors, related_name="add_barril")
+     presentacion    = models.CharField(max_length=20, choices=PRESENTACIONES,error_messages=my_default_errors,default="U")
+     cantidad        = models.FloatField(error_messages=my_default_errors)
+     p_unitario      = models.FloatField(error_messages=my_default_errors)
+     subtotal        = models.FloatField(error_messages=my_default_errors)

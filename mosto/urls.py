@@ -47,7 +47,7 @@ urlpatterns = [
     url(r'^clientes/$', Clientes.as_view()),
 
     url(r'^compras/$', Compras.as_view()),
-    url(r'^compras/(?P<insumo>\w+)/$', Nueva_compra.as_view(),name='add_compra'),
+    url(r'^compras/insumo/$', Compra_insumos.as_view(),name='add_compra'),
     url(r'^recetas/$', Recetas.as_view()),
     url(r'^recetas/editar/(?P<pk>\d+)/$', Editar_receta.as_view()),
     url(r'^recetas/ver/(?P<pk>\d+)/$', Ver_receta.as_view()),

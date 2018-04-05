@@ -145,3 +145,18 @@
   margin-left: 15px;
   margin-bottom: 50px;
 }
+.unidad-compras{
+  position: absolute;
+  margin-top:  5px;
+  margin-left:  10px;
+}
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+
+      margin-right:   10px;
+
+
+}
+
+input[type="number"] {
+      margin-right:   10px;
+}

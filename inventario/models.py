@@ -12,31 +12,22 @@ my_default_errors = {
 }
 
 # Create your models here.
-class Unidad_medida(models.Model):
-    valor = models.CharField(max_length=100,error_messages=my_default_errors)
 
-    def __str__(self):
-       return self.valor
-
-class Forma(models.Model):
-   valor = models.CharField(max_length=100,error_messages=my_default_errors)
-
-   def __str__(self):
-      return self.valor
-
-class Tipo(models.Model):
-   valor = models.CharField(max_length=100,error_messages=my_default_errors)
-
-   def __str__(self):
-       return self.valor
-
+TIPOS = (
+        ('INSUMO', 'Insumo'),
+        ('INGREDIENTE', 'Ingrediente'),
+        ('EQUIPAMIENTO', 'Equipamiento'),
+    )
+UNIDADES = (
+           ('K','Kilogramos'),
+           ('g','Gramos'),
+           ('l','Litros'),
+)
 class Insumo(models.Model):
     Nombre            = models.CharField(max_length=100, error_messages=my_default_errors)
-    Tipo              = models.ForeignKey(Tipo, error_messages=my_default_errors)
-    #Origen            = models.CharField(max_length=100,error_messages=my_default_errors, blank=True,null=True)
-    #Forma             = models.ForeignKey(Forma, error_messages=my_default_errors, blank=True,null=True)
+    Tipo              = models.CharField(max_length=20, choices=TIPOS, error_messages=my_default_errors)
     Uso               = models.CharField(max_length=100, error_messages=my_default_errors, blank=True,null=True)
-    Unidad_de_medida  = models.ForeignKey(Unidad_medida, error_messages=my_default_errors, blank=True,null=True)
+    Unidad_de_medida  = models.CharField(max_length=20, choices=UNIDADES,error_messages=my_default_errors, blank=True,null=True)
     Cantidad          = models.IntegerField(error_messages=my_default_errors)
     Stock_minimo      = models.IntegerField(error_messages=my_default_errors, blank=True,null=True)
     Stock_maximo      = models.IntegerField(error_messages=my_default_errors, blank=True,null=True)

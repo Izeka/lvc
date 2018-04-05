@@ -19,19 +19,24 @@ class Compras(LoginRequiredMixin, ListView):
     template_name = "contabilidad/compras.html"
     context_object_name = 'compras'
 
-class CompraInline( InlineFormSet):
-    model = CompraItem
+class InsumoInline( InlineFormSet):
+    model = CompraInsumo
     fields="__all__"
     extra=1
 
-class Nueva_compra(LoginRequiredMixin, CreateWithInlinesView):
+class BarrilInline( InlineFormSet):
+    model = CompraBarril
+    fields="__all__"
+    extra=1
+
+class Compra_insumos(LoginRequiredMixin, CreateWithInlinesView):
     model = Compra
     fields='__all__'
     login_url = "/login/"
-    inlines = [CompraInline,]
-    template_name ="contabilidad/compras_nueva.html"
+    inlines = [InsumoInline]
+    success_url = "/compras"
+    template_name ="contabilidad/compra_insumos.html"
 
-class Compra_insumoss(LoginRequiredMixin, CreateView):
-    login_url = "/login/"
-    template_name="contabilidad/ingrediente_nuevo.html"
-    form_class = InsumoForm
+
+    def form_invalid(self, form, insumo):
+       return HttpResponseRedirect("/compras")
