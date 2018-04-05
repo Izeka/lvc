@@ -22,10 +22,11 @@
                       <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-shopping-cart"></i></a>
                       <ul class="dropdown-menu" role="menu">
-                          <li><a href="insumo" >Insumo</a>
-                          </li>
-                           <li><a href="equipamiento" >Equipamiento</a>
-                          </li>
+                           <li><a href="insumo" >Insumo</a></li>
+                           <li><a href="servicio" >Servicio</a></li>
+                           <li><a href="equipamiento" >Barril</a></li>
+                           <li><a href="equipamiento" >Fermentador</a></li>
+                           <li><a href="equipamiento" >Botellas</a></li>
                       </ul>
 
                       </li>
@@ -43,7 +44,6 @@
               <th>Comprador </th>
               <th >Proveedor </th>
               <th >N° Factura </th>
-              <th style="text-align:left">Producto </th>
               <th >Importe Total </th>
            </thead>
            <tbody>
@@ -53,8 +53,6 @@
                 <td >{{dato.Comprador.get_full_name}}</td>
                 <td >{{dato.Proveedor.Nombre}}</td>
                 <td >{{dato.Factura}}</td>
-                <td >
-                  <input type="checkbox" class="flat" name="table_records">
                 </td>
                 <td >$ {{dato.Importe_Total}}</td>
               </tr>

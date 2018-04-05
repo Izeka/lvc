@@ -25,7 +25,7 @@ class InsumoInline( InlineFormSet):
     extra=1
 
 class BarrilInline( InlineFormSet):
-    model = CompraBarril
+    model = Barril
     fields="__all__"
     extra=1
 
@@ -37,6 +37,15 @@ class Compra_insumos(LoginRequiredMixin, CreateWithInlinesView):
     success_url = "/compras"
     template_name ="contabilidad/compra_insumos.html"
 
+class Compra_equipamiento(LoginRequiredMixin, CreateWithInlinesView):
+    model = Compra
+    fields='__all__'
+    login_url = "/login/"
+    inlines = [BarrilInline]
+    success_url = "/compras"
+    template_name ="contabilidad/compra_equipamiento.html"
 
-    def form_invalid(self, form, insumo):
-       return HttpResponseRedirect("/compras")
+    def get_context_data(self, **kwargs):
+        context = super(Compra_equipamiento, self).get_context_data(**kwargs)
+        context['no_fields'] = ["Ubicacion","Id","Compra", "Lleno","Carbonatado", "Observaciones","Eliminar"]
+        return context

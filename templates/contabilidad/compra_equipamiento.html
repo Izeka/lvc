@@ -4,21 +4,16 @@
 <script src="/static/vendors/jquery-ui/jquery-ui.min.js"></script>
 <script src="/static/custom/js/jquery.formset.js"></script>
 <script src="/static/custom/js/jquery.form.js"></script>
+
 <script >
       $('#id_Fecha_compra').datepicker({
       });
-      $(function() {
-       {% for form in inlines.0 %}
-        $('table#{{ form.prefix }}').formset({
-              prefix: '{{ form.prefix }}',
-              addText: 'Agregar',
-              deleteText: '',
-              deleteCssClass: 'delete-row fa fa-times-circle',
-          });
-       {% endfor %}
-     });
-
-      $('.add-row').addClass("fa fa-toggle-down")
+      $('div#{{ inlines.0.prefix }}').formset({
+            prefix: '{{ inlines.0.prefix }}',
+            addText: 'Agregar',
+            deleteText: '',
+            deleteCssClass: 'delete-row fa fa-times-circle',
+        });
 
       $('#modal').on('show.bs.modal', function (event) {
           var modal = $(this);
@@ -32,14 +27,12 @@
       });
 
 
+
 </script>
 {% endblock %}
 <!-- Here's an example of how you can style add/delete buttons with CSS -->
 {% block extra_css %}
 <style type="text/css">
-.fa-toggle-down::before{
-  margin-right: 5px !important;
-}
 .fa-plus{
    position: absolute;
    color: #ECF0F1 !important;
@@ -47,21 +40,9 @@
    margin-top: 3px;
    font-size: 8px !important;
 }
-
-th.active{
-  background: #3f5367 !important;
-  color: #ECF0F1 !important;
-}
-.add-row {
-  font-size: 12px !important;
-}
-.delete-row {
-  position: absolute;
-  right: 15px;
-  padding: 6px 8px;
-  border-left: 0;
-  text-decoration: none;
-  text-align: center;
+.dynamic-form{
+  background: #EDEDED !important;
+  padding: 10px;
 }
 </style>
 {% endblock %}
@@ -75,12 +56,12 @@ th.active{
    <div class="col-md-12 col-sm-12 col-xs-12">
       <div class="x_panel">
         <div class="x_title">
-            <h2>Compra de Insumos <small></small></h2>
+            <h2>Compra de Equipamiento <small></small></h2>
             <div class="clearfix"></div>
         </div>
       <div class="modal fade" id="modal"></div>
        <div class="x_content">
-      <form action="{{ request.path }}" method="post" id="nueva_compra" class="form">{% csrf_token %}
+      <form action="" method="post" id="nueva_compra">{% csrf_token %}
 
          <fieldset class="form-group">
              <label for="exampleInputEmail1">
@@ -97,7 +78,7 @@ th.active{
 
             <fieldset class="form-group">
                 <label for="exampleInputEmail1">
-                   {{ form.Proveedor.label }}
+                   {{ form.Proveedor.label }}<a title="Agregar Proveedor" style="color: #5A738E !important;" class="fa fa-plus" data-toggle="modal"  data-target="#modal"  href="/proveedores/nuevo"> </a>
                 </label>
                   {{ form.Proveedor |attr:"class:form-control" }}
             </fieldset>
@@ -108,42 +89,37 @@ th.active{
                   {{ form.Comprador |attr:"class:form-control" }}
             </fieldset>
 
-
-             <table  id="{{ form.prefix }}" class="table table-striped jambo_table bulk_action" id="id_contact_info_table" border="0" cellpadding="0" cellspacing="5">
-                 <thead>
-                     <tr>
-                         <th scope="col">Insumo <a class="fa fa-plus" data-toggle="modal"  data-target="#modal"  href="/insumos/nuevo/insumo"> </a></th>
-                         <th scope="col">Cantidad</th>
-                         <th scope="col">Presentacion</th>
-                         <th scope="col">Precio Unitario</th>
-                         <th scope="col">Subtotal</th>
-                         <th scope="col"> </th>
-                     </tr>
-                 </thead>
-                 <tbody>
+                   <div id="{{ inlines.0.prefix }}" class="form-group">
                      {% for form in inlines.0 %}
-                     {{form.id}}
-                     {{ forms.media }}
-                    <tr  class="form-group">
-                         <td>{{ form.insumo | append_attr:"class:form-control" }}</td>
-                         <td> {{ form.cantidad | append_attr:"class:form-control " }}</td>
-                         <td> {{ form.presentacion | append_attr:"class:form-control " }}</td>
-                         <td>  {{ form.p_unitario | append_attr:"class:form-control " }}</td>
-                         <td> {{ form.subtotal | append_attr:"class:form-control subtotal " }}</td>
-                         <td></td>
-                    </tr>
+                       {{form.id}}
+                       {{ forms.media }}
+                       {% for field in form %}
+                       {% if field.label not in no_fields %}
+                         <label>{{ field.label }}</label>
+                         <div>{{ field |attr:"class:form-control"  }}</div>
+                       {% endif %}
+                       {% endfor %}
                     {% endfor %}
-                 </tbody>
-             </table>
-             {% for formset in inlines %}
-              {{ formset.management_form }}
-             {% endfor %}
+                  </div>
+
+                {% for formset in inlines %}
+                  {{ formset.management_form }}
+                {% endfor %}
+
+
             <fieldset class="form-group">
                 <label for="exampleInputEmail1">
                    {{ form.Importe_Total.label }}
                 </label>
                   {{ form.Importe_Total |attr:"class:form-control" }}
             </fieldset>
+            <fieldset class="form-group">
+                <label for="exampleInputEmail1">
+                   {{ form.Observaciones.label }}
+                </label>
+                  {{ form.Observaciones |attr:"class:form-control" }}
+            </fieldset>
+
            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
            <input type="submit" class="btn btn-primary" value="Guardar" />
          </form>

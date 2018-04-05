@@ -15,7 +15,6 @@
               deleteCssClass: 'delete-row fa fa-times-circle',
           });
 
-
       $('.add-row').addClass("fa fa-toggle-down")
 
       $('#modal').on('show.bs.modal', function (event) {
@@ -95,7 +94,7 @@ th.active{
 
             <fieldset class="form-group">
                 <label for="exampleInputEmail1">
-                   {{ form.Proveedor.label }}
+                   {{ form.Proveedor.label }}<a title="Agregar Proveedor" style="color: #5A738E !important;" class="fa fa-plus" data-toggle="modal"  data-target="#modal"  href="/proveedores/nuevo"> </a>
                 </label>
                   {{ form.Proveedor |attr:"class:form-control" }}
             </fieldset>
@@ -108,7 +107,7 @@ th.active{
             <table  class="table table-striped jambo_table bulk_action" id="id_contact_info_table" border="0" cellpadding="0" cellspacing="5">
                 <thead>
                     <tr>
-                        <th scope="col">Insumo <a class="fa fa-plus" data-toggle="modal"  data-target="#modal"  href="/insumos/nuevo/insumo"> </a></th>
+                        <th scope="col">Insumo <a title="Agregar Insumo" class="fa fa-plus" data-toggle="modal"  data-target="#modal"  href="/insumos/nuevo/insumo"> </a></th>
                         <th scope="col">Cantidad</th>
                         <th scope="col">Presentacion</th>
                         <th scope="col">Precio Unitario</th>
@@ -143,6 +142,12 @@ th.active{
                    {{ form.Importe_Total.label }}
                 </label>
                   {{ form.Importe_Total |attr:"class:form-control" }}
+            </fieldset>
+            <fieldset class="form-group">
+                <label for="exampleInputEmail1">
+                   {{ form.Observaciones.label }}
+                </label>
+                  {{ form.Observaciones |attr:"class:form-control" }}
             </fieldset>
            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
            <input type="submit" class="btn btn-primary" value="Guardar" />
