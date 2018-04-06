@@ -1,6 +1,8 @@
 {% load i18n widget_tweaks %}
 
 {% block extra_css %}
+{% load qr_tags %}
+{% load fullurl %}
 
 <!-- Bootstrap -->
 <link href="/static/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -43,6 +45,7 @@
                  </fieldset>
               {% endfor %}
             </div>
+            {% qr_from_text request.path  "l" %}
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 <input type="submit" class="btn btn-primary" value="Guardar" />

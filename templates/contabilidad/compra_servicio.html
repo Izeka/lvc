@@ -9,14 +9,15 @@
 <script >
       $('#id_Fecha_compra').datepicker({
         dateFormat: 'dd/mm/yy',
-        regional: 'es'
+          regional: 'es'
       });
-      $('div#{{ inlines.0.prefix }}').formset({
-            prefix: '{{ inlines.0.prefix }}',
-            addText: 'Agregar',
-            deleteText: '',
-            deleteCssClass: 'delete-row fa fa-times-circle',
-        });
+        $('div#{{ inlines.0.prefix }}').formset({
+              prefix: '{{ inlines.0.prefix }}',
+              addText: 'Agregar',
+              deleteText: '',
+              deleteCssClass: 'delete-row fa fa-times-circle',
+          });
+
       $('.add-row').addClass("fa fa-toggle-down")
 
       $('#modal').on('show.bs.modal', function (event) {
@@ -31,21 +32,13 @@
       });
 
 
-
 </script>
 {% endblock %}
 <!-- Here's an example of how you can style add/delete buttons with CSS -->
 {% block extra_css %}
 <style type="text/css">
-.delete-row{
-  float: right;
-  margin-right: -15px;
-  margin-top: -352px;
-}
-.add-row {
-  font-size: 12px !important;
-  margin-bottom: 15px;
-  margin-top: -15px;
+.fa-toggle-down::before{
+  margin-right: 5px !important;
 }
 .fa-plus{
    position: absolute;
@@ -53,6 +46,19 @@
    margin-left: 4px;
    margin-top: 3px;
    font-size: 8px !important;
+}
+
+th.active{
+  background: #3f5367 !important;
+  color: #ECF0F1 !important;
+}
+.add-row {
+  font-size: 12px !important;
+}
+.delete-row{
+  float: right;
+  margin-right: -15px;
+  margin-top: -352px;
 }
 .dynamic-form{
   background: #EDEDED !important;
@@ -70,13 +76,12 @@
    <div class="col-md-12 col-sm-12 col-xs-12">
       <div class="x_panel">
         <div class="x_title">
-            <h2>Compra de {{equipamiento|title}} <small></small></h2>
+            <h2>Compra de Servicio <small></small></h2>
             <div class="clearfix"></div>
         </div>
       <div class="modal fade" id="modal"></div>
        <div class="x_content">
       <form action="" method="post" id="nueva_compra">{% csrf_token %}
-
          <fieldset class="form-group">
              <label for="exampleInputEmail1">
                 N° Factura
@@ -102,23 +107,23 @@
                 </label>
                   {{ form.Comprador |attr:"class:form-control" }}
             </fieldset>
-                   <div id="{{ inlines.0.prefix }}" class="form-group">
-                     {% for form in inlines.0 %}
-                     {{form.errors}}
-                     {{ form.non_field_errors }}
-                       {{form.id}}
-                       {{ forms.media }}
-                       {% for field in form %}
-                       {% if field.label not in no_fields %}
-                         <label>{{ field.label }}</label>
-                         <div>{{ field |attr:"class:form-control"  }}</div>
-                       {% endif %}
-                       {% endfor %}
-                    {% endfor %}
-                  </div>
-                {% for formset in inlines %}
-                  {{ formset.management_form }}
+            <div id="{{ inlines.0.prefix }}" class="form-group">
+              {% for form in inlines.0 %}
+              {{form.errors}}
+              {{ form.non_field_errors }}
+                {{form.id}}
+                {{ forms.media }}
+                {% for field in form %}
+                {% if field.label not in no_fields %}
+                  <label>{{ field.label }}</label>
+                  <div>{{ field |attr:"class:form-control"  }}</div>
+                {% endif %}
                 {% endfor %}
+             {% endfor %}
+           </div>
+          {% for formset in inlines %}
+            {{ formset.management_form }}
+          {% endfor %}
 
 
             <fieldset class="form-group">
@@ -133,8 +138,6 @@
                 </label>
                   {{ form.Observaciones |attr:"class:form-control" }}
             </fieldset>
-            {{form.errors}}
-            {{ form.non_field_errors }}
            <a style="background-color: #e6e6e6 !important;"role="button" class="btn "  href="/compras">Cerrar </a>
            <input type="submit" class="btn btn-primary" value="Guardar" />
          </form>

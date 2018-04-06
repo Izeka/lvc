@@ -4,9 +4,12 @@
 <script src="/static/vendors/jquery-ui/jquery-ui.min.js"></script>
 <script src="/static/custom/js/jquery.formset.js"></script>
 <script src="/static/custom/js/jquery.form.js"></script>
+<script src="/static/custom/js/datepicker-es.js"></script>
 
 <script >
       $('#id_Fecha_compra').datepicker({
+        dateFormat: 'dd/mm/yy',
+          regional: 'es'
       });
         $('tr#{{ inlines.0.prefix }}').formset({
               prefix: '{{ inlines.0.prefix }}',
@@ -78,7 +81,6 @@ th.active{
       <div class="modal fade" id="modal"></div>
        <div class="x_content">
       <form action="" method="post" id="nueva_compra">{% csrf_token %}
-
          <fieldset class="form-group">
              <label for="exampleInputEmail1">
                 N° Factura
@@ -149,7 +151,7 @@ th.active{
                 </label>
                   {{ form.Observaciones |attr:"class:form-control" }}
             </fieldset>
-           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+           <a style="background-color: #e6e6e6 !important;"role="button" class="btn "  href="/compras">Cerrar </a>
            <input type="submit" class="btn btn-primary" value="Guardar" />
          </form>
         </div>

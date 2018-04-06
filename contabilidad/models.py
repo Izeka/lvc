@@ -22,9 +22,7 @@ class Compra(models.Model):
     def __str__(self):
       return str(self.id)
 
-class CompraServicio(models.Model):
-     Nombre          = models.CharField(max_length=100, error_messages=my_default_errors)
+class Servicio(models.Model):
      compra          = models.ForeignKey(Compra, error_messages=my_default_errors)
-     cantidad        = models.FloatField(error_messages=my_default_errors)
+     Detalle         = models.CharField(max_length=100,error_messages=my_default_errors, blank=True,null=True)
      p_unitario      = models.FloatField(error_messages=my_default_errors)
-     subtotal        = models.FloatField(error_messages=my_default_errors)

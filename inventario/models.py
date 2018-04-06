@@ -71,6 +71,7 @@ class Barril(models.Model):
     Diametro        = models.IntegerField( error_messages=my_default_errors,blank=True, null=True)
     Altura          = models.IntegerField( error_messages=my_default_errors,blank=True, null=True)
     Material        = models.CharField( max_length=100,error_messages=my_default_errors,blank=True, null=True)
+    p_unitario      = models.FloatField(error_messages=my_default_errors,default=1)
     Lleno           = models.BooleanField( error_messages=my_default_errors,default=False)
     Carbonatado     = models.BooleanField( error_messages=my_default_errors,default=False)
     Observaciones   = models.TextField(max_length=300,error_messages=my_default_errors, blank=True,null=True)
@@ -79,7 +80,9 @@ class Barril(models.Model):
        return unicode(self.id)
 
 class Botella(models.Model):
-    Litros    = models.FloatField( error_messages=my_default_errors)
+    Litros      = models.FloatField( error_messages=my_default_errors)
+    compra      = models.ForeignKey(Compra, error_messages=my_default_errors, default=1)
+    p_unitario  = models.FloatField(error_messages=my_default_errors,default=1)
     Cantidad    = models.FloatField( error_messages=my_default_errors)
     Observaciones     = models.TextField(max_length=300,error_messages=my_default_errors, blank=True,null=True)
 
@@ -90,6 +93,7 @@ class Fermentador(models.Model):
     Numero_serie    = models.IntegerField( error_messages=my_default_errors,blank=True,null=True)
     compra          = models.ForeignKey(Compra, error_messages=my_default_errors, default=1)
     Litros    = models.FloatField( error_messages=my_default_errors)
+    p_unitario      = models.FloatField(error_messages=my_default_errors,default=1)
     Material        = models.CharField( max_length=100,error_messages=my_default_errors,blank=True,null=True)
     Lleno     = models.BooleanField( error_messages=my_default_errors,default=False)
     Observaciones     = models.TextField(max_length=300,error_messages=my_default_errors, blank=True,null=True)

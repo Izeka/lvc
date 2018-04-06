@@ -27,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['192.168.218.52','192.168.1.13','mosto','10.65.217.177','127.0.0.1','10.1.1.2']
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,8 +36,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'fullurl',
     'extra_views',
-    'widget_tweaks', 
+    'qrcode',
+    'widget_tweaks',
     'agenda',
     'inventario',
     'contabilidad',

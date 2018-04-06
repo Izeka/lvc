@@ -55,6 +55,10 @@ class Editar_Barril(LoginRequiredMixin, UpdateView):
        form.save()
        return HttpResponseRedirect("/equipamiento")
 
+    def get_context_data(self, **kwargs):
+        context = super(Editar_Barril, self).get_context_data(**kwargs)
+        return context
+
 class Editar_Fermentador(LoginRequiredMixin, UpdateView):
     model = Fermentador
     login_url = "/login/"
