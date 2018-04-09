@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'fullurl',
     'extra_views',
     'qrcode',
     'widget_tweaks',
