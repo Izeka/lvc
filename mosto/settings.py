@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['192.168.218.52','18.216.96.94','10.1.1.2']
 
+SITE_ID = 3
 # Application definition
 
 INSTALLED_APPS = [
