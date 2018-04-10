@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'extra_views',
-    'qrcode',
     'widget_tweaks',
     'agenda',
     'inventario',

@@ -14,6 +14,7 @@ from inventario.forms import *
 
 # Create your views here.
 
+
 class Compras(LoginRequiredMixin, ListView):
     model = Compra
     login_url = "/login/"

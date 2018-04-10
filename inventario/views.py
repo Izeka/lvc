@@ -4,11 +4,14 @@ from django.views.generic import ListView, CreateView, UpdateView
 from django.forms import modelform_factory
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django_addanother.views import CreatePopupMixin
+from django.core.files.uploadedfile import InMemoryUploadedFile
+
 import  json
 from .models import *
 from .forms import *
 
 # Create your views here.
+
 class Ingredientes(LoginRequiredMixin, ListView):
     model = Insumo
     login_url = "/login/"
@@ -32,6 +35,7 @@ class Equipamiento(LoginRequiredMixin, ListView):
         context['barriles'] = Barril.objects.all()
         context['fermentadores'] = Fermentador.objects.all()
         context['botellas'] = Botella.objects.all()
+        context['varios'] = Insumo.objects.filter(Tipo="EQ")
 
         return context
 
@@ -57,6 +61,7 @@ class Editar_Barril(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(Editar_Barril, self).get_context_data(**kwargs)
+        context['no_fields'] = ["Compra"]
         return context
 
 class Editar_Fermentador(LoginRequiredMixin, UpdateView):
@@ -68,6 +73,11 @@ class Editar_Fermentador(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
        form.save()
        return HttpResponseRedirect("/equipamiento")
+
+    def get_context_data(self, **kwargs):
+        context = super(Editar_Fermentador, self).get_context_data(**kwargs)
+        context['no_fields'] = ["Compra"]
+        return context
 
 class Editar_Botella(LoginRequiredMixin, UpdateView):
     model = Botella

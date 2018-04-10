@@ -15,9 +15,9 @@ my_default_errors = {
 # Create your models here.
 
 TIPOS = (
-        ('INSUMO', 'Insumo'),
-        ('INGREDIENTE', 'Ingrediente'),
-        ('EQUIPAMIENTO', 'Equipamiento'),
+        ('INS', 'Insumo'),
+        ('ING', 'Ingrediente'),
+        ('EQ', 'Equipamiento'),
     )
 UNIDADES = (
            ('K','Kilogramos'),
@@ -64,42 +64,38 @@ class Agregado(Insumo):
     pass
 
 class Barril(models.Model):
-    Numero_serie    = models.IntegerField( error_messages=my_default_errors,blank=True,null=True)
-    compra          = models.ForeignKey(Compra, error_messages=my_default_errors, default=1)
+    Numero_serie    = models.CharField(max_length=10, error_messages=my_default_errors,primary_key=True)
+    compra          = models.ForeignKey(Compra, error_messages=my_default_errors)
     Litros          = models.IntegerField( error_messages=my_default_errors)
     Ubicacion       = models.CharField( max_length=100,error_messages=my_default_errors,default="Keñua")
-    Diametro        = models.IntegerField( error_messages=my_default_errors,blank=True, null=True)
-    Altura          = models.IntegerField( error_messages=my_default_errors,blank=True, null=True)
-    Material        = models.CharField( max_length=100,error_messages=my_default_errors,blank=True, null=True)
     p_unitario      = models.FloatField(error_messages=my_default_errors,default=1)
     Lleno           = models.BooleanField( error_messages=my_default_errors,default=False)
     Carbonatado     = models.BooleanField( error_messages=my_default_errors,default=False)
     Observaciones   = models.TextField(max_length=300,error_messages=my_default_errors, blank=True,null=True)
 
     def __unicode__(self):
-       return unicode(self.id)
+       return unicode(self.Numero_serie)
 
 class Botella(models.Model):
     Litros      = models.FloatField( error_messages=my_default_errors)
-    compra      = models.ForeignKey(Compra, error_messages=my_default_errors, default=1)
-    p_unitario  = models.FloatField(error_messages=my_default_errors,default=1)
+    compra      = models.ForeignKey(Compra, error_messages=my_default_errors)
+    p_unitario  = models.FloatField(error_messages=my_default_errors)
     Cantidad    = models.FloatField( error_messages=my_default_errors)
     Observaciones     = models.TextField(max_length=300,error_messages=my_default_errors, blank=True,null=True)
 
     def __unicode__(self):
-       return unicode(self.id)
+       return unicode(self.Numero_serie)
 
 class Fermentador(models.Model):
-    Numero_serie    = models.IntegerField( error_messages=my_default_errors,blank=True,null=True)
-    compra          = models.ForeignKey(Compra, error_messages=my_default_errors, default=1)
+    Numero_serie    = models.CharField(max_length=10, error_messages=my_default_errors,primary_key=True)
+    compra          = models.ForeignKey(Compra, error_messages=my_default_errors)
     Litros    = models.FloatField( error_messages=my_default_errors)
-    p_unitario      = models.FloatField(error_messages=my_default_errors,default=1)
-    Material        = models.CharField( max_length=100,error_messages=my_default_errors,blank=True,null=True)
+    p_unitario      = models.FloatField(error_messages=my_default_errors)
     Lleno     = models.BooleanField( error_messages=my_default_errors,default=False)
     Observaciones     = models.TextField(max_length=300,error_messages=my_default_errors, blank=True,null=True)
 
     def __unicode__(self):
-       return unicode(self.id)
+       return unicode(self.Numero_serie)
 
 class CompraInsumo(models.Model):
      compra          = models.ForeignKey(Compra, error_messages=my_default_errors)

@@ -2,7 +2,7 @@
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.11/topics/http/urls/
-Examples:
+Examples:fsdf
 Function views
     1. Add an import:  from my_app import views
     2. Add a URL to urlpatterns:  url(r'^$', views.home, name='home')
@@ -23,6 +23,7 @@ from inventario.views import *
 from contabilidad.views import *
 from produccion.views import *
 
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^login/', login, {'template_name':'login.html'},),
@@ -36,9 +37,9 @@ urlpatterns = [
     url(r'^equipamiento/$', Equipamiento.as_view()),
     url(r'^equipamiento/nuevo/(?P<insumo>\w+)/$', Nuevo_insumo.as_view()),
     url(r'^equipamiento/editar/(?P<pk>\d+)/$', Editar_insumo.as_view(),),
-    url(r'^equipamiento/editar/barril/(?P<pk>\d+)/$', Editar_Barril.as_view(),),
+    url(r'^equipamiento/editar/barril/(?P<pk>\w+)/$', Editar_Barril.as_view(),),
     url(r'^equipamiento/editar/botella/(?P<pk>\d+)/$', Editar_Botella.as_view(),),
-    url(r'^equipamiento/editar/fermentador/(?P<pk>\d+)/$', Editar_Fermentador.as_view(),),
+    url(r'^equipamiento/editar/fermentador/(?P<pk>\w+)/$', Editar_Fermentador.as_view(),),
 
     url(r'^insumos/$', Insumos.as_view()),
     url(r'^insumos/nuevo/(?P<insumo>\w+)/$', Nuevo_insumo.as_view(), ),

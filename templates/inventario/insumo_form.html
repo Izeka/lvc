@@ -1,8 +1,5 @@
 {% load i18n widget_tweaks %}
-
 {% block extra_css %}
-{% load qr_tags %}
-{% load fullurl %}
 
 <!-- Bootstrap -->
 <link href="/static/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -10,19 +7,27 @@
 <link href="/static/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
-    <link href="/static/custom/css/custom.css" rel="stylesheet">
-    <link href="/static/custom/css/mosto.css" rel="stylesheet">
-    <link href="/static/custom/css/datepicker.css" rel="stylesheet">
+<link href="/static/custom/css/custom.css" rel="stylesheet">
+<link href="/static/custom/css/mosto.css" rel="stylesheet">
+<link href="/static/custom/css/blue.css" rel="stylesheet">
+
+
+<style type="text/css">
+.qr {
+  float: left;
+  background-color: #e6e6e6 !important;"
+}
+</style>
+
 {% endblock %}
 {% block extra_js %}
-
+<script src="/static/custom/js/icheck.min.js"></script>
 <script>
-  $('#id_Vencimiento').datepicker({
-  });
-
+  $('#id_Lleno').addClass("icheckbox_flat-blue");
 </script>
 
 {% endblock %}
+
 
 <div class="modal-dialog modal-lg" role="document">
     <form action="{{ request.path }}" method="post" id="editar_insumo" class="form">{% csrf_token %}
@@ -37,16 +42,22 @@
             <div class="modal-body">
               {{ form.media }}
               {% for field in form.visible_fields %}
+               {% if field.label not in no_fields %}
                  <fieldset class="form-group">
                     <label for="exampleInputEmail1">
                       {{ field.label_tag }}
                     </label>
                       {{ field|attr:"class:form-control" }}
                  </fieldset>
+               {% endif %}
               {% endfor %}
             </div>
-            {% qr_from_text request.path  "l" %}
+            <!-- Guardo la direccion en la variable url y genero el codigo QR-->
+
             <div class="modal-footer">
+                {% with "http://"|add:request.META.HTTP_HOST|add:request.get_full_path as url %}
+                  <a  class="qr btn"  href="http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl={{url}}&chld=H|0" >Imprimir QR </a>
+                {% endwith %}
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 <input type="submit" class="btn btn-primary" value="Guardar" />
             </div>

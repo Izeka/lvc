@@ -5,6 +5,7 @@
 <script src="/static/custom/js/jquery.formset.js"></script>
 <script src="/static/custom/js/jquery.form.js"></script>
 <script src="/static/custom/js/datepicker-es.js"></script>
+<script src="/static/custom/js/icheck.min.js"></script>
 
 <script >
       $('#id_Fecha_compra').datepicker({
@@ -31,6 +32,7 @@
           });
       });
 
+      $('#id_Lleno').addClass("icheckbox_flat-blue");
 
 </script>
 {% endblock %}
@@ -151,7 +153,7 @@ th.active{
                 </label>
                   {{ form.Observaciones |attr:"class:form-control" }}
             </fieldset>
-           <a style="background-color: #e6e6e6 !important;"role="button" class="btn "  href="/compras">Cerrar </a>
+           <a style="background-color: #e6e6e6 !important;" role="button" class="btn "  href="/compras">Cerrar </a>
            <input type="submit" class="btn btn-primary" value="Guardar" />
          </form>
         </div>
