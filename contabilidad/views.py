@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView, UpdateView
-from django.forms import modelformset_factory
+from django.http import HttpResponseRedirect
 from extra_views import InlineFormSet, CreateWithInlinesView, UpdateWithInlinesView, ModelFormSetView
 from django_addanother.views import CreatePopupMixin
 from django.apps import apps
@@ -59,14 +59,17 @@ class EquipamientoInline( InlineFormSet):
     extra=1
 
     def __init__(self, *args, **kwargs):
-        #Selecciono args 3 que contiene el valor de equipamiento
-        arg = args[3]
-        equipamiento = arg["equipamiento"]
-        #uso el valor de equipamiento para seleccionar el modelo dentro de la aplicacion inventario
-        if equipamiento == "fermentador":
-           self.model = apps.get_model(app_label="inventario", model_name="Fermentador")
-        elif equipamiento == "botellas":
-           self.model = apps.get_model(app_label="inventario", model_name="Botella")
+        try:
+            #Selecciono args 3 que contiene el valor de equipamiento
+            arg = args[3]
+            equipamiento = arg["equipamiento"]
+            #uso el valor de equipamiento para seleccionar el modelo dentro de la aplicacion inventario
+            if equipamiento == "fermentador":
+               self.model = apps.get_model(app_label="inventario", model_name="Fermentador")
+            elif equipamiento == "botellas":
+               self.model = apps.get_model(app_label="inventario", model_name="Botella")
+        except:
+            pass
         return super(EquipamientoInline, self).__init__( *args, **kwargs)
 
 class Compra_equipamiento(LoginRequiredMixin, CreateWithInlinesView):
@@ -75,14 +78,38 @@ class Compra_equipamiento(LoginRequiredMixin, CreateWithInlinesView):
     login_url = "/login/"
     inlines = [EquipamientoInline]
     success_url = "/compras"
-    template_name ="contabilidad/compra_equipamiento.html"
-
-    def form_valid(self, form):
-       form.save()
-       return HttpResponseRedirect("/equipamiento")
+    template_name ="contabilidad/compra_edit.html"
 
     def get_context_data(self, **kwargs):
         context = super(Compra_equipamiento, self).get_context_data(**kwargs)
         #Envio la variable no_fields al contexto para filtrar los campos del formset de equipamiento
+        context['no_fields'] = ["Id","Compra", "Lleno","Carbonatado", "Observaciones","Eliminar"]
+        return context
+
+class Compra_editar(LoginRequiredMixin, UpdateView):
+    model = Compra
+    login_url = "/login/"
+    fields= '__all__'
+    template_name="contabilidad/compra_equipamiento_edit.html"
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        formset = BarrilFormSet(self.request.POST, instance=self.object)
+        if (form.is_valid() and formset.is_valid()):
+            return self.form_valid(form, formset)
+        return self.form_invalid(form, formset)
+
+    def form_valid(self, form, formset):
+        self.object = form.save()
+        formset.instance = self.object
+        formset.save()
+        return HttpResponseRedirect("/compras")
+
+    def get_context_data(self, **kwargs):
+        context = super(Compra_editar, self).get_context_data(**kwargs)
+        id = self.kwargs["pk"]
+        context['barriles']= BarrilFormSet(instance=Compra.objects.get(id=id))
         context['no_fields'] = ["Id","Compra", "Lleno","Carbonatado", "Observaciones","Eliminar"]
         return context

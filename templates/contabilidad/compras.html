@@ -1,9 +1,10 @@
 {% extends 'index.html' %}
 {% block extra_js %}
-    <!-- bootstrap-progressbar
-    <script src="/static/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
-    <script src="/static/custom/js/jquery.form.js"></script>
--->
+<script src="/static/custom/js/jquery.form.js"></script>
+<script>
+
+
+</script>
 {% endblock %}
 
 {% block content %}
@@ -14,6 +15,7 @@
 
    <div class="col-md-12 col-sm-12 col-xs-12">
       <div class="x_panel">
+          <div class="modal fade" id="modal"></div>
         <div class="x_title">
                     <h2>Compras <small></small></h2>
                     <ul class="nav navbar-right panel_toolbox">
@@ -45,6 +47,7 @@
               <th >Proveedor </th>
               <th >N° Factura </th>
               <th >Importe Total </th>
+              <th ></th>
            </thead>
            <tbody>
              {% for dato in compras %}
@@ -55,6 +58,11 @@
                 <td >{{dato.Factura}}</td>
                 </td>
                 <td >$ {{dato.Importe_Total}}</td>
+                <td>
+                  <a >
+                  <a   href="editar/{{dato.id}}" title="editar"><i class="fa fa-edit"></i></a>
+                  <a href="eliminar/{{dato.id}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
+                </td>
               </tr>
             {% endfor %}
             </tbody>

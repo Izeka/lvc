@@ -21,13 +21,12 @@
 
 {% endblock %}
 {% block extra_js %}
-<script src="/static/custom/js/icheck.min.js"></script>
+
 <script>
-  $('#id_Lleno').addClass("icheckbox_flat-blue");
+  $('#id_Lleno,#id_Carbonatado').addClass("icheckbox_flat-blue");
 </script>
 
 {% endblock %}
-
 
 <div class="modal-dialog modal-lg" role="document">
     <form action="{{ request.path }}" method="post" id="editar_insumo" class="form">{% csrf_token %}

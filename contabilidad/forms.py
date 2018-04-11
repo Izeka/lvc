@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from django.core.urlresolvers import reverse_lazy
+from inventario.models import Barril
+from .models import Compra
 
-from django_addanother.widgets import AddAnotherWidgetWrapper, AddAnotherEditSelectedWidgetWrapper
+
+BarrilFormSet = forms.inlineformset_factory(Compra, Barril, fields="__all__",extra=0)

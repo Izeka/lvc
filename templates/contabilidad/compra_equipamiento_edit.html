@@ -5,22 +5,12 @@
 <script src="/static/custom/js/jquery.formset.js"></script>
 <script src="/static/custom/js/jquery.form.js"></script>
 <script src="/static/custom/js/datepicker-es.js"></script>
-<script src="/static/custom/js/icheck.min.js"></script>
 
 <script >
       $('#id_Fecha_compra').datepicker({
         dateFormat: 'dd/mm/yy',
-          regional: 'es'
+        regional: 'es'
       });
-        $('tr#{{ inlines.0.prefix }}').formset({
-              prefix: '{{ inlines.0.prefix }}',
-              addText: 'Agregar',
-              deleteText: '',
-              deleteCssClass: 'delete-row fa fa-times-circle',
-          });
-
-      $('.add-row').addClass("fa fa-toggle-down")
-
       $('#modal').on('show.bs.modal', function (event) {
           var modal = $(this);
           var url = $(event.relatedTarget).attr('href');
@@ -32,16 +22,13 @@
           });
       });
 
-      $('#id_Lleno,#id_Carbonatado').addClass("icheckbox_flat-blue");
+
 
 </script>
 {% endblock %}
 <!-- Here's an example of how you can style add/delete buttons with CSS -->
 {% block extra_css %}
 <style type="text/css">
-.fa-toggle-down::before{
-  margin-right: 5px !important;
-}
 .fa-plus{
    position: absolute;
    color: #ECF0F1 !important;
@@ -49,21 +36,9 @@
    margin-top: 3px;
    font-size: 8px !important;
 }
-
-th.active{
-  background: #3f5367 !important;
-  color: #ECF0F1 !important;
-}
-.add-row {
-  font-size: 12px !important;
-}
-.delete-row {
-  position: absolute;
-  right: 15px;
-  padding: 6px 8px;
-  border-left: 0;
-  text-decoration: none;
-  text-align: center;
+.dynamic-form{
+  background: #EDEDED !important;
+  padding: 10px;
 }
 </style>
 {% endblock %}
@@ -77,12 +52,15 @@ th.active{
    <div class="col-md-12 col-sm-12 col-xs-12">
       <div class="x_panel">
         <div class="x_title">
-            <h2>Compra de Insumos <small></small></h2>
+           {% if barriles %}
+            <h2>Editar Compra de Barriles <small></small></h2>
+           {% endif %}
             <div class="clearfix"></div>
         </div>
       <div class="modal fade" id="modal"></div>
        <div class="x_content">
       <form action="" method="post" id="nueva_compra">{% csrf_token %}
+
          <fieldset class="form-group">
              <label for="exampleInputEmail1">
                 N° Factura
@@ -108,37 +86,23 @@ th.active{
                 </label>
                   {{ form.Comprador |attr:"class:form-control" }}
             </fieldset>
-            <table  class="table table-striped jambo_table bulk_action" id="id_contact_info_table" border="0" cellpadding="0" cellspacing="5">
-                <thead>
-                    <tr>
-                        <th scope="col">Insumo <a title="Agregar Insumo" class="fa fa-plus" data-toggle="modal"  data-target="#modal"  href="/insumos/nuevo/insumo"> </a></th>
-                        <th scope="col">Cantidad</th>
-                        <th scope="col">Presentacion</th>
-                        <th scope="col">Precio Unitario</th>
-                        <th scope="col">Subtotal</th>
-                        <th scope="col"> </th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                   <tr id="{{ inlines.0.prefix }}" class="form-group">
-                     {% for form in inlines.0 %}
+                     {% for form in barriles %}
+                   <div id="{{ form.prefix }}" class="form-group dynamic-form">
+                      {{form.errors}}
+                      {{ form.non_field_errors }}
                        {{form.id}}
                        {{ forms.media }}
-                        <td>{{ form.insumo | append_attr:"class:form-control" }}</td>
-                        <td> {{ form.cantidad | append_attr:"class:form-control " }}</td>
-                        <td> {{ form.presentacion | append_attr:"class:form-control " }}</td>
-                        <td>  {{ form.p_unitario | append_attr:"class:form-control " }}</td>
-                        <td> {{ form.subtotal | append_attr:"class:form-control subtotal " }}</td>
-                        <td></td>
+                       {% for field in form %}
+                       {% if field.label not in no_fields %}
+                         <label>{{ field.label }}</label>
+                         <div>{{ field |attr:"class:form-control"  }}</div>
+                       {% endif %}
+                       {% endfor %}
+                  </div>
                     {% endfor %}
-                   </tr>
 
-                </tbody>
-            </table>
-                {% for formset in inlines %}
-                  {{ formset.management_form }}
-                {% endfor %}
+                  {{ barriles.management_form }}
+
 
 
             <fieldset class="form-group">
@@ -153,7 +117,9 @@ th.active{
                 </label>
                   {{ form.Observaciones |attr:"class:form-control" }}
             </fieldset>
-           <a style="background-color: #e6e6e6 !important;" role="button" class="btn "  href="/compras">Cerrar </a>
+            {{form.errors}}
+            {{ form.non_field_errors }}
+           <a style="background-color: #e6e6e6 !important;"role="button" class="btn "  href="/compras">Cerrar </a>
            <input type="submit" class="btn btn-primary" value="Guardar" />
          </form>
         </div>
