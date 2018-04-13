@@ -76,7 +76,6 @@
       <div class="modal fade" id="modal"></div>
        <div class="x_content">
       <form action="" method="post" id="nueva_compra">{% csrf_token %}
-
          <fieldset class="form-group">
              <label for="exampleInputEmail1">
                 N° Factura
@@ -137,6 +136,8 @@
             {{ form.non_field_errors }}
            <a style="background-color: #e6e6e6 !important;"role="button" class="btn "  href="/compras">Cerrar </a>
            <input type="submit" class="btn btn-primary" value="Guardar" />
+           <input type="hidden" name="id_Producto" value="Equipamiento" />
+           {{form.Producto| attr:"style:visibility: hidden;"}}
          </form>
         </div>
       </div>

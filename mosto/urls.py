@@ -38,7 +38,7 @@ urlpatterns = [
     url(r'^equipamiento/nuevo/(?P<insumo>\w+)/$', Nuevo_insumo.as_view()),
     url(r'^equipamiento/editar/(?P<pk>\d+)/$', Editar_insumo.as_view(),),
     url(r'^equipamiento/editar/barril/(?P<pk>\w+)/$', Editar_Barril.as_view(),),
-    url(r'^equipamiento/editar/botella/(?P<pk>\d+)/$', Editar_Botella.as_view(),),
+    url(r'^equipamiento/editar/botellas/(?P<pk>\d+)/$', Editar_Botellas.as_view(),),
     url(r'^equipamiento/editar/fermentador/(?P<pk>\w+)/$', Editar_Fermentador.as_view(),),
 
     url(r'^insumos/$', Insumos.as_view()),
@@ -52,6 +52,7 @@ urlpatterns = [
     url(r'^compras/$', Compras.as_view()),
     url(r'^compras/insumo/$', Compra_insumos.as_view(),name='add_compra'),
     url(r'^compras/servicio/$', Compra_servicio.as_view(),name='add_servicio'),
+    url(r'^compras/equipamiento/(?P<equipamiento>\w+)$', Compra_equipamiento.as_view(),name='add_equipamiento'),
     url(r'^compras/editar/(?P<pk>\d+)$', Compra_editar.as_view(),name='editar_compra'),
     url(r'^recetas/$', Recetas.as_view()),
     url(r'^recetas/editar/(?P<pk>\d+)/$', Editar_receta.as_view()),

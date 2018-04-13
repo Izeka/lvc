@@ -1,82 +1,178 @@
+{% extends 'index.html' %}
 {% load i18n widget_tweaks %}
 {% block extra_js %}
-<script>
-    $("#id_Tipo").val("1").prop('selected', true);
-    $("#id_Tipo").hide();
-    $("label[for='id_Tipo']").hide();
-    $("#id_Unidad_de_medida").val("1").prop('selected', true)
-  $('input[type=text]').closest('label').css("color","red");
+<script src="/static/vendors/jquery-ui/jquery-ui.min.js"></script>
+<script src="/static/custom/js/jquery.formset.js"></script>
+<script src="/static/custom/js/jquery.form.js"></script>
+<script src="/static/custom/js/datepicker-es.js"></script>
 
-  var form_options = { target: '#modal', success: function(response) {} };
+<script >
+      $('#id_Fecha_compra').datepicker({
+        dateFormat: 'dd/mm/yy',
+        regional: 'es'
+      });
+      $('#modal').on('show.bs.modal', function (event) {
+          var modal = $(this);
+          var url = $(event.relatedTarget).attr('href');
+          $.ajax({
+              url: url,
+              context: document.body
+          }).done(function(response) {
+              modal.html(response);
+          });
+      });
 
 </script>
 {% endblock %}
+<!-- Here's an example of how you can style add/delete buttons with CSS -->
+{% block extra_css %}
+<style type="text/css">
+.fa-plus{
+   position: absolute;
+   color: #ECF0F1 !important;
+   margin-left: 4px;
+   margin-top: 3px;
+   font-size: 8px !important;
+}
+.dynamic-form{
+  background: #EDEDED !important;
+  padding: 10px;
+}
+</style>
+{% endblock %}
 
-<div class="modal-dialog modal-lg" role="document">
-    <form action="{{ request.path }}" method="post" id="nuevo_ingrediente" class="form">{% csrf_token %}
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                    <span class="sr-only">Cerrar</span>
-                </button>
-                <h4 class="modal-title">Nuevo Insumo</h4>
-            </div>
-            <div class="modal-body">
-              {% load widget_tweaks %}
+{% block content %}
 
-             {% for hidden_field in form.hidden_fields %}
-                {{ hidden_field }}
-              {% endfor %}
+  <!-- page content -->
 
-              {% if form.non_field_errors %}
-              <div class="alert alert-danger" role="alert">
-                {% for error in form.non_field_errors %}
-                  {{ error }}
-                {% endfor %}
-              </div>
-              {% endif %}
-              <div class="form-group">
-                <label for="id_insumo"> Insumo </label>
-                  <select id="id_insumo" class="form-control" name="insumo">
-                    <option value="malta">Malta</option>
-                    <option value="lupulo">Lupulo</option>
-                    <option value="agregado">Agregado</option>
-                    <option value="acido">Acido</option>
-                    <option value="clarificante">Clarificante</option>
-              </select>
-              </div>
+  <div class="right_col" role="main">
 
-              {% for field in form.visible_fields %}
-              <div class="form-group">
-                {{ field.label_tag }}
+   <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="x_panel">
+        <div class="x_title">
+           {% if barriles %}
+            <h2>Editar Compra de {{form.Producto.value}} <small></small></h2>
+           {% endif %}
+            <div class="clearfix"></div>
+        </div>
+      <div class="modal fade" id="modal"></div>
+       <div class="x_content">
+      <form action="" method="post" id="nueva_compra">{% csrf_token %}
+         <fieldset class="form-group">
+             <label for="exampleInputEmail1">
+                N° Factura
+             </label>
+               {{ form.Factura |attr:"class:form-control" }}
+         </fieldset>
+           <fieldset class="form-group">
+               <label for="exampleInputEmail1">
+                  {{ form.Fecha_compra.label }}
+               </label>
+                 {{ form.Fecha_compra |attr:"class:form-control" }}
+            </fieldset>
 
-                {% if form.is_bound %}
-                  {% if field.errors %}
-                    {% render_field field class="form-control is-invalid" %}
-                    {% for error in field.errors %}
-                      <div class="invalid-feedback">
-                        {{ error }}
-                      </div>
-                    {% endfor %}
-                  {% else %}
-                    {% render_field field class="form-control is-valid" %}
-                  {% endif %}
-              {% else %}
-                {% render_field field class="form-control" %}
-              {% endif %}
+            <fieldset class="form-group">
+                <label for="exampleInputEmail1">
+                   {{ form.Proveedor.label }}<a title="Agregar Proveedor" style="color: #5A738E !important;" class="fa fa-plus" data-toggle="modal"  data-target="#modal"  href="/proveedores/nuevo"> </a>
+                </label>
+                  {{ form.Proveedor |attr:"class:form-control" }}
+            </fieldset>
+            <fieldset class="form-group">
+                <label for="exampleInputEmail1">
+                   {{ form.Comprador.label }}
+                </label>
+                  {{ form.Comprador |attr:"class:form-control" }}
+            </fieldset>
 
-              {% if field.help_text %}
-                <small class="form-text text-muted">{{ field.help_text }}</small>
-              {% endif %}
-             </div>
-             {% endfor %}
+                  {% for form in barriles %}
+                   <div id="{{ form.prefix }}" class="form-group dynamic-form">
+                        <input type="hidden" name="producto" value="barril" />
+                      {{form.errors}}
+                      {{ form.non_field_errors }}
+                       {{form.id}}
+                       {{ forms.media }}
+                       {% for field in form %}
+                       {% if field.label not in no_fields %}
+                         <label>{{ field.label }}</label>
+                         <div>{{ field |attr:"class:form-control"  }}</div>
+                       {% endif %}
+                       {% endfor %}
+                  </div>
+                     {% endfor %}
+                     {{ barriles.management_form }}
 
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <input type="submit" class="btn btn-primary" value="Guardar" />
-            </div>
-        </div><!-- /.modal-content -->
-    </form>
-</div><!-- /.modal-dialog -->
+                     {% for form in inlines.0 %}
+                      <div id="{{ form.prefix }}" class="form-group dynamic-form">
+                         {{form.errors}}
+                         {{ form.non_field_errors }}
+                          {{form.id}}
+                          {{ forms.media }}
+                          {% for field in form %}
+                          {% if field.label not in no_fields %}
+                            <label>{{ field.label }}</label>
+                            <div>{{ field |attr:"class:form-control"  }}</div>
+                          {% endif %}
+                          {% endfor %}
+                     </div>
+                        {% endfor %}
+                        {{ inlines.0.management_form }}
+
+                        {% for form in servicios %}
+                         <div id="{{ form.prefix }}" class="form-group dynamic-form">
+                            <input type="hidden" name="producto" value="servicio" />
+                            {{form.errors}}
+                            {{ form.non_field_errors }}
+                             {{form.id}}
+                             {{ forms.media }}
+                             {% for field in form %}
+                             {% if field.label not in no_fields %}
+                               <label>{{ field.label }}</label>
+                               <div>{{ field |attr:"class:form-control"  }}</div>
+                             {% endif %}
+                             {% endfor %}
+                        </div>
+                           {% endfor %}
+                           {{ servicios.management_form }}
+
+                           {% for form in fermentadores %}
+                            <div id="{{ form.prefix }}" class="form-group dynamic-form">
+                               <input type="hidden" name="producto" value="fermentador" />
+                               {{form.errors}}
+                               {{ form.non_field_errors }}
+                                {{form.id}}
+                                {{ forms.media }}
+                                {% for field in form %}
+                                {% if field.label not in no_fields %}
+                                  <label>{{ field.label }}</label>
+                                  <div>{{ field |attr:"class:form-control"  }}</div>
+                                {% endif %}
+                                {% endfor %}
+                           </div>
+                              {% endfor %}
+                              {{ fermentadores.management_form }}
+
+            <fieldset class="form-group">
+                <label for="exampleInputEmail1">
+                   {{ form.Importe_Total.label }}
+                </label>
+                  {{ form.Importe_Total |attr:"class:form-control" }}
+            </fieldset>
+            <fieldset class="form-group">
+                <label for="exampleInputEmail1">
+                   {{ form.Observaciones.label }}
+                </label>
+                  {{ form.Observaciones |attr:"class:form-control" }}
+            </fieldset>
+            {{form.errors}}
+            {{ form.non_field_errors }}
+           <a style="background-color: #e6e6e6 !important;"role="button" class="btn "  href="/compras">Cerrar </a>
+           <input type="submit" class="btn btn-primary" value="Guardar" />
+          {{form.Producto| attr:"style:visibility: hidden;"}}
+         </form>
+        </div>
+      </div>
+   </div>
+
+  </div>
+        <!-- /page content -->
+{% endblock %}

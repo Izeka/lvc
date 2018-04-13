@@ -17,9 +17,23 @@
               addText: 'Agregar',
               deleteText: '',
               deleteCssClass: 'delete-row fa fa-times-circle',
+              
           });
 
-      $('.add-row').addClass("fa fa-toggle-down")
+      $('.add-row').addClass("fa fa-toggle-down");
+      calculate_subtotal();
+
+      $('.cantidad').change(function(){
+          calculate_subtotal();
+      });
+
+      function calculate_subtotal(){
+
+        $('.subtotal').val(function() {
+          return $(this).closest('tr').find('.cantidad').val();
+        });
+      };
+
 
       $('#modal').on('show.bs.modal', function (event) {
           var modal = $(this);
@@ -126,7 +140,7 @@ th.active{
                        {{form.id}}
                        {{ forms.media }}
                         <td>{{ form.insumo | append_attr:"class:form-control" }}</td>
-                        <td> {{ form.cantidad | append_attr:"class:form-control " }}</td>
+                        <td> {{ form.cantidad | append_attr:"class:form-control cantidad " }}</td>
                         <td> {{ form.presentacion | append_attr:"class:form-control " }}</td>
                         <td>  {{ form.p_unitario | append_attr:"class:form-control " }}</td>
                         <td> {{ form.subtotal | append_attr:"class:form-control subtotal " }}</td>
@@ -155,6 +169,7 @@ th.active{
             </fieldset>
            <a style="background-color: #e6e6e6 !important;" role="button" class="btn "  href="/compras">Cerrar </a>
            <input type="submit" class="btn btn-primary" value="Guardar" />
+           {{form.Producto| attr:"style:visibility: hidden;"}}
          </form>
         </div>
       </div>

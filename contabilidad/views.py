@@ -14,7 +14,6 @@ from inventario.forms import *
 
 # Create your views here.
 
-
 class Compras(LoginRequiredMixin, ListView):
     model = Compra
     login_url = "/login/"
@@ -78,7 +77,7 @@ class Compra_equipamiento(LoginRequiredMixin, CreateWithInlinesView):
     login_url = "/login/"
     inlines = [EquipamientoInline]
     success_url = "/compras"
-    template_name ="contabilidad/compra_edit.html"
+    template_name ="contabilidad/compra_equipamiento.html"
 
     def get_context_data(self, **kwargs):
         context = super(Compra_equipamiento, self).get_context_data(**kwargs)
@@ -86,20 +85,35 @@ class Compra_equipamiento(LoginRequiredMixin, CreateWithInlinesView):
         context['no_fields'] = ["Id","Compra", "Lleno","Carbonatado", "Observaciones","Eliminar"]
         return context
 
-class Compra_editar(LoginRequiredMixin, UpdateView):
+class EditInsumoInline( InlineFormSet):
+    model = CompraInsumo
+    fields="__all__"
+    extra=0
+
+class Compra_editar(LoginRequiredMixin,UpdateWithInlinesView ):
     model = Compra
     login_url = "/login/"
+    inlines=[EditInsumoInline]
     fields= '__all__'
-    template_name="contabilidad/compra_equipamiento_edit.html"
+    template_name="contabilidad/compra_edit.html"
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-        formset = BarrilFormSet(self.request.POST, instance=self.object)
+        producto = request.POST.get("producto")
+        if producto == "barril":
+            formset = BarrilFormSet(self.request.POST, instance=self.object)
+        elif producto == "servicio":
+            formset = ServicioFormSet(self.request.POST, instance=self.object)
+        elif producto == "fermentador":
+            formset = FermentadorFormSet(self.request.POST, instance=self.object)
+        elif producto == "botellas":
+            formset = BotellasFormSet(self.request.POST, instance=self.object)
+        else:
+            formset = InsumoFormSet(self.request.POST,instance=self.object)
         if (form.is_valid() and formset.is_valid()):
-            return self.form_valid(form, formset)
-        return self.form_invalid(form, formset)
+                return self.form_valid(form, formset)
 
     def form_valid(self, form, formset):
         self.object = form.save()
@@ -110,6 +124,10 @@ class Compra_editar(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super(Compra_editar, self).get_context_data(**kwargs)
         id = self.kwargs["pk"]
-        context['barriles']= BarrilFormSet(instance=Compra.objects.get(id=id))
+        compra= Compra.objects.get(id=id)
+        context['barriles']= BarrilFormSet(instance=compra)
+        context['servicios']= ServicioFormSet(instance=compra)
+        context['fermentadores']= FermentadorFormSet(instance=compra)
+        context['botellases']= BotellasFormSet(instance=compra)
         context['no_fields'] = ["Id","Compra", "Lleno","Carbonatado", "Observaciones","Eliminar"]
         return context

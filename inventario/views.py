@@ -34,7 +34,7 @@ class Equipamiento(LoginRequiredMixin, ListView):
         context = super(Equipamiento, self).get_context_data(**kwargs)
         context['barriles'] = Barril.objects.all()
         context['fermentadores'] = Fermentador.objects.all()
-        context['botellas'] = Botella.objects.all()
+        context['botellas'] = Botellas.objects.all()
         context['varios'] = Insumo.objects.filter(Tipo="EQ")
 
         return context
@@ -79,8 +79,8 @@ class Editar_Fermentador(LoginRequiredMixin, UpdateView):
         context['no_fields'] = ["Compra"]
         return context
 
-class Editar_Botella(LoginRequiredMixin, UpdateView):
-    model = Botella
+class Editar_Botellas(LoginRequiredMixin, UpdateView):
+    model = Botellas
     login_url = "/login/"
     fields= '__all__'
     template_name="inventario/insumo_form.html"
@@ -145,8 +145,8 @@ class Nuevo_insumo(LoginRequiredMixin, CreateView):
             form_class = FermentadorForm
         elif insumo == "barril":
             form_class = BarrilForm
-        elif insumo == "botella":
-            form_class = BotellaForm
+        elif insumo == "botellas":
+            form_class = BotellasForm
         else:
             form_class = InsumoForm
         form = self.get_form(form_class)
@@ -171,8 +171,8 @@ class Nuevo_insumo(LoginRequiredMixin, CreateView):
            context["form"] = modelform_factory(Fermentador, fields="__all__")
        elif insumo == "barril":
            context["form"] = modelform_factory(Barril, fields="__all__")
-       elif insumo == "botella":
-           context["form"] = modelform_factory(Botella, fields="__all__")
+       elif insumo == "botellas":
+           context["form"] = modelform_factory(Botellas, fields="__all__")
        else:
            context["form"] = modelform_factory(Insumo, fields="__all__")
        return context

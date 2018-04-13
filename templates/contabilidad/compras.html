@@ -8,6 +8,13 @@
 {% endblock %}
 
 {% block content %}
+{% block extra_css %}
+<style type="text/css">
+td{
+  text-align: left;
+}
+</style>
+{% endblock %}
 
   <!-- page content -->
 
@@ -17,7 +24,7 @@
       <div class="x_panel">
           <div class="modal fade" id="modal"></div>
         <div class="x_title">
-                    <h2>Compras <small></small></h2>
+                    <h2>Lista de Compras <small></small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -42,10 +49,10 @@
          <table id="compras" class="table table-striped jambo_table bulk_action">
            <thead>
              <tr class="headings">
-              <th >Fecha de Compra </th>
-              <th>Comprador </th>
+              <th >Fecha  </th>
               <th >Proveedor </th>
-              <th >N° Factura </th>
+              <th>Comprador </th>
+              <th >Producto </th>
               <th >Importe Total </th>
               <th ></th>
            </thead>
@@ -53,10 +60,9 @@
              {% for dato in compras %}
             <tr class="even pointer">
                 <td >{{dato.Fecha_compra}} </td>
-                <td >{{dato.Comprador.get_full_name}}</td>
                 <td >{{dato.Proveedor.Nombre}}</td>
-                <td >{{dato.Factura}}</td>
-                </td>
+                <td >{{dato.Comprador.get_full_name}}</td>
+                <td >{{dato.Producto}}</td>
                 <td >$ {{dato.Importe_Total}}</td>
                 <td>
                   <a >

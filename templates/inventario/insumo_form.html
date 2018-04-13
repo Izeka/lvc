@@ -52,7 +52,6 @@
               {% endfor %}
             </div>
             <!-- Guardo la direccion en la variable url y genero el codigo QR-->
-
             <div class="modal-footer">
                 {% with "http://"|add:request.META.HTTP_HOST|add:request.get_full_path as url %}
                   <a  class="qr btn"  href="http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl={{url}}&chld=H|0" >Imprimir QR </a>

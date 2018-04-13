@@ -6,8 +6,9 @@ from .models import *
 
 # Register your models here.
 admin.site.register(Insumo)
+admin.site.register(CompraInsumo)
 admin.site.register(Barril)
-admin.site.register(Botella)
+admin.site.register(Botellas)
 admin.site.register(Fermentador)
 admin.site.register(Lupulo)
 admin.site.register(Levadura)

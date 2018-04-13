@@ -76,7 +76,7 @@ class Barril(models.Model):
     def __unicode__(self):
        return unicode(self.Numero_serie)
 
-class Botella(models.Model):
+class Botellas(models.Model):
     Litros      = models.FloatField( error_messages=my_default_errors)
     compra      = models.ForeignKey(Compra, error_messages=my_default_errors)
     p_unitario  = models.FloatField(error_messages=my_default_errors)
@@ -89,10 +89,10 @@ class Botella(models.Model):
 class Fermentador(models.Model):
     Numero_serie    = models.CharField(max_length=10, error_messages=my_default_errors,primary_key=True)
     compra          = models.ForeignKey(Compra, error_messages=my_default_errors)
-    Litros    = models.FloatField( error_messages=my_default_errors)
+    Litros          = models.FloatField( error_messages=my_default_errors)
     p_unitario      = models.FloatField(error_messages=my_default_errors)
-    Lleno     = models.BooleanField( error_messages=my_default_errors,default=False)
-    Observaciones     = models.TextField(max_length=300,error_messages=my_default_errors, blank=True,null=True)
+    Lleno           = models.BooleanField( error_messages=my_default_errors,default=False)
+    Observaciones   = models.TextField(max_length=300,error_messages=my_default_errors, blank=True,null=True)
 
     def __unicode__(self):
        return unicode(self.Numero_serie)

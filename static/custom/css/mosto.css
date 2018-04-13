@@ -2,7 +2,7 @@
   text-align: center;
 }
 #compras th, #compras td{
-  text-align: center !important;
+  padding-left:10px
 }
 .logo{
   width: 80%;

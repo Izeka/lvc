@@ -76,7 +76,7 @@
                             <td>{{dato.lupulo.Alfa_Acido}}</td>
                             <td class="project_progress">
                              <div class="progress progress_sm">
-                              <div class="progress-bar  {% if dato.Cantidad < 0.5 %} progress-bar-danger{% else %} progress-bar-info {% endif %}" role="progressbar" data-transitiongoal="{{dato.Cantidad}}" aria-valuemin="0" aria-valuemax="2"></div>
+                              <div class="progress-bar  {% if dato.Cantidad < dato.Stock_minimo %} progress-bar-danger{% else %} progress-bar-info {% endif %}" role="progressbar" data-transitiongoal="{{dato.Cantidad}}" aria-valuemin="0" aria-valuemax="2"></div>
                              </div>
                              <small>{{dato.Cantidad}} Kgs</small>
                             </td>

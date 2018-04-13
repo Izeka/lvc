@@ -82,6 +82,7 @@ th.active{
       <div class="modal fade" id="modal"></div>
        <div class="x_content">
       <form action="" method="post" id="nueva_compra">{% csrf_token %}
+        <input type="hidden" name="id_Producto" value="Servicio" />
          <fieldset class="form-group">
              <label for="exampleInputEmail1">
                 N° Factura
