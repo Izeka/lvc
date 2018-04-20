@@ -1,0 +1,397 @@
+{% extends 'index.html' %}
+{% load widget_tweaks %}
+
+{% block extra_js %}
+  <!-- jQuery Smart Wizard -->
+    <script src="/static/custom/js/jquery.formset.js"></script>
+    <script src="/static/custom/js/moment.js"></script>
+    <script src="/static/custom/js/countimer.js"></script>
+    <script src="/static/custom/js/coundown.js"></script>
+    <script src="/static/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
+    <script src="/static/custom/js/jquery.validate.js"></script>
+    <script>
+    $('.timer').countimer({autoStart : false,});
+    $('.timer_maceracion').countimer({autoStart : false,});
+    $('.timer_filtrado').countimer({autoStart : false,});
+    $('.timer_lavado').countimer({autoStart : false,});
+    $('.timer_coccion').countimer({autoStart : false,});
+    $(function() {
+        {% for formset in inlines %}
+        $('div#{{ formset.prefix }}').formset({
+            prefix: '{{ formset.prefix }}',
+            addText: 'Agregar',
+            deleteText: 'Eliminar',
+            addCssClass: 'col-md-1 col-sm-1 col-xs-1 btn btn-info btn-sm {{formset.prefix}}-agregar',
+            deleteCssClass: 'col-md-1 col-sm-1 col-xs-1 btn btn-info btn-sm {{formset.prefix}}-eliminar',
+            onLeaveStep: abrir_modal,
+        });
+        {% endfor %}
+    })
+    {% if receta %}
+      document.getElementById("id_Litros").value = {{receta.Litros}};
+      document.getElementById("id_Temp_Maceracion").value = {{receta.Temp_Maceracion}};
+    {% endif %}
+    function abrir_modal(url)
+    {
+        $('#popup').load(url, function()
+        {
+                $(this).modal('show');
+        });
+        return false;
+    }
+
+    function cerrar_modal()
+    {
+	      var url      = window.location.href;
+        $('#popup').modal('hide');
+        window.location.replace(url);
+    }
+    $(document).ready(function(){
+
+    $('#wizard_verticle').smartWizard({
+      labelNext:'Siguiente',
+      labelPrevious:'Volver',
+      labelFinish:'Finalizar',
+      onFinish:onFinishCallback
+    });
+
+    function onFinishCallback(objs, context){
+            $('form').submit();
+    }
+    });
+    $('#id_Fecha').datepicker({
+      });
+
+
+    </script>
+{% endblock %}
+
+{% block content %}
+    <!-- page content -->
+    <div class="right_col" role="main">
+      <div class="">
+        <div class="clearfix"></div>
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+
+            <!-- top tiles -->
+             <div id="top" class="row tile_count">
+               <div style="margin-left:170px;"class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                 <span class="count_top"><i class="fa fa-clock-o"></i> Tiempo Total</span>
+                 <div class="timer count">00:00:00</div>
+               </div>
+               <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                 <span class="count_top"><i class="fa fa-link"></i>Tiempo de Maceración</span>
+                 <div class="timer_maceracion count">00:00:00</div>
+               </div>
+               <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                 <span class="count_top"><i class="fa fa-filter"></i> Tiempo de Filtrado</span>
+                 <div class="timer_filtrado count">00:00:00</div>
+               </div>
+               <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                 <span class="count_top"><i class="fa fa-refresh"></i> Tiempo de Lavado</span>
+                 <div class="timer_lavado count">00:00:00</div>
+               </div>
+               <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                 <span class="count_top"><i class="fa fa-fire"></i> Tiempo de Cocción</span>
+                 <div class="timer_coccion count">00:00:00</div>
+               </div>
+             </div>
+             <!-- /top tiles -->
+
+            <div class="x_content">
+
+                <!-- Smart Wizard -->
+                   <form action="" method="post" class="form-horizontal form-label-left">{% csrf_token %}
+                    <!-- SmartWizard html -->
+                    <div id="wizard_verticle" class="form_wizard wizard_verticle">
+                      <ul class="list-unstyled wizard_steps anchor">
+                        <li>
+                          <a href="#step-1">
+                            <span class="step_no">1</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#step-2">
+                            <span class="step_no">2</span>
+                         </a>
+                        </li>
+                        <li>
+                          <a href="#step-3">
+                            <span class="step_no">3</span>
+
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#step-4">
+                            <span class="step_no">4</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#step-5">
+                            <span class="step_no">5</span>
+                          </a>
+                        </li>
+                        </li>
+
+                        </li>
+
+                      </ul>
+                     <form class="form-horizontal form-label-left">
+                      <div class="stepContainer" >
+
+                      <div id="step-1" class="content" style="display: block;">
+                        <h2 class="StepTitle">Nueva Cocción</h2>
+                        <span class="section"></span>
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">{{form.Nombre.label}} <span class="required"></span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              {{form.Nombre | append_attr:"class:form-control" }}
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">{{form.Fecha.label}} <span class="required"></span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input   value= "{{hoy|date:'d/m/y' }}"  class="form-control" id="id_Fecha" name="Fecha" required="" maxlength="20" type="text">
+                          </div>
+                        </div>
+
+                          <div class="form-group">
+                            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.Receta.label}}</label>
+                            <div class="text-container col-md-6 col-sm-6 col-xs-12">
+                              {{form.Receta | append_attr:"class:form-control"| append_attr:"onchange:this.form.submit()"}}
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.Litros.label}}</label>
+                            <div class="text-container col-md-6 col-sm-6 col-xs-12">
+                              {{form.Litros | append_attr:"class:form-control" }}
+                            </div>
+                          </div>
+                      </div>
+
+                      <div id="step-2">
+                        <h2 class="StepTitle">Maltas</h2>
+                        <span class="section"></span>
+                        <div id="{{ inlines.0.prefix }}" class="form-group">
+                             {% if maltas %}
+                               {% for form in maltas %}
+                                 {{form.id}}
+                                 <div class="col-md-6 col-sm-6 col-xs-6">
+                                   <label for="middle-name">{{form.Malta.label}}</label>
+                                   {{form.Malta | append_attr:"class:form-control"}}
+                                 </div>
+                                 <div class="col-md-6 col-sm-6 col-xs-6">
+                                   <label for="middle-name">{{form.Cantidad.label}}</label>
+                                   <span class="unidad-inlines">kg</span>
+                                   {{form.Cantidad | append_attr:"class:form-control"}}
+                                 </div>
+                               {% endfor %}
+                            {% else %}
+
+                             {% for form in inlines.0 %}
+                             {{form.id}}
+                             <div class="col-md-6 col-sm-6 col-xs-6">
+                                 <label for="middle-name">{{form.Malta.label}}</label>
+                                 {{form.Malta | append_attr:"class:form-control"}}
+                             </div>
+                             <div class="col-md-6 col-sm-6 col-xs-6">
+                                 <label for="middle-name">{{form.Cantidad.label}}</label>
+                                 <span class="unidad-inlines">kg</span>
+                                 {{form.Cantidad | append_attr:"class:form-control"}}
+                             </div>
+                            {{ form.management_form }}
+                           {% endfor %}
+                           {% endif %}
+                        </div>
+                      </div>
+
+                      <div id="step-3">
+
+                        <h2 class="StepTitle">Maceracion </h2> {{receta.Tiempo_Maceracion}} minutos
+                        <span class="section"></span>
+                        <div class="form-group">
+                          <div class="buttons-maceracion col-md-2 col-sm-2 col-xs-2">
+                            <button class="start  btn btn-success" onclick="$('.timer_maceracion').countimer('start');">Iniciar</button>
+                            <button class="end btn btn-success" onclick="$('.timer_maceracion').countimer('stop');">Finalizar</button>
+                          </div>
+                          <div class="col-md-4 col-sm-4 col-xs-4">
+                            <label for="middle-name">{{form.Temp_Maceracion.label}}</label>
+                            <span class="unidad-maceracion">C°</span>
+                            {{form.Temp_Maceracion | append_attr:"class:   form-control" }}
+                          </div>
+
+                        </div>
+                        &nbsp;
+                        &nbsp;
+                        <h2 class="StepTitle">Filtrado </h2> {{receta.Tiempo_Maceracion}} minutos
+                        <span class="section"></span>
+                        <button class="start btn btn-success" onclick="$('.timer_filtrado').countimer('start');">Iniciar</button>
+                        <button class="start btn btn-success" onclick="$('.timer_filtrado').countimer('stop');">Finalizar</button>
+                        &nbsp;
+                        &nbsp;
+                        <h2 class="StepTitle">Lavado </h2>{{receta.Tiempo_Filtrado}} minutos
+                        <span class="section"></span>
+                        <button class="start btn btn-success" onclick="$('.timer_lavado').countimer('start');">Iniciar</button>
+                        <button class="end btn btn-success" onclick="$('.timer_lavado').countimer('stop');">Finalizar</button>
+                      </div>
+
+
+                     <div id="step-4">
+                       <h2 class="StepTitle">Coccion</h2>{{receta.Tiempo_Lavado}} minutos
+                       <span class="section"></span>
+                       <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <button class="start btn btn-success" onclick="$('.timer_coccion').countimer('start');">Iniciar</button>
+                          <button class="end btn btn-success" onclick="$('.timer_coccion').countimer('stop');">Finalizar</button>
+                        </div>
+                      </div>
+                        &nbsp;
+                        &nbsp;
+                        <h2 class="StepTitle">Lupulos</h2>
+                        {% if lupulos %}
+                        <span class="section"></span>
+                        <div id="{{ inlines.1.prefix }}" class="form-group">
+                             {% for form in lupulos %}
+                             {{form.id}}
+                             <div class="col-md-4 col-sm-4 col-xs-4">
+                                 <label for="middle-name">{{form.Lupulo.label}}</label>
+                                 {{form.Lupulo | append_attr:"class:form-control"}}
+                             </div>
+                             <div class="col-md-4 col-sm-4 col-xs-4">
+                                 <label for="middle-name">{{form.Cantidad.label}} </label>
+                                 <span class="unidad-inlines">g</span>
+                                 {{form.Cantidad | append_attr:"class:form-control"}}
+                             </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                 <label for="middle-name">{{form.Tiempo.label}}</label>
+                                 <span class="unidad-inlines">minutos</span>
+                                 {{form.Tiempo | append_attr:"class:form-control"}}
+                             </div>
+                             {% endfor %}
+                        </div>
+                        {% else %}
+
+                        <span class="section"></span>
+                        <div id="{{ inlines.1.prefix }}" class="form-group">
+                             {% for form in inlines.1 %}
+                             {{form.id}}
+                             <div class="col-md-4 col-sm-4 col-xs-4">
+                                 <label for="middle-name">{{form.Lupulo.label}}</label>
+                                 {{form.Lupulo | append_attr:"class:form-control"}}
+                             </div>
+                             <div class="col-md-4 col-sm-4 col-xs-4">
+                                 <label for="middle-name">{{form.Cantidad.label}} </label>
+                                 <span class="unidad-inlines">g</span>
+                                 {{form.Cantidad | append_attr:"class:form-control"}}
+                             </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                 <label for="middle-name">{{form.Tiempo.label}}</label>
+                                 <span class="unidad-inlines">minutos</span>
+                                 {{form.Tiempo | append_attr:"class:form-control"}}
+                             </div>
+                             {% endfor %}
+                        </div>
+                        {% endif %}
+                        &nbsp;
+                        &nbsp;
+                        <h2 class="StepTitle">Agregados</h2>
+                        <span class="section"></span>
+                        {% if agregrados %}
+                        <div id="{{ inlines.2.prefix }}" >
+                             {% for form in Agregados%}
+                             {{form.id}}
+                             <div class="col-md-4 col-sm-4 col-xs-4">
+                                 <label for="middle-name">{{form.Agregados.label}} de Coccion</label>
+                                 {{form.Agregados | append_attr:"class:form-control"}}
+                             </div>
+                             <div class="col-md-4 col-sm-4 col-xs-4">
+                                 <label for="middle-name">{{form.Cantidad.label}}</label>
+                                 <span class="unidad-inlines">g</span>
+                                 {{form.Cantidad | append_attr:"class:form-control"}}
+                             </div>
+                            <div  class="col-md-4 col-sm-4 col-xs-4">
+                                 <label for="middle-name">{{form.Tiempo.label}}</label>
+                                 <span class="unidad-inlines">minutos</span>
+                                 {{form.Tiempo | append_attr:"class:form-control"}}
+                             </div>
+                             {% endfor %}
+
+                        </div>
+                        {% else %}
+                        <div id="{{ inlines.2.prefix }}" >
+                             {% for form in inlines.2 %}
+                             {{form.id}}
+                             <div class="col-md-4 col-sm-4 col-xs-4">
+                                 <label for="middle-name">{{form.Agregados.label}} de Coccion</label>
+                                 {{form.Agregados | append_attr:"class:form-control"}}
+                             </div>
+                             <div class="col-md-4 col-sm-4 col-xs-4">
+                                 <label for="middle-name">{{form.Cantidad.label}}</label>
+                                 <span class="unidad-inlines">g</span>
+                                 {{form.Cantidad | append_attr:"class:form-control"}}
+                             </div>
+                            <div  class="col-md-4 col-sm-4 col-xs-4">
+                                 <label for="middle-name">{{form.Tiempo.label}}</label>
+                                 <span class="unidad-inlines">minutos</span>
+                                 {{form.Tiempo | append_attr:"class:form-control"}}
+                             </div>
+                             {% endfor %}
+
+                            {{ inlines.0.management_form }}
+                            {{ inlines.1.management_form }}
+                            {{ inlines.2.management_form }}
+                        </div>
+                        {% endif %}
+                      </div>
+
+                      <div id="step-5">
+                        <h2 class="StepTitle">Valores Finales</h2>
+                        <span class="section"></span>
+                          <div class="form-group">
+                            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.Temp_Final.label}}</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                            <span class="unidad">C°</span>
+                              {{form.Temp_Final | append_attr:"class:form-control" }}
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.DF.label}}</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              {{form.DF| append_attr:"class:form-control" }}
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.Litros.label}}</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                            <span class="unidad">lts</span>
+                              {{form.Litros| append_attr:"class:form-control" }}
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.Observaciones.label}}</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              {{form.Observaciones| append_attr:"class:form-control" }}
+                            </div>
+                          </div>
+
+                      </div>
+                    </div>
+                    </form>
+                  </div>
+                <!-- End SmartWizard Content -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+        <!-- /page content -->
+
+{% endblock %}

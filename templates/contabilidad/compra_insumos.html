@@ -1,53 +1,20 @@
 {% extends 'index.html' %}
 {% load i18n widget_tweaks %}
 {% block extra_js %}
-<script src="/static/vendors/jquery-ui/jquery-ui.min.js"></script>
+
 <script src="/static/custom/js/jquery.formset.js"></script>
 <script src="/static/custom/js/jquery.form.js"></script>
 <script src="/static/custom/js/datepicker-es.js"></script>
 <script src="/static/custom/js/icheck.min.js"></script>
 
-<script >
-      $('#id_Fecha_compra').datepicker({
-        dateFormat: 'dd/mm/yy',
-          regional: 'es'
-      });
-        $('tr#{{ inlines.0.prefix }}').formset({
-              prefix: '{{ inlines.0.prefix }}',
-              addText: 'Agregar',
-              deleteText: '',
-              deleteCssClass: 'delete-row fa fa-times-circle',
-              
-          });
-
-      $('.add-row').addClass("fa fa-toggle-down");
-      calculate_subtotal();
-
-      $('.cantidad').change(function(){
-          calculate_subtotal();
-      });
-
-      function calculate_subtotal(){
-
-        $('.subtotal').val(function() {
-          return $(this).closest('tr').find('.cantidad').val();
-        });
-      };
-
-
-      $('#modal').on('show.bs.modal', function (event) {
-          var modal = $(this);
-          var url = $(event.relatedTarget).attr('href');
-          $.ajax({
-              url: url,
-              context: document.body
-          }).done(function(response) {
-              modal.html(response);
-          });
-      });
-
-      $('#id_Lleno,#id_Carbonatado').addClass("icheckbox_flat-blue");
-
+<script>
+$('tr#{{ inlines.0.prefix }}').formset({
+       prefix: '{{ inlines.0.prefix }}',
+       addText: 'Agregar',
+       deleteText: '',
+       addCssClass: 'add-row fa fa-toggle-down',
+       deleteCssClass: 'delete-row fa fa-times-circle',
+   });
 </script>
 {% endblock %}
 <!-- Here's an example of how you can style add/delete buttons with CSS -->
@@ -134,15 +101,15 @@ th.active{
                     </tr>
                 </thead>
                 <tbody>
-
                    <tr id="{{ inlines.0.prefix }}" class="form-group">
                      {% for form in inlines.0 %}
+                       {{form.errors}}
                        {{form.id}}
                        {{ forms.media }}
                         <td>{{ form.insumo | append_attr:"class:form-control" }}</td>
                         <td> {{ form.cantidad | append_attr:"class:form-control cantidad " }}</td>
                         <td> {{ form.presentacion | append_attr:"class:form-control " }}</td>
-                        <td>  {{ form.p_unitario | append_attr:"class:form-control " }}</td>
+                        <td>  {{ form.p_unitario | append_attr:"class:form-control p_unitario" }}</td>
                         <td> {{ form.subtotal | append_attr:"class:form-control subtotal " }}</td>
                         <td></td>
                     {% endfor %}
@@ -169,7 +136,7 @@ th.active{
             </fieldset>
            <a style="background-color: #e6e6e6 !important;" role="button" class="btn "  href="/compras">Cerrar </a>
            <input type="submit" class="btn btn-primary" value="Guardar" />
-           {{form.Producto| attr:"style:visibility: hidden;"}}
+           {{form.Producto| attr:"style:visibility: hidden;"| attr:"value:insumo;"}}
          </form>
         </div>
       </div>

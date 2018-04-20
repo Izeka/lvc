@@ -7,6 +7,8 @@
 <script src="/static/custom/js/datepicker-es.js"></script>
 
 <script >
+      calc_total();
+
       $('#id_Fecha_compra').datepicker({
         dateFormat: 'dd/mm/yy',
         regional: 'es'
@@ -15,9 +17,25 @@
             prefix: '{{ inlines.0.prefix }}',
             addText: 'Agregar',
             deleteText: '',
+            addCssClass: 'add-row fa fa-toggle-down',
             deleteCssClass: 'delete-row fa fa-times-circle',
         });
+        
       $('.add-row').addClass("fa fa-toggle-down")
+
+      $(document).on('change', '.p_unitario', function() {
+          calc_total();
+      });
+
+      function calc_total() {
+           var sum = 0;
+           $('.p_unitario').each(function(){
+             sum += parseInt(this.value);  // Or this.innerHTML, this.innerText
+           });
+           $('#id_Importe_Total').val(function(){
+               return sum;
+           });
+       };
 
       $('#modal').on('show.bs.modal', function (event) {
           var modal = $(this);
@@ -108,10 +126,14 @@
                        {{form.id}}
                        {{ forms.media }}
                        {% for field in form %}
-                       {% if field.label not in no_fields %}
+                        {% if field.label not in no_fields %}
                          <label>{{ field.label }}</label>
-                         <div>{{ field |attr:"class:form-control"  }}</div>
-                       {% endif %}
+                         {% if field.label == "P unitario" %}
+                           <div>{{ field |attr:"class:form-control p_unitario"  }}</div>
+                         {% else %}
+                           <div>{{ field |attr:"class:form-control"  }}</div>
+                         {% endif %}
+                        {% endif %}
                        {% endfor %}
                     {% endfor %}
                   </div>

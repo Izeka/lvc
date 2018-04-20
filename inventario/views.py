@@ -115,7 +115,7 @@ class Editar_insumo(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
        form.save()
-       return HttpResponseRedirect("")
+       return HttpResponseRedirect("/ingredientes/")
 
 class Nuevo_insumo(LoginRequiredMixin, CreateView):
     login_url = "/login/"

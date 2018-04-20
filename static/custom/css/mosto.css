@@ -45,10 +45,11 @@
     text-decoration: none;
     text-align: center;
 }
+
 .unidad-inlines{
     position: absolute;
     bottom:  0px;
-    left:  10px;
+    right:   50px;
     padding: 6px 8px;
     border-left: 0;
     text-decoration: none;

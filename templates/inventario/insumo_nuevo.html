@@ -4,37 +4,25 @@
 <script>
 
 var list = ["lupulo","malta","levadura","agregado"];
-
 $("#id_Tipo").val("INSUMO").prop('selected', true);
 $("#id_Unidad_de_medida").val("l").prop('selected', true)
-$("#id_insumo").val("{{insumo}}")
 
 $("#id_insumo").change(function(){
-  var modal = $("#modal");
-  insumo = $(this).val()
-  var url = "/insumos/nuevo/"+insumo
-  $.ajax({
-    url: url,
-    context: document.body
-  }).done(function(response) {
-    modal.html(response);
-  });
-
-  if(jQuery.inArray($(this).val(), list) != -1) {
-    $("#id_Tipo").val("INGREDIENTE").prop('selected', true);
-    $("#id_Unidad_de_medida").val("Kg").prop('selected', true)
-  } else {
-    $("#id_Tipo").val("INSUMO").prop('selected', true);
-    $("#id_Unidad_de_medida").val("l").prop('selected', true)
-  };
+   if(jQuery.inArray($(this).val(), list) != -1) {
+      $("#id_Tipo").val("INGREDIENTE").prop('selected', true);
+      $("#id_Unidad_de_medida").val("Kg").prop('selected', true)
+   } else {
+      $("#id_Tipo").val("INSUMO").prop('selected', true);
+      $("#id_Unidad_de_medida").val("l").prop('selected', true)
+   };
 });
 
-  var form_options = { target: '#modal', success: function(response) { $("#modal").modal("toggle");} };
-  $('#nuevo_ingrediente').ajaxForm(form_options);
+var form_options = { target: '#modal', success: function(response) { $("#modal").modal("toggle");} };
+$('#nuevo_ingrediente').ajaxForm(form_options);
 
-  $('#nuevo_ingrediente').submit(function() {
-    $('#modal').modal('hide');
-  });
+$('#nuevo_ingrediente').submit(function() {
+  $('#modal').modal('hide');
+});
 
 </script>
 {% endblock %}

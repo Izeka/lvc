@@ -86,13 +86,12 @@ class Nueva_coccion(LoginRequiredMixin, CreateWithInlinesView):
     def get_context_data(self, **kwargs):
         context = super(Nueva_coccion, self).get_context_data(**kwargs)
         receta= self.request.POST.get('Receta',False)
+        context['hoy'] = date.today()
         if receta:
            context['receta'] = Receta.objects.get(pk=receta)
-           maltasFormset = modelformset_factory(Malta_x_Receta, fields="__all__")
-           context['maltas']= maltasFormset(queryset=Malta_x_Receta.objects.filter(Receta=receta))
+           context['maltas']= MaltaCoccionInline(queryset=Malta_x_Receta.objects.filter(Receta=receta))
            context['lupulos']= maltasFormset(queryset=Lupulo_x_Receta.objects.filter(Receta=receta))
            context['agregados']= maltasFormset(queryset=Agregados_x_Receta.objects.filter(Receta=receta))
-           context['hoy'] = date.today()
         return context
 
 class Editar_coccion(LoginRequiredMixin, UpdateWithInlinesView):

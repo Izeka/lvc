@@ -10,11 +10,6 @@
     <script src="/static/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
     <script src="/static/custom/js/jquery.validate.js"></script>
     <script>
-    $('.timer').countimer({autoStart : false,});
-    $('.timer_maceracion').countimer({autoStart : false,});
-    $('.timer_filtrado').countimer({autoStart : false,});
-    $('.timer_lavado').countimer({autoStart : false,});
-    $('.timer_coccion').countimer({autoStart : false,});
     $(function() {
         {% for formset in inlines %}
         $('div#{{ formset.prefix }}').formset({
@@ -74,31 +69,6 @@
         <div class="row">
           <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
-
-            <!-- top tiles -->
-             <div id="top" class="row tile_count">
-               <div style="margin-left:170px;"class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                 <span class="count_top"><i class="fa fa-clock-o"></i> Tiempo Total</span>
-                 <div class="timer count">00:00:00</div>
-               </div>
-               <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                 <span class="count_top"><i class="fa fa-link"></i>Tiempo de Maceración</span>
-                 <div class="timer_maceracion count">00:00:00</div>
-               </div>
-               <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                 <span class="count_top"><i class="fa fa-filter"></i> Tiempo de Filtrado</span>
-                 <div class="timer_filtrado count">00:00:00</div>
-               </div>
-               <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                 <span class="count_top"><i class="fa fa-refresh"></i> Tiempo de Lavado</span>
-                 <div class="timer_lavado count">00:00:00</div>
-               </div>
-               <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                 <span class="count_top"><i class="fa fa-fire"></i> Tiempo de Cocción</span>
-                 <div class="timer_coccion count">00:00:00</div>
-               </div>
-             </div>
-             <!-- /top tiles -->
 
             <div class="x_content">
 
@@ -176,9 +146,9 @@
                       <div id="step-2">
                         <h2 class="StepTitle">Maltas</h2>
                         <span class="section"></span>
-                        <div id="{{ inlines.0.prefix }}" class="form-group">
                              {% if maltas %}
                                {% for form in maltas %}
+                        <div id="{{ form.prefix }}" class="form-group">
                                  {{form.id}}
                                  <div class="col-md-6 col-sm-6 col-xs-6">
                                    <label for="middle-name">{{form.Malta.label}}</label>
@@ -189,6 +159,7 @@
                                    <span class="unidad-inlines">kg</span>
                                    {{form.Cantidad | append_attr:"class:form-control"}}
                                  </div>
+                        <div id="{{ form.prefix }}" class="form-group">
                                {% endfor %}
                             {% else %}
 

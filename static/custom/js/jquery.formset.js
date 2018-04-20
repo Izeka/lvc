@@ -174,6 +174,7 @@
             options.formTemplate = template;
 
             if ($$.is('TR')) {
+          
                 // If forms are laid out as table rows, insert the
                 // "add" button in a new table row:
                 var numCols = $$.eq(0).children().length,   // This is a bit of an assumption :|
@@ -189,6 +190,7 @@
                 if (hideAddButton) addButton.hide();
             }
             addButton.click(function() {
+
                 var formCount = parseInt(totalForms.val()),
                     row = options.formTemplate.clone(true).removeClass('formset-custom-template'),
                     buttonRow = $($(this).parents('tr.' + options.formCssClass + '-add').get(0) || this),

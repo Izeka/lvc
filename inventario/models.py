@@ -15,12 +15,12 @@ my_default_errors = {
 # Create your models here.
 
 TIPOS = (
-        ('INS', 'Insumo'),
-        ('ING', 'Ingrediente'),
-        ('EQ', 'Equipamiento'),
+        ('INSUMO', 'Insumo'),
+        ('INGREDIENTE', 'Ingrediente'),
+        ('EQUIPAMIENTO', 'Equipamiento'),
     )
 UNIDADES = (
-           ('K','Kilogramos'),
+           ('Kg','Kilogramos'),
            ('g','Gramos'),
            ('l','Litros'),
 )
@@ -40,7 +40,7 @@ class Insumo(models.Model):
     Tipo              = models.CharField(max_length=20, choices=TIPOS, error_messages=my_default_errors)
     Uso               = models.CharField(max_length=100, error_messages=my_default_errors, blank=True,null=True)
     Unidad_de_medida  = models.CharField(max_length=20, choices=UNIDADES,error_messages=my_default_errors, blank=True,null=True)
-    Cantidad          = models.IntegerField(error_messages=my_default_errors)
+    Cantidad          = models.FloatField(error_messages=my_default_errors)
     Stock_minimo      = models.IntegerField(error_messages=my_default_errors, blank=True,null=True)
     Stock_maximo      = models.IntegerField(error_messages=my_default_errors, blank=True,null=True)
     Observaciones     = models.TextField(max_length=300,error_messages=my_default_errors, blank=True,null=True)
@@ -53,9 +53,9 @@ class Lupulo(Insumo):
     Alfa_Acido        = models.FloatField( error_messages=my_default_errors,blank=True, null=True)
 
 class Malta(Insumo):
-    DBFG      = models.CharField( max_length=10,error_messages=my_default_errors,blank=True, null=True)
-    MC        = models.CharField( max_length=10,error_messages=my_default_errors,blank=True, null=True)
-    EBC       = models.CharField( max_length=10,error_messages=my_default_errors,blank=True, null=True)
+    Ganancia    = models.CharField( max_length=10,error_messages=my_default_errors,blank=True, null=True)
+    Humedad     = models.CharField( max_length=10,error_messages=my_default_errors,blank=True, null=True)
+    Color       = models.CharField( max_length=10,error_messages=my_default_errors,blank=True, null=True)
 
 class Levadura(Insumo):
     pass

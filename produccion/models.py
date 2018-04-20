@@ -10,22 +10,13 @@ my_default_errors = {
     'unique': 'Este valor ya fue utilizado'
 }
 
-class Estilo(models.Model):
-    Nombre    = models.CharField(max_length=100,error_messages=my_default_errors)
-
-    def __str__(self):
-       return self.Nombre
-
 class Receta(models.Model):
     Nombre                 = models.CharField(max_length=100,error_messages=my_default_errors)
-    Tipo                   = models.ForeignKey(Estilo,error_messages=my_default_errors)
     Litros                 = models.IntegerField(error_messages=my_default_errors)
     DI                     = models.CharField(max_length=100,error_messages=my_default_errors)
     DF                     = models.CharField(max_length=100,error_messages=my_default_errors)
     IBUs                   = models.CharField(max_length=100,error_messages=my_default_errors, blank=True,null=True)
-    EBC                    = models.CharField(max_length=100,error_messages=my_default_errors, blank=True,null=True)
-    Rendimiento            = models.CharField(max_length=100,error_messages=my_default_errors, blank=True,null=True)
-    Alcohol                = models.FloatField(error_messages=my_default_errors, blank=True,null=True)
+    Color                  = models.CharField(max_length=100,error_messages=my_default_errors, blank=True,null=True)
     Temp_Maceracion        = models.IntegerField(error_messages=my_default_errors)
     Tiempo_Maceracion      = models.IntegerField(error_messages=my_default_errors)
     Tiempo_Filtrado        = models.IntegerField(error_messages=my_default_errors)
