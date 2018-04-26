@@ -219,19 +219,19 @@
                                 </tr>
                             </thead>
                             <tbody>
-                               <tr id="{{ inlines.0.prefix }}">
                                  {% for form in inlines.0 %}
+                               <tr id="{{ inlines.0.prefix }}">
                                    {{form.errors}}
                                    {{form.id}}
                                    {{ forms.media }}
                                     <td>{{ form.Malta| append_attr:"class:form-control" }}</td>
                                     <td>
-                                      <span class="unidad-malta">g</span>
+                                      <span class="unidad-malta">kg</span>
                                       {{ form.Cantidad | append_attr:"class:form-control cantidad " }}
                                     </td>
                                     <td></td>
-                                {% endfor %}
                                </tr>
+                                {% endfor %}
 
                             </tbody>
                         </table>
@@ -304,8 +304,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                               <tr id="{{ inlines.1.prefix }}">
                                  {% for form in inlines.1 %}
+                               <tr id="{{ inlines.1.prefix }}">
                                    {{form.errors}}
                                    {{form.id}}
                                    {{ forms.media }}
@@ -319,9 +319,8 @@
                                       {{ form.Tiempo | append_attr:"class:form-control cantidad " }}
                                     </td>
                                     <td></td>
-                                {% endfor %}
                                </tr>
-
+                                {% endfor %}
                             </tbody>
                         </table>
                         &nbsp;
@@ -338,8 +337,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                               <tr id="{{ inlines.2.prefix }}">
                                  {% for form in inlines.2 %}
+                               <tr id="{{ inlines.2.prefix }}">
                                    {{form.errors}}
                                    {{form.id}}
                                    {{ forms.media }}
@@ -353,8 +352,8 @@
                                       {{ form.Tiempo | append_attr:"class:form-control cantidad " }}
                                     </td>
                                     <td></td>
-                                {% endfor %}
                                </tr>
+                                {% endfor %}
 
                             </tbody>
                         </table>
@@ -362,14 +361,11 @@
                             {{ inlines.0.management_form }}
                             {{ inlines.1.management_form }}
                             {{ inlines.2.management_form }}
-
-
                       </div>
 
                       <div id="step-5">
-                        <h2 class="StepTitle">Paso 5</h2>
-                        <span class="section">Valores Fermentacion</span>
-
+                        <h2 class="StepTitle">Fermentación</h2>
+                        <span class="section"></span>
                           <div class="form-group">
                             <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.Temp_Final.label}}</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">

@@ -1,5 +1,4 @@
 from django.views.generic import ListView, UpdateView
-from django.forms import modelformset_factory
 from extra_views import InlineFormSet, CreateWithInlinesView, UpdateWithInlinesView, ModelFormSetView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -89,9 +88,9 @@ class Nueva_coccion(LoginRequiredMixin, CreateWithInlinesView):
         context['hoy'] = date.today()
         if receta:
            context['receta'] = Receta.objects.get(pk=receta)
-           context['maltas']= MaltaCoccionInline(queryset=Malta_x_Receta.objects.filter(Receta=receta))
-           context['lupulos']= maltasFormset(queryset=Lupulo_x_Receta.objects.filter(Receta=receta))
-           context['agregados']= maltasFormset(queryset=Agregados_x_Receta.objects.filter(Receta=receta))
+           context['maltas']= maltaFormSet(queryset=Malta_x_Receta.objects.filter(recetas__pk=receta))
+           #context['lupulos']= lupuloFormSet(queryset=Lupulo_x_Receta.objects.filter(Receta=receta))
+           #context['agregados']= agregadoFormSet(queryset=Agregados_x_Receta.objects.filter(Receta=receta))
         return context
 
 class Editar_coccion(LoginRequiredMixin, UpdateWithInlinesView):

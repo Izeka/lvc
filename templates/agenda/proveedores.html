@@ -16,12 +16,22 @@ $('#modal').on('show.bs.modal', function (event) {
 })
 </script>
 {% endblock %}
+{% block extra_css %}
+<style type="text/css">
+.well{
+  margin: 5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  background: #ffff;
+}
+</style>
+{% endblock %}
 
 {% block content %}
 <!-- page content -->
 <div class="right_col" role="main">
-
- <div class="col-md-12 col-sm-12 col-xs-12">
+ <div >
     <div class="x_panel">
         <div class="x_title">
                   <h2>Proveedores <small></small></h2>
@@ -44,15 +54,9 @@ $('#modal').on('show.bs.modal', function (event) {
 
           </div>
           <div class="x_content">
-            <div class="row">
-              <div class="modal fade" id="modal"></div>
-              <div class="col-md-12 col-sm-12 col-xs-12 text-center">
-              </div>
-
-              <div class="clearfix"></div>
             {%for dato in proveedores %}
-              <div style="width:30%" class="col-md-4 col-sm-4 col-xs-4 profile_details">
-                <div class="well profile_view">
+
+                <div class="col-md-3 col-sm-3 col-xs-3 well profile_view">
                   <div class="col-sm-12">
                     <h2 class="brief">{{dato.Nombre}}</h2>
                     <div class="left col-xs-12">
@@ -69,16 +73,11 @@ $('#modal').on('show.bs.modal', function (event) {
                     </div>
                   </div>
                 </div>
-              </div>
-            {% endfor %}
-              </div>
 
-            </div>
+            {% endfor %}
           </div>
-        </div>
-      </div>
     </div>
-  </div>
+ </div>
 </div>
 <!-- /page content -->
 

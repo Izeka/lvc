@@ -65,7 +65,7 @@ class Agregados_x_Receta(models.Model):
 
 class Coccion(models.Model):
     Fecha                  = models.DateField(error_messages=my_default_errors,default=None)
-    Receta                 = models.ForeignKey(Receta,error_messages=my_default_errors)
+    Receta                 = models.ForeignKey(Receta,error_messages=my_default_errors, related_name="recetas")
     DI                     = models.CharField(max_length=100,error_messages=my_default_errors)
     Temp_Maceracion        = models.IntegerField(error_messages=my_default_errors)
     Tiempo_Maceracion      = models.IntegerField(error_messages=my_default_errors)

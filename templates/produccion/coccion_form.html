@@ -12,13 +12,12 @@
     <script>
     $(function() {
         {% for formset in inlines %}
-        $('div#{{ formset.prefix }}').formset({
+        $('tr#{{ formset.prefix }}').formset({
             prefix: '{{ formset.prefix }}',
             addText: 'Agregar',
-            deleteText: 'Eliminar',
-            addCssClass: 'col-md-1 col-sm-1 col-xs-1 btn btn-info btn-sm {{formset.prefix}}-agregar',
-            deleteCssClass: 'col-md-1 col-sm-1 col-xs-1 btn btn-info btn-sm {{formset.prefix}}-eliminar',
-            onLeaveStep: abrir_modal,
+            deleteText: '',
+            addCssClass: 'add-row fa fa-toggle-down',
+            deleteCssClass: 'delete-row fa fa-times-circle',
         });
         {% endfor %}
     })
@@ -26,21 +25,10 @@
       document.getElementById("id_Litros").value = {{receta.Litros}};
       document.getElementById("id_Temp_Maceracion").value = {{receta.Temp_Maceracion}};
     {% endif %}
-    function abrir_modal(url)
-    {
-        $('#popup').load(url, function()
-        {
-                $(this).modal('show');
-        });
-        return false;
-    }
+
 
     function cerrar_modal()
-    {
-	      var url      = window.location.href;
-        $('#popup').modal('hide');
-        window.location.replace(url);
-    }
+
     $(document).ready(function(){
 
     $('#wizard_verticle').smartWizard({
@@ -58,9 +46,63 @@
       });
 
 
-    </script>
+</script>
 {% endblock %}
+{% block extra_css %}
+<style type="text/css">
+.fa-toggle-down::before{
+  margin-right: 5px !important;
+}
+.fa-plus{
+   position: absolute;
+   color: #ECF0F1 !important;
+   margin-left: 4px;
+   margin-top: 3px;
+   font-size: 8px !important;
+}
+.add-row {
+  font-size: 12px !important;
+}
+.delete-row {
+  position: absolute;
+  right: 20px;
+  padding: 6px 8px;
+  border-left: 0;
+  text-decoration: none;
+  text-align: center;
+}
+.unidad-malta{
+    position: absolute;
+    right: 85px;
+    padding-top: 5px;
+    text-decoration: none;
+    text-align: center;
+}
+.unidad-insumo{
+    position: absolute;
+    right: 480px;
+    padding-top: 5px;
+    text-decoration: none;
+    text-align: center;
+}
+.unidad-lupulo{
+    position: absolute;
+    right: 430px;
+    padding-top: 5px;
+    text-decoration: none;
+    text-align: center;
+}
+.tiempo-insumo{
+    position: absolute;
+    right: 85px;
+    padding-top: 5px;
+    text-decoration: none;
+    text-align: center;
+}
 
+
+</style>
+{% endblock %}
 {% block content %}
     <!-- page content -->
     <div class="right_col" role="main">
@@ -147,35 +189,58 @@
                         <h2 class="StepTitle">Maltas</h2>
                         <span class="section"></span>
                              {% if maltas %}
-                               {% for form in maltas %}
-                        <div id="{{ form.prefix }}" class="form-group">
-                                 {{form.id}}
-                                 <div class="col-md-6 col-sm-6 col-xs-6">
-                                   <label for="middle-name">{{form.Malta.label}}</label>
-                                   {{form.Malta | append_attr:"class:form-control"}}
-                                 </div>
-                                 <div class="col-md-6 col-sm-6 col-xs-6">
-                                   <label for="middle-name">{{form.Cantidad.label}}</label>
-                                   <span class="unidad-inlines">kg</span>
-                                   {{form.Cantidad | append_attr:"class:form-control"}}
-                                 </div>
-                        <div id="{{ form.prefix }}" class="form-group">
-                               {% endfor %}
-                            {% else %}
+                             <table  class="table " cellspacing="5">
+                                 <thead>
+                                     <tr>
+                                         <th scope="col">Malta </th>
+                                         <th scope="col">Cantidad</th>
+                                         <th scope="col"> </th>
+                                     </tr>
+                                 </thead>
+                                 <tbody>
+                                      {% for form in maltas %}
+                                    <tr id="{{ maltas.prefix }}">
+                                        {{form.errors}}
+                                        {{form.id}}
+                                        {{ forms.media }}
+                                         <td>{{ form.Malta| append_attr:"class:form-control" }}</td>
+                                         <td>
+                                           <span class="unidad-malta">kg</span>
+                                           {{ form.Cantidad | append_attr:"class:form-control cantidad " }}
+                                         </td>
+                                         <td></td>
+                                    </tr>
+                                     {% endfor %}
 
-                             {% for form in inlines.0 %}
-                             {{form.id}}
-                             <div class="col-md-6 col-sm-6 col-xs-6">
-                                 <label for="middle-name">{{form.Malta.label}}</label>
-                                 {{form.Malta | append_attr:"class:form-control"}}
-                             </div>
-                             <div class="col-md-6 col-sm-6 col-xs-6">
-                                 <label for="middle-name">{{form.Cantidad.label}}</label>
-                                 <span class="unidad-inlines">kg</span>
-                                 {{form.Cantidad | append_attr:"class:form-control"}}
-                             </div>
-                            {{ form.management_form }}
-                           {% endfor %}
+                                 </tbody>
+                             </table>
+
+                            {% else %}
+                            <table  class="table " cellspacing="5">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Malta </th>
+                                        <th scope="col">Cantidad</th>
+                                        <th scope="col"> </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                     {% for form in inlines.0 %}
+                                   <tr id="{{ inlines.0.prefix }}">
+                                       {{form.errors}}
+                                       {{form.id}}
+                                       {{ forms.media }}
+                                        <td>{{ form.Malta| append_attr:"class:form-control" }}</td>
+                                        <td>
+                                          <span class="unidad-malta">kg</span>
+                                          {{ form.Cantidad | append_attr:"class:form-control cantidad " }}
+                                        </td>
+                                        <td></td>
+                                   </tr>
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
                            {% endif %}
                         </div>
                       </div>

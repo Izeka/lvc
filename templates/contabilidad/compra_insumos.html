@@ -4,7 +4,6 @@
 
 <script src="/static/custom/js/jquery.formset.js"></script>
 <script src="/static/custom/js/jquery.form.js"></script>
-<script src="/static/custom/js/datepicker-es.js"></script>
 <script src="/static/custom/js/icheck.min.js"></script>
 
 <script>
@@ -19,6 +18,7 @@ $('tr#{{ inlines.0.prefix }}').formset({
 {% endblock %}
 <!-- Here's an example of how you can style add/delete buttons with CSS -->
 {% block extra_css %}
+<link href="/static/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 <style type="text/css">
 .fa-toggle-down::before{
   margin-right: 5px !important;
@@ -30,7 +30,6 @@ $('tr#{{ inlines.0.prefix }}').formset({
    margin-top: 3px;
    font-size: 8px !important;
 }
-
 th.active{
   background: #3f5367 !important;
   color: #ECF0F1 !important;
@@ -64,6 +63,7 @@ th.active{
       <div class="modal fade" id="modal"></div>
        <div class="x_content">
       <form action="" method="post" id="nueva_compra">{% csrf_token %}
+        {{form.errors}}
          <fieldset class="form-group">
              <label for="exampleInputEmail1">
                 N° Factura
@@ -121,7 +121,6 @@ th.active{
                   {{ formset.management_form }}
                 {% endfor %}
 
-
             <fieldset class="form-group">
                 <label for="exampleInputEmail1">
                    {{ form.Importe_Total.label }}
@@ -136,7 +135,7 @@ th.active{
             </fieldset>
            <a style="background-color: #e6e6e6 !important;" role="button" class="btn "  href="/compras">Cerrar </a>
            <input type="submit" class="btn btn-primary" value="Guardar" />
-           {{form.Producto| attr:"style:visibility: hidden;"| attr:"value:insumo;"}}
+           {{form.Producto| attr:"style:visibility: hidden;"| attr:"value:insumo"}}
          </form>
         </div>
       </div>

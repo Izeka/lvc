@@ -22,7 +22,6 @@ html , body{
 .daterangepicker .ranges li:hover {
     background: #536A7F;
     border: 1px solid #536A7F;
-    color: #fff
 }
 .daterangepicker .input-mini {
     background-color: #eee;
@@ -108,12 +107,18 @@ html , body{
     color: #73879C
 }
 .daterangepicker.picker_3 .calendar-table thead tr:first-child {
-    color: #fff;
-    background: #1ABB9C
+      background: #1ABB9C
 }
 .daterangepicker.picker_4 .calendar-table thead tr:first-child {
     color: #fff;
-    background: #34495E
+    background: #34495E;
+}
+.daterangepicker.picker_4 td.available:hover{
+      color: #ffff;
+      background-color: #73879C
+}
+.daterangepicker.picker_4 .prev:hover, .daterangepicker.picker_4 .next:hover{
+  color: #73879C
 }
 .daterangepicker.picker_4 .calendar-table td,
 .daterangepicker.picker_4 .calendar-table td.off {

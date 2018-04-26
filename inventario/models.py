@@ -28,6 +28,7 @@ UNIDADES = (
 PRESENTACIONES = (
            ('U','Unidad'),
            ('100G','100 Gramos'),
+           ('500G','500 Gramos'),
            ('1K','1 Kg'),
            ('10K','10 Kg'),
            ('25K','25 Kg'),
@@ -104,3 +105,26 @@ class CompraInsumo(models.Model):
      cantidad        = models.FloatField(error_messages=my_default_errors)
      p_unitario      = models.FloatField(error_messages=my_default_errors)
      subtotal        = models.FloatField(error_messages=my_default_errors)
+
+     def __unicode__(self):
+        return unicode(self.id)
+
+     def save(self, *args, **kwargs):
+         #Obtengo el insumo que se compro
+         insumo = Insumo.objects.get(pk=self.insumo_id)
+         #Obtengo la presentacion de la compra
+         presentacion = str(self.presentacion)
+         #Extraigo la unidad de presentacion (K, G, L)
+         unidad = filter(str.isalpha, presentacion )
+         #Extraigo la cantidad de la presentacion 10,25, 100 etc
+         p_cantidad = int(filter(str.isdigit, presentacion))
+         #Compruebo si el insumo comprado es un Lupulo o un agregado
+         if any( [Lupulo.objects.filter(id=self.insumo_id), Agregado.objects.filter(id=self.insumo_id)] ):
+           #si la compra fue de Kgs lo paso a gramos multiplicandolo por 1000
+             if unidad == 'K':
+                 p_cantidad = p_cantidad*1000
+         #sumo la cantidad comprara a la cantidad actual del insumo
+         insumo.Cantidad = insumo.Cantidad + int(self.cantidad)*p_cantidad
+         #guardo el insumo
+         insumo.save()
+         return super(CompraInsumo, self).save(*args,**kwargs)

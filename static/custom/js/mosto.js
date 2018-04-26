@@ -1,9 +1,7 @@
 calc_total();
 
-$('#id_Fecha_compra').datepicker({
- dateFormat: 'dd/mm/yy',
-   regional: 'es'
-});
+moment.locale('es');
+$('#id_Fecha_compra').daterangepicker();
 
  $('.add-row').addClass("fa fa-toggle-down");
 
