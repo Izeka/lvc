@@ -22,6 +22,24 @@
 
     <!-- Custom Theme Style -->
     <link href="/static/custom/css/custom.css" rel="stylesheet">
+    <link href="/static/custom/css/mosto.css" rel="stylesheet">
+
+    <style type="text/css">
+    .logo-login{
+      margin-top: -90px;
+    }
+    .login_content{
+      margin-top: 150px !important;
+    }
+    
+    .login-button{
+      float:none !important;
+      margin-left: 0 !important;
+    }
+    .logo-nombre{
+      margin-top: -20px !important;
+    }
+    </style>
   </head>
 
   <body class="login">
@@ -34,7 +52,8 @@
           <section class="login_content">
             <form method="post" action="">
                {% csrf_token %}
-              <h1>Login Form</h1>
+              <h1><img  height="150" width="150" src="/static/custom/images/keñua-login.png" alt="..." class="logo-login"></h1>
+              <h1 class="logo-nombre"></i>CERVECERIA KEÑUA </h1>
               {% if form.errors %}
               <p>El usuario y password no coinciden. Por favor intente de nuevo.</p>
               {% endif %}
@@ -44,6 +63,7 @@
                   ingrese con una cuenta con permisos</p>
                   {% endif %}
               {% endif %}
+
               <div>
                 {{ form.username | append_attr:"class:form-control"| append_attr:"placeholder:Usuario" }}
               </div>
@@ -51,7 +71,7 @@
                 {{ form.password | append_attr:"class:form-control"| append_attr:"placeholder:Password" }}
               </div>
               <div>
-                <input class="btn btn-default" type="submit" value="Ingresar">
+                <input class="btn btn-default login-button" type="submit" value="Ingresar">
               </div>
 
               <div class="clearfix"></div>
@@ -60,6 +80,9 @@
 
                 <div class="clearfix"></div>
                 <br />
+                <div>
+
+               </div>
 
                 <div>
                 </div>

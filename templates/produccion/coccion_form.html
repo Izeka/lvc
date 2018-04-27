@@ -50,6 +50,7 @@
 {% endblock %}
 {% block extra_css %}
 <style type="text/css">
+
 .fa-toggle-down::before{
   margin-right: 5px !important;
 }
@@ -188,34 +189,7 @@
                       <div id="step-2">
                         <h2 class="StepTitle">Maltas</h2>
                         <span class="section"></span>
-                             {% if maltas %}
-                             <table  class="table " cellspacing="5">
-                                 <thead>
-                                     <tr>
-                                         <th scope="col">Malta </th>
-                                         <th scope="col">Cantidad</th>
-                                         <th scope="col"> </th>
-                                     </tr>
-                                 </thead>
-                                 <tbody>
-                                      {% for form in maltas %}
-                                    <tr id="{{ maltas.prefix }}">
-                                        {{form.errors}}
-                                        {{form.id}}
-                                        {{ forms.media }}
-                                         <td>{{ form.Malta| append_attr:"class:form-control" }}</td>
-                                         <td>
-                                           <span class="unidad-malta">kg</span>
-                                           {{ form.Cantidad | append_attr:"class:form-control cantidad " }}
-                                         </td>
-                                         <td></td>
-                                    </tr>
-                                     {% endfor %}
 
-                                 </tbody>
-                             </table>
-
-                            {% else %}
                             <table  class="table " cellspacing="5">
                                 <thead>
                                     <tr>
@@ -241,7 +215,7 @@
 
                                 </tbody>
                             </table>
-                           {% endif %}
+
                         </div>
                       </div>
 
@@ -250,10 +224,6 @@
                         <h2 class="StepTitle">Maceracion </h2> {{receta.Tiempo_Maceracion}} minutos
                         <span class="section"></span>
                         <div class="form-group">
-                          <div class="buttons-maceracion col-md-2 col-sm-2 col-xs-2">
-                            <button class="start  btn btn-success" onclick="$('.timer_maceracion').countimer('start');">Iniciar</button>
-                            <button class="end btn btn-success" onclick="$('.timer_maceracion').countimer('stop');">Finalizar</button>
-                          </div>
                           <div class="col-md-4 col-sm-4 col-xs-4">
                             <label for="middle-name">{{form.Temp_Maceracion.label}}</label>
                             <span class="unidad-maceracion">C°</span>
