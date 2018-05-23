@@ -49,11 +49,11 @@
                <th>
                 <input type="checkbox" id="check-all" class="flat">
               </th>
-              <th style="text-align:left">Nombre </th>
-              <th >Litros</th>
-              <th >Alcohol </th>
+              <th style="text-align:left">Lote </th>
+              <th> Fecha </th>
+              <th >Estilo</th>
+              <th >Litros </th>
               <th >DF</th>
-              <th >IBUs </th>
               <th > </th>
            </thead>
            <tbody>
@@ -62,10 +62,10 @@
                 <td >
                   <input type="checkbox" class="flat" name="table_records">
                 </td>
-                <td >{{dato.Nombre}}</td>
-                <td >{{dato.Litros}} </td>
-                <td >{{dato.Alcohol}}</td>
-                <td >{{dato.IBUs}}</td>
+                <td >{{dato.id}}</td>
+                <td>{{dato.Fecha}}</td>
+                <td >{{dato.Receta}} </td>
+                <td >{{dato.Litros}}</td>
                 <td >{{dato.DF}}</td>
                 <td>
                     <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="ver/{{dato.id}}" title="Ver"><i class="fa fa-eye"></i></a>

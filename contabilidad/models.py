@@ -16,18 +16,18 @@ TIPOS = (
         ('EQ', 'Equipamiento'),
     )
 class Compra(models.Model):
-    Fecha_compra      = models.DateField('Fecha de Compra',error_messages=my_default_errors)
-    Producto          = models.CharField(max_length=20,  error_messages=my_default_errors)
-    Factura           = models.CharField(max_length=100,error_messages=my_default_errors, blank=True,null=True)
-    Proveedor         = models.ForeignKey(Proveedor,error_messages=my_default_errors)
-    Comprador         = models.ForeignKey(User, error_messages=my_default_errors)
-    Importe_Total     = models.FloatField(error_messages=my_default_errors)
-    Observaciones     = models.TextField(max_length=300,error_messages=my_default_errors, blank=True,null=True)
+    fecha_compra      = models.DateField('Fecha de Compra',error_messages=my_default_errors)
+    producto          = models.CharField(max_length=20,  error_messages=my_default_errors)
+    factura           = models.CharField(max_length=100,error_messages=my_default_errors, blank=True)
+    proveedor         = models.ForeignKey(Proveedor,error_messages=my_default_errors)
+    comprador         = models.ForeignKey(User, error_messages=my_default_errors)
+    importe_total     = models.FloatField(error_messages=my_default_errors)
+    observaciones     = models.TextField(max_length=300,error_messages=my_default_errors, blank=True)
 
     def __str__(self):
       return str(self.id)
 
 class Servicio(models.Model):
-     compra          = models.ForeignKey(Compra, error_messages=my_default_errors)
-     Detalle         = models.CharField(max_length=100,error_messages=my_default_errors, blank=True,null=True)
-     p_unitario      = models.FloatField(error_messages=my_default_errors)
+     compra           = models.ForeignKey(Compra, error_messages=my_default_errors)
+     detalle          = models.CharField(max_length=100,error_messages=my_default_errors, blank=True)
+     precio_unitario  = models.FloatField(error_messages=my_default_errors)

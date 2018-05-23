@@ -34,8 +34,8 @@ class Equipamiento(LoginRequiredMixin, ListView):
         context = super(Equipamiento, self).get_context_data(**kwargs)
         context['barriles'] = Barril.objects.all()
         context['fermentadores'] = Fermentador.objects.all()
-        context['botellas'] = Botellas.objects.all()
-        context['varios'] = Insumo.objects.filter(Tipo="EQ")
+        context['pallet'] = Pallet.objects.all()
+        context['varios'] = Insumo.objects.filter(tipo="EQ")
 
         return context
 
@@ -46,7 +46,7 @@ class Insumos(LoginRequiredMixin, ListView):
     context_object_name = 'insumos'
 
     def get_queryset(self):
-        queryset=Insumo.objects.all().filter(Tipo=3)
+        queryset=Insumo.objects.all().filter(tipo=3)
         return queryset
 
 class Editar_Barril(LoginRequiredMixin, UpdateView):
@@ -61,7 +61,7 @@ class Editar_Barril(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(Editar_Barril, self).get_context_data(**kwargs)
-        context['no_fields'] = ["Compra"]
+        context['no_fields'] = ["compra"]
         return context
 
 class Editar_Fermentador(LoginRequiredMixin, UpdateView):
@@ -76,11 +76,11 @@ class Editar_Fermentador(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(Editar_Fermentador, self).get_context_data(**kwargs)
-        context['no_fields'] = ["Compra"]
+        context['no_fields'] = ["compra"]
         return context
 
-class Editar_Botellas(LoginRequiredMixin, UpdateView):
-    model = Botellas
+class Editar_Pallet(LoginRequiredMixin, UpdateView):
+    model = Pallet
     login_url = "/login/"
     fields= '__all__'
     template_name="inventario/insumo_form.html"
@@ -145,8 +145,8 @@ class Nuevo_insumo(LoginRequiredMixin, CreateView):
             form_class = FermentadorForm
         elif insumo == "barril":
             form_class = BarrilForm
-        elif insumo == "botellas":
-            form_class = BotellasForm
+        elif insumo == "pallet":
+            form_class =PalletForm
         else:
             form_class = InsumoForm
         form = self.get_form(form_class)
@@ -171,8 +171,8 @@ class Nuevo_insumo(LoginRequiredMixin, CreateView):
            context["form"] = modelform_factory(Fermentador, fields="__all__")
        elif insumo == "barril":
            context["form"] = modelform_factory(Barril, fields="__all__")
-       elif insumo == "botellas":
-           context["form"] = modelform_factory(Botellas, fields="__all__")
+       elif insumo == "pallet":
+           context["form"] = modelform_factory(Pallet, fields="__all__")
        else:
            context["form"] = modelform_factory(Insumo, fields="__all__")
        return context

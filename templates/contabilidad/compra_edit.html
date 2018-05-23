@@ -21,8 +21,15 @@
               modal.html(response);
           });
       });
+      $('tr#{{ inlines.0.prefix }}').formset({
+             prefix: '{{ inlines.0.prefix }}',
+             addText: 'Agregar',
+             deleteText: '',
+             addCssClass: 'add-row fa fa-toggle-down',
+             deleteCssClass: 'delete-row fa fa-times-circle',
+         });
 
-      $('.p_unitario').each(function(){
+      $('.precio_unitario').each(function(){
           $(this).change(function(){
             calculate_subtotal();
           });
@@ -30,7 +37,7 @@
 
       function calculate_subtotal(){
         $('.subtotal').val(function() {
-          return $(this).closest('tr').find('.p_unitario').val();
+          return $(this).closest('tr').find('.precio_unitario').val();
         });
       };
 
@@ -39,12 +46,30 @@
 <!-- Here's an example of how you can style add/delete buttons with CSS -->
 {% block extra_css %}
 <style type="text/css">
+.fa-toggle-down::before{
+  margin-right: 5px !important;
+}
 .fa-plus{
    position: absolute;
    color: #ECF0F1 !important;
    margin-left: 4px;
    margin-top: 3px;
    font-size: 8px !important;
+}
+th.active{
+  background: #3f5367 !important;
+  color: #ECF0F1 !important;
+}
+.add-row {
+  font-size: 12px !important;
+}
+.delete-row {
+  position: absolute;
+  right: 15px;
+  padding: 6px 8px;
+  border-left: 0;
+  text-decoration: none;
+  text-align: center;
 }
 .dynamic-form{
   background: #EDEDED !important;
@@ -63,7 +88,7 @@
       <div class="x_panel">
         <div class="x_title">
            {% if barriles %}
-            <h2>Editar Compra de {{form.Producto.value}} <small></small></h2>
+            <h2>Editar Compra de {{form.producto.value}} <small></small></h2>
            {% endif %}
             <div class="clearfix"></div>
         </div>
@@ -74,26 +99,26 @@
              <label for="exampleInputEmail1">
                 N° Factura
              </label>
-               {{ form.Factura |attr:"class:form-control" }}
+               {{ form.factura |attr:"class:form-control" }}
          </fieldset>
            <fieldset class="form-group">
                <label for="exampleInputEmail1">
-                  {{ form.Fecha_compra.label }}
+                  {{ form.fecha_compra.label }}
                </label>
-                 {{ form.Fecha_compra |attr:"class:form-control" }}
+                 {{ form.fecha_compra |attr:"class:form-control" }}
             </fieldset>
 
             <fieldset class="form-group">
                 <label for="exampleInputEmail1">
-                   {{ form.Proveedor.label }}<a title="Agregar Proveedor" style="color: #5A738E !important;" class="fa fa-plus" data-toggle="modal"  data-target="#modal"  href="/proveedores/nuevo"> </a>
+                   {{ form.proveedor.label }}<a title="Agregar Proveedor" style="color: #5A738E !important;" class="fa fa-plus" data-toggle="modal"  data-target="#modal"  href="/proveedores/nuevo"> </a>
                 </label>
-                  {{ form.Proveedor |attr:"class:form-control" }}
+                  {{ form.proveedor |attr:"class:form-control" }}
             </fieldset>
             <fieldset class="form-group">
                 <label for="exampleInputEmail1">
-                   {{ form.Comprador.label }}
+                   {{ form.comprador.label }}
                 </label>
-                  {{ form.Comprador |attr:"class:form-control" }}
+                  {{ form.comprador |attr:"class:form-control" }}
             </fieldset>
 
                   {% for form in barriles %}
@@ -112,22 +137,35 @@
                   </div>
                      {% endfor %}
                      {{ barriles.management_form }}
+                     <table  class="table table-striped jambo_table bulk_action" id="id_contact_info_table" border="0" cellpadding="0" cellspacing="5">
+                         <thead>
+                             <tr>
+                                 <th scope="col">Insumo <a title="Agregar Insumo" class="fa fa-plus" data-toggle="modal"  data-target="#modal"  href="/insumos/nuevo/insumo"> </a></th>
+                                 <th scope="col">Cantidad</th>
+                                 <th scope="col">Presentacion</th>
+                                 <th scope="col">Precio Unitario</th>
+                                 <th scope="col">Subtotal</th>
+                                 <th scope="col"> </th>
+                             </tr>
+                         </thead>
+                         <tbody>
+                              {% for form in inlines.0 %}
+                              <tr id="{{ inlines.0.prefix }}" class="form-group">
+                                {{form.errors}}
+                                {{form.id}}
+                                {{ forms.media }}
+                                 <td>{{ form.insumo | append_attr:"class:form-control" }}</td>
+                                 <td> {{ form.cantidad | append_attr:"class:form-control cantidad " }}</td>
+                                 <td> {{ form.presentacion | append_attr:"class:form-control " }}</td>
+                                 <td>  {{ form.precio_unitario | append_attr:"class:form-control precio_unitario" }}</td>
+                                 <td> {{ form.subtotal | append_attr:"class:form-control subtotal " }}</td>
+                                 <td></td>
+                              </tr>
+                             {% endfor %}
 
-                     {% for form in inlines.0 %}
-                      <div id="{{ form.prefix }}" class="form-group dynamic-form">
-                         {{form.errors}}
-                         {{ form.non_field_errors }}
-                          {{form.id}}
-                          {{ forms.media }}
-                          {% for field in form %}
-                          {% if field.label not in no_fields %}
-                            <label>{{ field.label }}</label>
-                            <div>{{ field |attr:"class:form-control"  }}</div>
-                          {% endif %}
-                          {% endfor %}
-                     </div>
-                        {% endfor %}
-                        {{ inlines.0.management_form }}
+
+                         </tbody>
+                     </table>
 
                         {% for form in servicios %}
                          <div id="{{ form.prefix }}" class="form-group dynamic-form">
@@ -165,15 +203,15 @@
 
             <fieldset class="form-group">
                 <label for="exampleInputEmail1">
-                   {{ form.Importe_Total.label }}
+                   {{ form.importe_total.label }}
                 </label>
-                  {{ form.Importe_Total |attr:"class:form-control" }}
+                  {{ form.importe_total |attr:"class:form-control" }}
             </fieldset>
             <fieldset class="form-group">
                 <label for="exampleInputEmail1">
-                   {{ form.Observaciones.label }}
+                   {{ form.observaciones.label }}
                 </label>
-                  {{ form.Observaciones |attr:"class:form-control" }}
+                  {{ form.observaciones |attr:"class:form-control" }}
             </fieldset>
             {{form.errors}}
             {{ form.non_field_errors }}

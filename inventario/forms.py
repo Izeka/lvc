@@ -31,10 +31,10 @@ class FermentadorForm(forms.ModelForm):
         fields = "__all__"
         model = Fermentador
 
-class BotellasForm(forms.ModelForm):
+class PalletForm(forms.ModelForm):
      class Meta:
         fields = "__all__"
-        model = Botellas
+        model = Pallet
 
 class BarrilForm(forms.ModelForm):
      class Meta:

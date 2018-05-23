@@ -35,7 +35,7 @@ td{
                            <li><a href="servicio" >Servicio</a></li>
                            <li><a href="equipamiento/barril" >Barril</a></li>
                            <li><a href="equipamiento/fermentador" >Fermentador</a></li>
-                           <li><a href="equipamiento/botellas" >Botellas</a></li>
+                           <li><a href="equipamiento/Palle" >Pallet</a></li>
                       </ul>
 
                       </li>
@@ -59,11 +59,11 @@ td{
            <tbody>
              {% for dato in compras %}
             <tr class="even pointer">
-                <td >{{dato.Fecha_compra}} </td>
-                <td >{{dato.Proveedor.Nombre}}</td>
-                <td >{{dato.Comprador.get_full_name}}</td>
-                <td >{{dato.Producto}}</td>
-                <td >$ {{dato.Importe_Total}}</td>
+                <td >{{dato.fecha_compra}} </td>
+                <td >{{dato.proveedor.Nombre}}</td>
+                <td >{{dato.comprador.get_full_name}}</td>
+                <td >{{dato.producto}}</td>
+                <td >$ {{dato.importe_total}}</td>
                 <td>
                   <a >
                   <a   href="editar/{{dato.id}}" title="editar"><i class="fa fa-edit"></i></a>

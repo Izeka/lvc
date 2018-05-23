@@ -37,26 +37,26 @@ PRESENTACIONES = (
 )
 
 class Insumo(models.Model):
-    Nombre            = models.CharField(max_length=100, error_messages=my_default_errors)
-    Tipo              = models.CharField(max_length=20, choices=TIPOS, error_messages=my_default_errors)
-    Uso               = models.CharField(max_length=100, error_messages=my_default_errors, blank=True,null=True)
-    Unidad_de_medida  = models.CharField(max_length=20, choices=UNIDADES,error_messages=my_default_errors, blank=True,null=True)
-    Cantidad          = models.FloatField(error_messages=my_default_errors)
-    Stock_minimo      = models.IntegerField(error_messages=my_default_errors, blank=True,null=True)
-    Stock_maximo      = models.IntegerField(error_messages=my_default_errors, blank=True,null=True)
-    Observaciones     = models.TextField(max_length=300,error_messages=my_default_errors, blank=True,null=True)
+    nombre            = models.CharField(max_length=100, error_messages=my_default_errors)
+    tipo              = models.CharField(max_length=20, choices=TIPOS, error_messages=my_default_errors)
+    uso               = models.CharField(max_length=100, error_messages=my_default_errors, blank=True)
+    unidad_de_medida  = models.CharField(max_length=20, choices=UNIDADES,error_messages=my_default_errors, blank=True)
+    cantidad          = models.FloatField(error_messages=my_default_errors)
+    stock_minimo      = models.IntegerField(error_messages=my_default_errors, blank=True,null=True)
+    stock_maximo      = models.IntegerField(error_messages=my_default_errors, blank=True,null=True)
+    observaciones     = models.TextField(max_length=300,error_messages=my_default_errors, blank=True)
     objects           = InheritanceManager()
 
     def __str__(self):
-       return self.Nombre
+       return self.nombre
 
 class Lupulo(Insumo):
-    Alfa_Acido        = models.FloatField( error_messages=my_default_errors,blank=True, null=True)
+    alfa_acido        = models.FloatField( error_messages=my_default_errors,blank=True, null=True)
 
 class Malta(Insumo):
-    Ganancia    = models.CharField( max_length=10,error_messages=my_default_errors,blank=True, null=True)
-    Humedad     = models.CharField( max_length=10,error_messages=my_default_errors,blank=True, null=True)
-    Color       = models.CharField( max_length=10,error_messages=my_default_errors,blank=True, null=True)
+    ganancia    = models.CharField( max_length=10,error_messages=my_default_errors,blank=True)
+    humedad     = models.CharField( max_length=10,error_messages=my_default_errors,blank=True)
+    color       = models.CharField( max_length=10,error_messages=my_default_errors,blank=True)
 
 class Levadura(Insumo):
     pass
@@ -65,46 +65,46 @@ class Agregado(Insumo):
     pass
 
 class Barril(models.Model):
-    Numero_serie    = models.CharField(max_length=10, error_messages=my_default_errors,primary_key=True)
-    compra          = models.ForeignKey(Compra, error_messages=my_default_errors)
-    Litros          = models.IntegerField( error_messages=my_default_errors)
-    Ubicacion       = models.CharField( max_length=100,error_messages=my_default_errors,default="Keñua")
-    p_unitario      = models.FloatField(error_messages=my_default_errors,default=1)
-    Lleno           = models.BooleanField( error_messages=my_default_errors,default=False)
-    Carbonatado     = models.BooleanField( error_messages=my_default_errors,default=False)
-    Observaciones   = models.TextField(max_length=300,error_messages=my_default_errors, blank=True,null=True)
+    numero_serie         = models.CharField(max_length=10, error_messages=my_default_errors,primary_key=True)
+    compra               = models.ForeignKey(Compra, error_messages=my_default_errors)
+    litros               = models.IntegerField( error_messages=my_default_errors)
+    ubicacion            = models.CharField( max_length=100,error_messages=my_default_errors,default="Keñua")
+    precio_unitario      = models.FloatField(error_messages=my_default_errors,default=1)
+    lleno                = models.BooleanField( error_messages=my_default_errors,default=False)
+    carbonatado          = models.BooleanField( error_messages=my_default_errors,default=False)
+    observaciones        = models.TextField(max_length=300,error_messages=my_default_errors, blank=True)
 
     def __unicode__(self):
-       return unicode(self.Numero_serie)
+       return unicode(self.numero_serie)
 
-class Botellas(models.Model):
-    Litros      = models.FloatField( error_messages=my_default_errors)
-    compra      = models.ForeignKey(Compra, error_messages=my_default_errors)
-    p_unitario  = models.FloatField(error_messages=my_default_errors)
-    Cantidad    = models.FloatField( error_messages=my_default_errors)
-    Observaciones     = models.TextField(max_length=300,error_messages=my_default_errors, blank=True,null=True)
+class Pallet(models.Model):
+    compra           = models.ForeignKey(Compra, error_messages=my_default_errors)
+    litros           = models.FloatField( error_messages=my_default_errors)
+    precio           = models.FloatField(error_messages=my_default_errors)
+    cantidad         = models.FloatField( error_messages=my_default_errors)
+    observaciones    = models.TextField(max_length=300,error_messages=my_default_errors, blank=True)
 
     def __unicode__(self):
-       return unicode(self.Numero_serie)
+       return unicode(self.numero_serie)
 
 class Fermentador(models.Model):
-    Numero_serie    = models.CharField(max_length=10, error_messages=my_default_errors,primary_key=True)
-    compra          = models.ForeignKey(Compra, error_messages=my_default_errors)
-    Litros          = models.FloatField( error_messages=my_default_errors)
-    p_unitario      = models.FloatField(error_messages=my_default_errors)
-    Lleno           = models.BooleanField( error_messages=my_default_errors,default=False)
-    Observaciones   = models.TextField(max_length=300,error_messages=my_default_errors, blank=True,null=True)
+    numero_serie         = models.CharField(max_length=10, error_messages=my_default_errors,primary_key=True)
+    compra               = models.ForeignKey(Compra, error_messages=my_default_errors)
+    litros               = models.FloatField( error_messages=my_default_errors)
+    precio_unitario      = models.FloatField(error_messages=my_default_errors)
+    lleno                = models.BooleanField( error_messages=my_default_errors,default=False)
+    observaciones        = models.TextField(max_length=300,error_messages=my_default_errors, blank=True)
 
     def __unicode__(self):
-       return unicode(self.Numero_serie)
+       return unicode(self.numero_serie)
 
 class CompraInsumo(models.Model):
-     compra          = models.ForeignKey(Compra, error_messages=my_default_errors)
-     insumo          = models.ForeignKey(Insumo, error_messages=my_default_errors, related_name="add_insumo")
-     presentacion    = models.CharField(max_length=20, choices=PRESENTACIONES,error_messages=my_default_errors,default="U")
-     cantidad        = models.FloatField(error_messages=my_default_errors)
-     p_unitario      = models.FloatField(error_messages=my_default_errors)
-     subtotal        = models.FloatField(error_messages=my_default_errors)
+     compra               = models.ForeignKey(Compra, error_messages=my_default_errors)
+     insumo               = models.ForeignKey(Insumo, error_messages=my_default_errors, related_name="insumos")
+     presentacion         = models.CharField(max_length=20, choices=PRESENTACIONES,error_messages=my_default_errors,default="U")
+     cantidad             = models.FloatField(error_messages=my_default_errors)
+     precio_unitario      = models.FloatField(error_messages=my_default_errors)
+     subtotal             = models.FloatField(error_messages=my_default_errors)
 
      def __unicode__(self):
         return unicode(self.id)
@@ -117,14 +117,14 @@ class CompraInsumo(models.Model):
          #Extraigo la unidad de presentacion (K, G, L)
          unidad = filter(str.isalpha, presentacion )
          #Extraigo la cantidad de la presentacion 10,25, 100 etc
-         p_cantidad = int(filter(str.isdigit, presentacion))
+         presentacion_cantidad = int(filter(str.isdigit, presentacion))
          #Compruebo si el insumo comprado es un Lupulo o un agregado
          if any( [Lupulo.objects.filter(id=self.insumo_id), Agregado.objects.filter(id=self.insumo_id)] ):
            #si la compra fue de Kgs lo paso a gramos multiplicandolo por 1000
              if unidad == 'K':
-                 p_cantidad = p_cantidad*1000
+                 presentacion_cantidad = presentacion_cantidad*1000
          #sumo la cantidad comprara a la cantidad actual del insumo
-         insumo.Cantidad = insumo.Cantidad + int(self.cantidad)*p_cantidad
+         insumo.cantidad = insumo.cantidad + int(self.cantidad)*presentacion_cantidad
          #guardo el insumo
          insumo.save()
          return super(CompraInsumo, self).save(*args,**kwargs)

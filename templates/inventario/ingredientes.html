@@ -72,13 +72,13 @@
                         <tbody>
                         {% for dato in lupulos %}
                           <tr>
-                            <td style="text-align: left;" >{{dato.Nombre}}</td>
-                            <td>{{dato.lupulo.Alfa_Acido}}</td>
+                            <td style="text-align: left;" >{{dato.nombre}}</td>
+                            <td>{{dato.lupulo.alfa_acido}}</td>
                             <td class="project_progress">
                              <div class="progress progress_sm">
-                              <div class="progress-bar  {% if dato.Cantidad < dato.Stock_minimo %} progress-bar-danger{% else %} progress-bar-info {% endif %}" role="progressbar" data-transitiongoal="{{dato.Cantidad}}" aria-valuemin="0" aria-valuemax="2"></div>
+                              <div class="progress-bar  {% if dato.cantidad < dato.stock_minimo %} progress-bar-danger{% else %} progress-bar-info {% endif %}" role="progressbar" data-transitiongoal="{{dato.cantidad}}" aria-valuemin="0" aria-valuemax="2"></div>
                              </div>
-                             <small>{{dato.Cantidad}} g</small>
+                             <small>{{dato.cantidad}} g</small>
                             </td>
                             <td>
                               <a >
@@ -127,13 +127,13 @@
                         <tbody>
                         {% for dato in maltas %}
                           <tr>
-                            <td style="text-align: left;" >{{dato.Nombre}}</td>
+                            <td style="text-align: left;" >{{dato.nombre}}</td>
                             <td>{{dato.malta.EBC}}</td>
                             <td class="project_progress">
                              <div class="progress progress_sm">
-                              <div class="progress-bar  {% if dato.Cantidad < 2 %} progress-bar-danger{% else %} progress-bar-info {% endif %}" role="progressbar" data-transitiongoal="{{dato.Cantidad}}" aria-valuemin="0" aria-valuemax="50"></div>
+                              <div class="progress-bar  {% if dato.cantidad < 2 %} progress-bar-danger{% else %} progress-bar-info {% endif %}" role="progressbar" data-transitiongoal="{{dato.cantidad}}" aria-valuemin="0" aria-valuemax="50"></div>
                              </div>
-                             <small>{{dato.Cantidad}} Kgs</small>
+                             <small>{{dato.cantidad}} Kgs</small>
                             </td>
                             <td>
                               <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="editar/{{dato.id}}"  title="editar"><i class="fa fa-edit"></i></a>
@@ -182,13 +182,13 @@
                         <tbody>
                         {% for dato in levaduras %}
                           <tr>
-                            <td style="text-align: left;" >{{dato.Nombre}}</td>
+                            <td style="text-align: left;" >{{dato.nombre}}</td>
                             <td>{{dato.Vencimiento}}</td>
                             <td class="project_progress">
                              <div class="progress progress_sm">
-                              <div class="progress-bar  {% if dato.Cantidad < 200 %} progress-bar-danger{% else %} progress-bar-info {% endif %}" role="progressbar" data-transitiongoal="{{dato.Cantidad}}" aria-valuemin="0" aria-valuemax="1000"></div>
+                              <div class="progress-bar  {% if dato.cantidad < 200 %} progress-bar-danger{% else %} progress-bar-info {% endif %}" role="progressbar" data-transitiongoal="{{dato.cantidad}}" aria-valuemin="0" aria-valuemax="1000"></div>
                              </div>
-                             <small>{{dato.Cantidad}} g</small>
+                             <small>{{dato.cantidad}} g</small>
                             </td>
 
                             <td>
@@ -231,20 +231,20 @@
                         <tr>
                           <th style="text-align: left;" >Nombre</th>
                           <th>Uso</th>
-                          <th>Cantidad</th>
+                          <th>cantidad</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tbody>
                         {% for dato in agregados %}
                           <tr>
-                            <td style="text-align: left;" >{{dato.Nombre}}</td>
-                            <td>{{dato.agregado.Uso}}</td>
+                            <td style="text-align: left;" >{{dato.nombre}}</td>
+                            <td>{{dato.agregado.uso}}</td>
                             <td class="project_progress">
                              <div class="progress progress_sm">
-                              <div class="progress-bar  {% if dato.Cantidad < 200 %} progress-bar-danger{% else %} progress-bar-info {% endif %}" role="progressbar" data-transitiongoal="{{dato.Cantidad}}" aria-valuemin="0" aria-valuemax="500"></div>
+                              <div class="progress-bar  {% if dato.cantidad < 200 %} progress-bar-danger{% else %} progress-bar-info {% endif %}" role="progressbar" data-transitiongoal="{{dato.cantidad}}" aria-valuemin="0" aria-valuemax="500"></div>
                              </div>
-                             <small>{{dato.Cantidad}} g</small>
+                             <small>{{dato.cantidad}} g</small>
                             </td>
                             <td>
                               <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="editar/{{dato.id}}"  title="editar"><i class="fa fa-edit"></i></a>

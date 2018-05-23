@@ -9,21 +9,21 @@ my_default_errors = {
 # Create your models here.
 class Proveedor(models.Model):
     Nombre         = models.CharField(max_length=100,error_messages=my_default_errors)
-    Representante  = models.CharField(max_length=100,error_messages=my_default_errors,blank=True,null=True)
-    Rubro          = models.CharField(max_length=100,error_messages=my_default_errors,blank=True,null=True)
-    Telefono       = models.IntegerField(error_messages=my_default_errors)
-    Direccion      = models.CharField(max_length=100,error_messages=my_default_errors,blank=True,null=True)
-    Email          = models.EmailField(max_length=100,error_messages=my_default_errors, blank=True,null=True)
+    Representante  = models.CharField(max_length=100,error_messages=my_default_errors,blank=True)
+    Rubro          = models.CharField(max_length=100,error_messages=my_default_errors, blank=True)
+    Telefono       = models.IntegerField(error_messages=my_default_errors, blank=True)
+    Direccion      = models.CharField(max_length=100,error_messages=my_default_errors,blank=True)
+    Email          = models.EmailField(max_length=100,error_messages=my_default_errors, blank=True)
 
     def __str__(self):
        return self.Nombre
 
 class Cliente(models.Model):
     Nombre         = models.CharField(max_length=100,error_messages=my_default_errors)
-    Representante  = models.CharField(max_length=100,error_messages=my_default_errors)
-    Telefono       = models.IntegerField(error_messages=my_default_errors)
-    Direccion      = models.CharField(max_length=100,error_messages=my_default_errors)
-    Email          = models.EmailField(max_length=100,error_messages=my_default_errors, blank=True,null=True)
+    Representante  = models.CharField(max_length=100,error_messages=my_default_errors,blank=True)
+    Telefono       = models.IntegerField(error_messages=my_default_errors, blank=True)
+    Direccion      = models.CharField(max_length=100,error_messages=my_default_errors, blank=True)
+    Email          = models.EmailField(max_length=100,error_messages=my_default_errors, blank=True)
 
     def __str__(self):
        return self.Nombre

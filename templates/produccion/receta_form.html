@@ -69,14 +69,14 @@
 }
 .unidad-insumo{
     position: absolute;
-    right: 480px;
+    right: 470px;
     padding-top: 5px;
     text-decoration: none;
     text-align: center;
 }
 .unidad-lupulo{
     position: absolute;
-    right: 430px;
+    right: 460px;
     padding-top: 5px;
     text-decoration: none;
     text-align: center;
@@ -138,16 +138,6 @@
 
                           </a>
                         </li>
-                        <li>
-                          <a href="#step-4">
-                            <span class="step_no">4</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#step-5">
-                            <span class="step_no">5</span>
-                          </a>
-                        </li>
 
                       </ul>
                      <form class="form-horizontal form-label-left">
@@ -191,14 +181,6 @@
                           </div>
 
                           <div class="form-group">
-                            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.DI.label}}</label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                              {{form.DI | append_attr:"class:form-control" }}
-                              {{form.DI.errors}}
-                            </div>
-                          </div>
-
-                          <div class="form-group">
                             <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.DF.label}}</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                               {{form.DF | append_attr:"class:form-control" }}
@@ -236,62 +218,8 @@
                             </tbody>
                         </table>
                       </div>
-                      <div id="step-3">
-                        <h2 class="StepTitle">Maceracion</h2>
-                        <span class="section"></span>
-                      <div class="form-group">
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                        <label for="middle-name" >{{form.Tiempo_Maceracion.label}}</label>
-                          <span class="unidad-inlines">minutos</span>
-                          {{form.Tiempo_Maceracion | append_attr:"class:form-control" }}
-                          {{form.Tiempo_Maceracion.errors}}
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                          <label for="middle-name">{{form.Temp_Maceracion.label}}</label>
-                          <span class="unidad-inlines">C°</span>
-                          {{form.Temp_Maceracion | append_attr:"class:form-control" }}
-                          {{form.Temp_Maceracion.errors}}
-                        </div>
-                        &nbsp;
-                        &nbsp;
-                        <h2 class="StepTitle">Filtrado</h2>
-                        <span class="section"></span>
-                        <div class="form-group">
-                          <div class="col-md-6 col-sm-6 col-xs-12">
-                            <label for="middle-name">{{form.Tiempo_Filtrado.label}}</label>
-                            <span class="unidad-inlines">minutos</span>
-                            {{form.Tiempo_Filtrado | append_attr:"class:form-control" }}
-                            {{form.Tiempo_Filtrado.errors}}
-                          </div>
-                       </div>
-                       &nbsp;
-                       &nbsp;
-                       <h2 class="StepTitle">Lavado</h2>
-                       <span class="section"></span>
-                       <div class="form-group">
-                         <div class="col-md-6 col-sm-6 col-xs-12">
-                           <label for="middle-name">{{form.Tiempo_Lavado.label}}</label>
-                           <span class="unidad-inlines">minutos</span>
-                           {{form.Tiempo_Lavado | append_attr:"class:form-control" }}
-                           {{form.Tiempo_Lavado.errors}}
-                         </div>
-                      </div>
-                      </div>
-                    </div>
 
-                      <div id="step-4">
-                        <h2 class="StepTitle">Coccion</h2>
-                        <span class="section"></span>
-                        <div class="form-group">
-                         <div class="col-md-6 col-sm-6 col-xs-12">
-                         <label for="middle-name" >{{form.Tiempo_Coccion.label}}</label>
-                           <span class="unidad-inlines">minutos</span>
-                           {{form.Tiempo_Coccion | append_attr:"class:form-control" }}
-                           {{form.Tiempo_Coccion.errors}}
-                         </div>
-                       </div>
-                       &nbsp;
-                       &nbsp;
+                      <div id="step-3">
                         <h2 class="StepTitle">Lupulos</h2>
                         <span class="section"></span>
                         <table  class="table " cellspacing="5">
@@ -363,29 +291,6 @@
                             {{ inlines.2.management_form }}
                       </div>
 
-                      <div id="step-5">
-                        <h2 class="StepTitle">Fermentación</h2>
-                        <span class="section"></span>
-                          <div class="form-group">
-                            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.Temp_Final.label}}</label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                            <span class="unidad">C°</span>
-                              {{form.Temp_Final| append_attr:"class:form-control" }}
-                              {{form.Temp_Final.errors}}
-                            </div>
-                          </div>
-
-                          <div class="form-group">
-                            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.Tiempo_Fermentacion.label}}</label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                            <span class="unidad">Dias</span>
-                              {{form.Tiempo_Fermentacion | append_attr:"class:form-control" }}
-                              {{form.Tiempo_Fermentacion.errors}}
-                            </div>
-                          </div>
-
-
-                      </div>
                     </div>
                     </form>
                   </div>

@@ -1,11 +1,13 @@
 calc_total();
 
 moment.locale('es');
-$('#id_Fecha_compra').daterangepicker();
+$('#id_fecha_compra').daterangepicker({
+   singleDatePicker: true,
+});
 
  $('.add-row').addClass("fa fa-toggle-down");
 
- $(document).on('change', '.p_unitario', function() {
+ $(document).on('change', '.precio_unitario', function() {
      var pu  = $(this).val();
      var q = $(this).closest("tr").find('.cantidad').val();
      var sub = pu*q;
@@ -17,7 +19,7 @@ $('#id_Fecha_compra').daterangepicker();
 
  $(document).on('change', '.cantidad', function() {
      var q  = $(this).val();
-     var pu = $(this).closest("tr").find('.p_unitario').val();
+     var pu = $(this).closest("tr").find('.precio_unitario').val();
      var sub = pu*q;
      $(this).closest("tr").find('.subtotal').val(function(){
 
@@ -31,7 +33,7 @@ function calc_total() {
      $('.subtotal').each(function(){
        sum += parseInt(this.value);  // Or this.innerHTML, this.innerText
      });
-     $('#id_Importe_Total').val(function(){
+     $('#id_importe_total').val(function(){
          return sum;
      });
  };

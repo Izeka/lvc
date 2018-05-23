@@ -20,19 +20,19 @@
             addCssClass: 'add-row fa fa-toggle-down',
             deleteCssClass: 'delete-row fa fa-times-circle',
         });
-        
+
       $('.add-row').addClass("fa fa-toggle-down")
 
-      $(document).on('change', '.p_unitario', function() {
+      $(document).on('change', '.precio_unitario', function() {
           calc_total();
       });
 
       function calc_total() {
            var sum = 0;
-           $('.p_unitario').each(function(){
+           $('.precio_unitario').each(function(){
              sum += parseInt(this.value);  // Or this.innerHTML, this.innerText
            });
-           $('#id_Importe_Total').val(function(){
+           $('#id_importe_total').val(function(){
                return sum;
            });
        };
@@ -98,26 +98,26 @@
              <label for="exampleInputEmail1">
                 N° Factura
              </label>
-               {{ form.Factura |attr:"class:form-control" }}
+               {{ form.factura |attr:"class:form-control" }}
          </fieldset>
            <fieldset class="form-group">
                <label for="exampleInputEmail1">
-                  {{ form.Fecha_compra.label }}
+                  {{ form.fecha_compra.label }}
                </label>
-                 {{ form.Fecha_compra |attr:"class:form-control" }}
+                 {{ form.fecha_compra |attr:"class:form-control" }}
             </fieldset>
 
             <fieldset class="form-group">
                 <label for="exampleInputEmail1">
-                   {{ form.Proveedor.label }}<a title="Agregar Proveedor" style="color: #5A738E !important;" class="fa fa-plus" data-toggle="modal"  data-target="#modal"  href="/proveedores/nuevo"> </a>
+                   {{ form.proveedor.label }}<a title="Agregar Proveedor" style="color: #5A738E !important;" class="fa fa-plus" data-toggle="modal"  data-target="#modal"  href="/proveedores/nuevo"> </a>
                 </label>
-                  {{ form.Proveedor |attr:"class:form-control" }}
+                  {{ form.proveedor |attr:"class:form-control" }}
             </fieldset>
             <fieldset class="form-group">
                 <label for="exampleInputEmail1">
-                   {{ form.Comprador.label }}
+                   {{ form.comprador.label }}
                 </label>
-                  {{ form.Comprador |attr:"class:form-control" }}
+                  {{ form.comprador |attr:"class:form-control" }}
             </fieldset>
                    <div id="{{ inlines.0.prefix }}" class="form-group">
                      {% for form in inlines.0 %}
@@ -128,8 +128,8 @@
                        {% for field in form %}
                         {% if field.label not in no_fields %}
                          <label>{{ field.label }}</label>
-                         {% if field.label == "P unitario" %}
-                           <div>{{ field |attr:"class:form-control p_unitario"  }}</div>
+                         {% if field.label == "Precio unitario" %}
+                           <div>{{ field |attr:"class:form-control precio_unitario"  }}</div>
                          {% else %}
                            <div>{{ field |attr:"class:form-control"  }}</div>
                          {% endif %}
@@ -144,22 +144,22 @@
 
             <fieldset class="form-group">
                 <label for="exampleInputEmail1">
-                   {{ form.Importe_Total.label }}
+                   {{ form.importe_total.label }}
                 </label>
-                  {{ form.Importe_Total |attr:"class:form-control" }}
+                  {{ form.importe_total |attr:"class:form-control" }}
             </fieldset>
             <fieldset class="form-group">
                 <label for="exampleInputEmail1">
-                   {{ form.Observaciones.label }}
+                   {{ form.observaciones.label }}
                 </label>
-                  {{ form.Observaciones |attr:"class:form-control" }}
+                  {{ form.observaciones |attr:"class:form-control" }}
             </fieldset>
             {{form.errors}}
             {{ form.non_field_errors }}
            <a style="background-color: #e6e6e6 !important;"role="button" class="btn "  href="/compras">Cerrar </a>
            <input type="submit" class="btn btn-primary" value="Guardar" />
            <input type="hidden" name="id_Producto" value="Equipamiento" />
-           {{form.Producto| attr:"style:visibility: hidden;"}}
+           {{form.producto| attr:"style:visibility: hidden;"}}
          </form>
         </div>
       </div>

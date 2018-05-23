@@ -49,7 +49,7 @@ class Compra_servicio(LoginRequiredMixin, CreateWithInlinesView):
     def get_context_data(self, **kwargs):
         context = super(Compra_servicio, self).get_context_data(**kwargs)
         #Envio la variable no_fields al contexto para filtrar los campos del formset de equipamiento
-        context['no_fields'] = ["Id","Compra", "Lleno","Carbonatado", "Observaciones","Eliminar"]
+        context['no_fields'] = ["id","compra", "lleno","carbonatado", "observaciones","eliminar"]
         return context
 
 class EquipamientoInline( InlineFormSet):
@@ -82,7 +82,7 @@ class Compra_equipamiento(LoginRequiredMixin, CreateWithInlinesView):
     def get_context_data(self, **kwargs):
         context = super(Compra_equipamiento, self).get_context_data(**kwargs)
         #Envio la variable no_fields al contexto para filtrar los campos del formset de equipamiento
-        context['no_fields'] = ["Id","Compra", "Lleno","Carbonatado", "Observaciones","Eliminar"]
+        context['no_fields'] = ["id","Compra", "lleno","carbonatado", "observaciones","eliminar"]
         return context
 
 class EditInsumoInline( InlineFormSet):
@@ -108,12 +108,14 @@ class Compra_editar(LoginRequiredMixin,UpdateWithInlinesView ):
             formset = ServicioFormSet(self.request.POST, instance=self.object)
         elif producto == "fermentador":
             formset = FermentadorFormSet(self.request.POST, instance=self.object)
-        elif producto == "botellas":
-            formset = BotellasFormSet(self.request.POST, instance=self.object)
+        elif producto == "pallet":
+            formset = PalletFormSet(self.request.POST, instance=self.object)
         else:
             formset = InsumoFormSet(self.request.POST,instance=self.object)
         if (form.is_valid() and formset.is_valid()):
                 return self.form_valid(form, formset)
+        else:
+                return self.form_invalid(form, formset)
 
     def form_valid(self, form, formset):
         self.object = form.save()
@@ -128,6 +130,6 @@ class Compra_editar(LoginRequiredMixin,UpdateWithInlinesView ):
         context['barriles']= BarrilFormSet(instance=compra)
         context['servicios']= ServicioFormSet(instance=compra)
         context['fermentadores']= FermentadorFormSet(instance=compra)
-        context['botellases']= BotellasFormSet(instance=compra)
-        context['no_fields'] = ["Id","Compra", "Lleno","Carbonatado", "Observaciones","Eliminar"]
+        context['pallets']= PalletFormSet(instance=compra)
+        context['no_fields'] = ["id","compra", "Lleno","Carbonatado", "Observaciones","eliminar"]
         return context

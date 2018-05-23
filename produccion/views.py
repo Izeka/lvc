@@ -1,6 +1,8 @@
 from django.views.generic import ListView, UpdateView
 from extra_views import InlineFormSet, CreateWithInlinesView, UpdateWithInlinesView, ModelFormSetView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.forms.models import model_to_dict
+from django.http import JsonResponse
 
 from .models import *
 from .forms import *
@@ -75,6 +77,11 @@ class Cocciones(LoginRequiredMixin, ListView):
     template_name = "produccion/cocciones.html"
     context_object_name = 'cocciones'
 
+def get_receta(request):
+    receta = request.GET.get('receta', None)
+    data = Receta.objects.get(pk=receta)
+    return JsonResponse(model_to_dict(data), safe=False)
+
 class Nueva_coccion(LoginRequiredMixin, CreateWithInlinesView):
     model = Coccion
     login_url = "/login/"
@@ -82,17 +89,23 @@ class Nueva_coccion(LoginRequiredMixin, CreateWithInlinesView):
     fields = "__all__"
     success_url = "/cocciones"
 
+    def form_valid(self, form, formset):
+        self.object = form.save()
+        formset.instance = self.object
+        formset.save()
+        return HttpResponseRedirect("/cocciones")
+
     def get_context_data(self, **kwargs):
         context = super(Nueva_coccion, self).get_context_data(**kwargs)
         receta_id = self.request.POST.get('Receta',False)
         context['hoy'] = date.today()
         if receta_id:
            receta = Receta.objects.get(id=receta_id)
-           maltas = maltaFormSet(queryset=Malta_x_Receta.objects.filter(Receta=receta),prefix="malta_x_receta_set")
-           lupulos  = lupuloFormSet(queryset=Lupulo_x_Receta.objects.filter(Receta=receta),prefix="lupulo_x_receta_set")
-           agregados = agregadoFormSet(queryset=Agregados_x_Receta.objects.filter(Receta=receta),prefix="agregado_x_receta_set")
+           context['maltas'] = maltaFormSet(queryset=Malta_x_Receta.objects.filter(Receta=receta),prefix="malta_x_coccion_set")
+           context['lupulos']  = lupuloFormSet(queryset=Lupulo_x_Receta.objects.filter(Receta=receta),prefix="lupulo_x_coccion_set")
+           context['agregados'] = agregadoFormSet(queryset=Agregados_x_Receta.objects.filter(Receta=receta),prefix="agregado_x_coccion_set")
            context['receta'] = receta
-           context['inlines'] = list([maltas, lupulos, agregados])
+    #       context['inlines'] = list([maltas, lupulos, agregados])
         return context
 
 class Editar_coccion(LoginRequiredMixin, UpdateWithInlinesView):

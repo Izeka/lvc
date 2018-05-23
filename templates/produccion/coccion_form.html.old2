@@ -1,0 +1,397 @@
+{% extends 'index.html' %}
+{% load widget_tweaks %}
+
+{% block extra_js %}
+  <!-- jQuery Smart Wizard -->
+    <script src="/static/custom/js/jquery.formset.js"></script>
+    <script src="/static/custom/js/moment.js"></script>
+    <script src="/static/custom/js/countimer.js"></script>
+    <script src="/static/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
+    <script src="/static/custom/js/jquery.validate.js"></script>
+    <script>
+    $(function() {
+        {% for formset in inlines %}
+        $('tr#{{ formset.prefix }}').formset({
+            prefix: '{{ formset.prefix }}',
+            addText: 'Agregar',
+            deleteText: 'Eliminar',
+            addCssClass: 'add-row fa fa-toggle-down',
+            deleteCssClass: 'delete-row fa fa-times-circle',
+        });
+        {% endfor %}
+    })
+
+    $('#wizard_verticle').smartWizard({
+      labelNext:'Siguiente',
+      labelPrevious:'Volver',
+      labelFinish:'Finalizar',
+      onFinish:onFinishCallback
+    });
+
+    $("#id_Recseta").change(function () {
+       var receta = $(this).val();
+
+       $.ajax({
+         type: 'GET',
+         url: '/ajax/get_receta/',
+         data: {
+           'receta': receta
+         },
+         dataType: 'json',
+         success: function (data, inlines) {
+           document.getElementById("id_Litros").value = data["Litros"];
+           document.getElementById("id_Temp_Maceracion").value = data["Temp_Maceracion"];
+         },
+
+       });
+
+     });
+     function onFinishCallback(objs, context){
+             $('form').submit();
+     }
+    $('#id_Fecha').datepicker({
+      });
+
+
+</script>
+{% endblock %}
+{% block extra_css %}
+<style type="text/css">
+
+.fa-toggle-down::before{
+  margin-right: 5px !important;
+}
+.fa-plus{
+   position: absolute;
+   color: #ECF0F1 !important;
+   margin-left: 4px;
+   margin-top: 3px;
+   font-size: 8px !important;
+}
+.add-row {
+  font-size: 12px !important;
+}
+.delete-row {
+  position: absolute;
+  right: 20px;
+  padding: 6px 8px;
+  border-left: 0;
+  text-decoration: none;
+  text-align: center;
+}
+.unidad-malta{
+    position: absolute;
+    right: 85px;
+    padding-top: 5px;
+    text-decoration: none;
+    text-align: center;
+}
+.unidad-insumo{
+    position: absolute;
+    right: 480px;
+    padding-top: 5px;
+    text-decoration: none;
+    text-align: center;
+}
+.unidad-lupulo{
+    position: absolute;
+    right: 440px;
+    padding-top: 5px;
+    text-decoration: none;
+    text-align: center;
+}
+.tiempo-insumo{
+    position: absolute;
+    right: 85px;
+    padding-top: 5px;
+    text-decoration: none;
+    text-align: center;
+}
+
+
+</style>
+{% endblock %}
+{% block content %}
+    <!-- page content -->
+    <div class="right_col" role="main">
+      <div class="">
+        <div class="clearfix"></div>
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+
+             <div class="x_content">
+                <!-- Smart Wizard -->
+                   <form action="" method="post" class="form-horizontal form-label-left">{% csrf_token %}
+                    <!-- SmartWizard html -->
+                    <div id="wizard_verticle" class="form_wizard wizard_verticle">
+                      <ul class="list-unstyled wizard_steps anchor">
+                        <li>
+                          <a href="#step-1">
+                            <span class="step_no">1</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#step-2">
+                            <span class="step_no">2</span>
+                         </a>
+                        </li>
+                        <li>
+                          <a href="#step-3">
+                            <span class="step_no">3</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#step-4">
+                            <span class="step_no">4</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#step-5">
+                            <span class="step_no">5</span>
+                          </a>
+                        </li>
+                        </li>
+
+                        </li>
+
+                      </ul>
+                     <form class="form-horizontal form-label-left">
+                      <div class="stepContainer" >
+
+                      <div id="step-1" class="content" style="display: block;">
+                        <h2 class="StepTitle">Nueva Cocción</h2>
+                        <span class="section"></span>
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">{{form.Nombre.label}} <span class="required"></span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              {{form.Nombre | append_attr:"class:form-control" }}
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">{{form.Fecha.label}} <span class="required"></span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input   value= "{{hoy|date:'d/m/y' }}"  class="form-control" id="id_Fecha" name="Fecha" required="" maxlength="20" type="text">
+                          </div>
+                        </div>
+
+                          <div class="form-group">
+                            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.Receta.label}}</label>
+                            <div class="text-container col-md-6 col-sm-6 col-xs-12">
+                              {{form.Receta | append_attr:"class:form-control" | append_attr:"onchange:this.form.submit()"}}
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.Litros.label}}</label>
+                            <div class="text-container col-md-6 col-sm-6 col-xs-12">
+                              {{form.Litros | append_attr:"class:form-control" }}
+                            </div>
+                          </div>
+                      </div>
+
+                      <div id="step-2">
+                        <h2 class="StepTitle">Maltas</h2>
+                        <span class="section"></span>
+
+                            <table  class="table " cellspacing="5">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Malta </th>
+                                        <th scope="col">Cantidad</th>
+                                        <th scope="col"> </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{ inlines.0.management_form }}
+                                    {% for form in inlines.0 %}
+                                   <tr id="{{ inlines.0.prefix }}">
+                                       {{form.errors}}
+                                       {{form.id}}
+                                        <td>{{ form.Malta| append_attr:"class:form-control" }}</td>
+                                        <td>
+                                          <span class="unidad-malta">kg</span>
+                                          {{ form.Cantidad | append_attr:"class:form-control cantidad " }}
+                                        </td>
+                                        <td></td>
+                                   </tr>
+
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                      </div>
+
+                      <div id="step-3">
+
+                        <h2 class="StepTitle">Maceracion </h2>
+                        <span class="section"></span>
+                        <div class="form-group">
+                          <div class="col-md-6 col-sm-6 col-xs-12">
+                          <label for="middle-name" >{{form.Tiempo_Maceracion.label}}</label>
+                            <span class="unidad-inlines">minutos</span>
+                            {{form.Tiempo_Maceracion | append_attr:"class:form-control" }}
+                            {{form.Tiempo_Maceracion.errors}}
+                          </div>
+                          <div class="col-md-6 col-sm-6 col-xs-12">
+                            <label for="middle-name">{{form.Temp_Maceracion.label}}</label>
+                            <span class="unidad-inlines">C°</span>
+                            {{form.Temp_Maceracion | append_attr:"class:form-control" }}
+                            {{form.Temp_Maceracion.errors}}
+                          </div>
+                        </div>
+                        &nbsp;
+                        &nbsp;
+                        <h2 class="StepTitle">Filtrado </h2>
+                        <span class="section"></span>
+                        <div class="form-group">
+                          <div class="col-md-4 col-sm-4 col-xs-4">
+                            <label for="middle-name">{{form.Temp_Maceracion.label}}</label>
+                            <span class="unidad-maceracion">C°</span>
+                            {{form.Tiempo_Filtrado | append_attr:"class:form-control" }}
+                          </div>
+                        </div>
+                        &nbsp;
+                        &nbsp;
+                        <h2 class="StepTitle">Lavado </h2>
+                        <span class="section"></span>
+                        <div class="form-group">
+                          <div class="col-md-4 col-sm-4 col-xs-4">
+                            <label for="middle-name">{{form.Temp_Maceracion.label}}</label>
+                            <span class="unidad-maceracion">C°</span>
+                            {{form.Tiempo_Lavado | append_attr:"class:form-control" }}
+                          </div>
+                       </div>
+                      </div>
+
+                      <div id="step-4">
+                       <h2 class="StepTitle">Coccion</h2>
+                       <span class="section"></span>
+                       <div class="form-group">
+                         <div class="col-md-4 col-sm-4 col-xs-4">
+                           <label for="middle-name">{{form.Temp_Maceracion.label}}</label>
+                           <span class="unidad-maceracion">C°</span>
+                           {{form.Tiempo_Coccion | append_attr:"class:form-control" }}
+                         </div>
+                       </div>
+                        &nbsp;
+                        &nbsp;
+                        <h2 class="StepTitle">Lupulos</h2>
+                        <table  class="table " cellspacing="5">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Lupulo </th>
+                                    <th scope="col">Cantidad</th>
+                                    <th scope="col">Tiempo de Cocción</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{ inlines.1.management_form }}
+                                 {% for form in inlines.1 %}
+                               <tr id="{{ inlines.1.prefix }}">
+                                   {{form.errors}}
+                                   {{form.id}}
+                                    <td>{{ form.Lupulo| append_attr:"class:form-control" }}</td>
+                                    <td>
+                                      <span class="unidad-lupulo">g</span>
+                                      {{ form.Cantidad | append_attr:"class:form-control cantidad " }}
+                                    </td>
+                                    <td>
+                                      <span class="tiempo-insumo">minutos</span>
+                                      {{ form.Tiempo | append_attr:"class:form-control cantidad " }}
+                                    </td>
+                                    <td></td>
+                               </tr>
+
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        &nbsp;
+                        &nbsp;
+                        <h2 class="StepTitle">Agregados</h2>
+                        <span class="section"></span>
+                        <table  class="table "  cellspacing="5">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Agregados</th>
+                                    <th scope="col">Cantidad</th>
+                                    <th scope="col">Tiempo de Cocción</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                 {{ inlines.2.management_form }}
+                                 {% for form in inlines.2 %}
+                               <tr id="{{ inlines.2.prefix }}">
+                                   {{form.errors}}
+                                   {{form.id}}
+                                    <td>{{ form.Agregados| append_attr:"class:form-control" }}</td>
+                                    <td>
+                                      <span class="unidad-insumo">g</span>
+                                      {{ form.Cantidad | append_attr:"class:form-control cantidad " }}
+                                    </td>
+                                    <td>
+                                      <span class="tiempo-insumo">minutos</span>
+                                      {{ form.Tiempo | append_attr:"class:form-control cantidad " }}
+                                    </td>
+                                    <td></td>
+                               </tr>
+
+                                {% endfor %}
+
+                            </tbody>
+                        </table>
+
+
+                      </div>
+
+                      <div id="step-5">
+                        <h2 class="StepTitle">Valores Finales</h2>
+                        <span class="section"></span>
+                          <div class="form-group">
+                            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.Temp_Final.label}}</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                            <span class="unidad">C°</span>
+                              {{form.Temp_Final | append_attr:"class:form-control" }}
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.DF.label}}</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              {{form.DF| append_attr:"class:form-control" }}
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.Litros.label}}</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                            <span class="unidad">lts</span>
+                              {{form.Litros| append_attr:"class:form-control" }}
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.Observaciones.label}}</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              {{form.Observaciones| append_attr:"class:form-control" }}
+                            </div>
+                          </div>
+
+                      </div>
+                    </div>
+                   </form>
+            </div>
+                <!-- End SmartWizard Content -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+        <!-- /page content -->
+
+{% endblock %}
