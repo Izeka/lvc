@@ -12,17 +12,17 @@ from datetime import date
 class MaltaInline(InlineFormSet):
     model = Malta_x_Receta
     fields="__all__"
-    extra=1
+    factory_kwargs = {'extra': 1}
 
 class LupuloInline(InlineFormSet):
     model = Lupulo_x_Receta
     fields = "__all__"
-    extra=1
+    factory_kwargs = {'extra': 1}
 
 class AgregadosInline(InlineFormSet):
     model = Agregados_x_Receta
     fields = "__all__"
-    extra=1
+    factory_kwargs = {'extra': 1}
 
 class Recetas(LoginRequiredMixin, ListView):
     model = Receta
@@ -59,17 +59,17 @@ class Ver_receta(LoginRequiredMixin, UpdateView):
 class MaltaCoccionInline(InlineFormSet):
     model = Malta_x_Coccion
     fields="__all__"
-    extra=1
+    factory_kwargs = {'extra': 1}
 
 class LupuloCoccionInline(InlineFormSet):
     model = Lupulo_x_Coccion
     fields = "__all__"
-    extra=1
+    factory_kwargs = {'extra': 1}
 
 class AgregadosCoccionInline(InlineFormSet):
     model = Agregados_x_Coccion
     fields = "__all__"
-    extra=1
+    factory_kwargs = {'extra': 1}
 
 class Cocciones(LoginRequiredMixin, ListView):
     model = Coccion

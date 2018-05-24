@@ -23,7 +23,6 @@ class Compras(LoginRequiredMixin, ListView):
 class InsumoInline( InlineFormSet):
     model = CompraInsumo
     fields="__all__"
-    extra=1
 
 class Compra_insumos(LoginRequiredMixin, CreateWithInlinesView):
     model = Compra
@@ -36,7 +35,7 @@ class Compra_insumos(LoginRequiredMixin, CreateWithInlinesView):
 class ServicioInline( InlineFormSet):
     model = Servicio
     fields="__all__"
-    extra=1
+    factory_kwargs = {'extra': 1}
 
 class Compra_servicio(LoginRequiredMixin, CreateWithInlinesView):
     model = Compra
@@ -55,7 +54,7 @@ class Compra_servicio(LoginRequiredMixin, CreateWithInlinesView):
 class EquipamientoInline( InlineFormSet):
     model = Barril
     fields="__all__"
-    extra=1
+    factory_kwargs = {'extra': 1}
 
     def __init__(self, *args, **kwargs):
         try:
