@@ -1,98 +1,96 @@
-<!DOCTYPE html>
-{% load widget_tweaks %}
+<!DOCTYPE html> {% load widget_tweaks %}
 <html lang="en">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <!-- Meta, title, CSS, favicons, etc. -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Sistema de Control Cerveceria | </title>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <!-- Meta, title, CSS, favicons, etc. -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap -->
-    <link href="/static/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="/static/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <title>Sistema de Control Cerveceria | </title>
 
-    <!-- NProgress -->
-    <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
-    <!-- Animate.css -->
-    <link href="../vendors/animate.css/animate.min.css" rel="stylesheet">
+  <!-- Bootstrap -->
+  <link href="/static/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="/static/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
-    <!-- Custom Theme Style -->
-    <link href="/static/custom/css/custom.css" rel="stylesheet">
-    <link href="/static/custom/css/mosto.css" rel="stylesheet">
+  <!-- NProgress -->
+  <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
+  <!-- Animate.css -->
+  <link href="../vendors/animate.css/animate.min.css" rel="stylesheet">
 
-    <style type="text/css">
-    .logo-login{
+  <!-- Custom Theme Style -->
+  <link href="/static/custom/css/custom.css" rel="stylesheet">
+  <link href="/static/custom/css/mosto.css" rel="stylesheet">
+
+  <style type="text/css">
+    .logo-login {
       margin-top: -90px;
     }
-    .login_content{
+
+    .login_content {
       margin-top: 150px !important;
     }
-    
-    .login-button{
-      float:none !important;
+
+    .login-button {
+      float: none !important;
       margin-left: 0 !important;
     }
-    .logo-nombre{
+
+    .logo-nombre {
       margin-top: -20px !important;
     }
-    </style>
-  </head>
+  </style>
+</head>
 
-  <body class="login">
-    <div>
-      <a class="hiddenanchor" id="signup"></a>
-      <a class="hiddenanchor" id="signin"></a>
+<body class="login">
+  <div>
+    <a class="hiddenanchor" id="signup"></a>
+    <a class="hiddenanchor" id="signin"></a>
 
-      <div class="login_wrapper">
-        <div class="animate form login_form">
-          <section class="login_content">
-            <form method="post" action="">
-               {% csrf_token %}
-              <h1><img  height="150" width="150" src="/static/custom/images/keñua-login.png" alt="..." class="logo-login"></h1>
-              <h1 class="logo-nombre"></i>CERVECERIA KEÑUA </h1>
-              {% if form.errors %}
-              <p>El usuario y password no coinciden. Por favor intente de nuevo.</p>
-              {% endif %}
-              {% if next %}
-                  {% if user.is_authenticated %}
-                  <p>Su cuenta no posee permisos para acceder a esta pagina. Para proceder,
-                  ingrese con una cuenta con permisos</p>
-                  {% endif %}
-              {% endif %}
+    <div class="login_wrapper">
+      <div class="animate form login_form">
+        <section class="login_content">
+          <form method="post" action="">
+            {% csrf_token %}
+            <h1><img  height="150" width="150" src="/static/custom/images/keñua-login.png" alt="..." class="logo-login"></h1>
+            <h1 class="logo-nombre"></i>CERVECERIA KEÑUA </h1> {% if form.errors %}
+            <p>El usuario y password no coinciden. Por favor intente de nuevo.</p>
+            {% endif %} {% if next %} {% if user.is_authenticated %}
+            <p>Su cuenta no posee permisos para acceder a esta pagina. Para proceder, ingrese con una cuenta con permisos</p>
+            {% endif %} {% endif %}
 
-              <div>
-                {{ form.username | append_attr:"class:form-control"| append_attr:"placeholder:Usuario" }}
-              </div>
-              <div>
-                {{ form.password | append_attr:"class:form-control"| append_attr:"placeholder:Password" }}
-              </div>
-              <div>
-                <input class="btn btn-default login-button" type="submit" value="Ingresar">
-              </div>
+            <div>
+              {{ form.username | append_attr:"class:form-control"| append_attr:"placeholder:Usuario" }}
+            </div>
+            <div>
+              {{ form.password | append_attr:"class:form-control"| append_attr:"placeholder:Password" }}
+            </div>
+            <div>
+              <input class="btn btn-default login-button" type="submit" value="Ingresar">
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="separator">
 
               <div class="clearfix"></div>
+              <br />
+              <div>
 
-              <div class="separator">
-
-                <div class="clearfix"></div>
-                <br />
-                <div>
-
-               </div>
-
-                <div>
-                </div>
               </div>
-            </form>
-          </section>
-        </div>
 
-        </div>
+              <div>
+              </div>
+            </div>
+          </form>
+        </section>
       </div>
+
     </div>
-  </body>
+  </div>
+  </div>
+</body>
+
 </html>

@@ -1,100 +1,95 @@
-{% load i18n widget_tweaks %}
-{% block extra_js %}
+{% load i18n widget_tweaks %} {% block extra_js %}
 
 <script>
+  var en_gramos = ["lupulo", "levadura", "agregado", "clarificante"];
 
-var list = ["lupulo","malta","levadura","agregado"];
-$("#id_Tipo").val("INSUMO").prop('selected', true);
-$("#id_Unidad_de_medida").val("l").prop('selected', true)
+  //Al iniciar Cambio el valor de tipo y unidad segun el insumo
+  $(document).ready(function() {
+    $("#id_insumo").val("{{insumo}}");
+    insumo_values($("#id_insumo").val());
+  });
 
-$("#id_insumo").change(function(){
-   if(jQuery.inArray($(this).val(), list) != -1) {
-      $("#id_Tipo").val("INGREDIENTE").prop('selected', true);
-      $("#id_Unidad_de_medida").val("Kg").prop('selected', true)
-   } else {
-      $("#id_Tipo").val("INSUMO").prop('selected', true);
-      $("#id_Unidad_de_medida").val("l").prop('selected', true)
-   };
-});
+  //al modificar el insumo vuelvo a cambiar los valores de tipo y unidad
+  $("#id_insumo").change(function() {
+    insumo_values($(this).val());
 
-var form_options = { target: '#modal', success: function(response) { $("#modal").modal("toggle");} };
-$('#nuevo_ingrediente').ajaxForm(form_options);
 
-$('#nuevo_ingrediente').submit(function() {
-  $('#modal').modal('hide');
-});
+  });
 
+  //funcion para seleccionar tipo y unidad segun el valor de insumo
+  function insumo_values(insumo) {
+    if (jQuery.inArray(insumo, en_gramos) != -1) { //chequea si insumo esta en la lista
+      $("#id_tipo").val("INGREDIENTE").prop('selected', true);
+      $("#id_unidad_de_medida").val("g").prop('selected', true)
+    } else if (insumo = "malta") {
+      $("#id_tipo").val("INGREDIENTE").prop('selected', true);
+      $("#id_unidad_de_medida").val("Kg").prop('selected', true)
+    } else {
+      $("#id_tipo").val("INSUMO").prop('selected', true);
+      $("#id_unidad_de_medida").val("l").prop('selected', true);
+    };
+  };
+
+  $("#id_tipo").hide();
+  $('label[for="id_tipo"]').hide();
+
+  //esconde el modal despues de enviarlo
+  $('#nuevo_insumo').submit(function() {
+     $('#modal').modal('hide');
+  });
 </script>
 {% endblock %}
 
 <div class="modal-dialog modal-lg" role="document">
-    <form action="{{ request.path }}" method="post" id="nuevo_ingrediente" class="form">{% csrf_token %}
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                    <span class="sr-only">Cerrar</span>
-                </button>
-                <h4 class="modal-title">Nuevo {{insumo|title }}</h4>
-            </div>
+  <form action="{{ request.path }}" method="post" id="nuevo_insumo" class="form">{% csrf_token %}
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+     <span aria-hidden="true">×</span>
+     <span class="sr-only">Cerrar</span>
+    </button>
+        <h4 class="modal-title">Nuevo {{insumo|title }}</h4>
+      </div>
 
-            <div class="modal-body">
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="id_insumo">Tipo: </label>
+          <select id="id_insumo" class="form-control" name="insumo">
+                <option value="insumo">Insumo</option>
+                <option value="malta">Malta</option>
+                <option value="levadura">Levadura</option>
+                <option value="lupulo">Lupulo</option>
+                <option value="agregado">Agregado</option>
+                <option value="acido">Acido</option>
+                <option value="clarificante">Clarificante</option>
+         </select>
+        </div>
 
-              <div class="form-group">
-                <label for="id_insumo"> Insumo </label>
-                  <select id="id_insumo" class="form-control" name="insumo">
-                    <option value="insumo">Insumo</option>
-                    <option value="malta">Malta</option>
-                    <option value="lupulo">Lupulo</option>
-                    <option value="agregado">Agregado</option>
-                    <option value="acido">Acido</option>
-                    <option value="clarificante">Clarificante</option>
-              </select>
-              </div>
-              {% load widget_tweaks %}
+        {% load widget_tweaks %} {% for hidden_field in form.hidden_fields %} {{ hidden_field }} {% endfor %} {% if form.non_field_errors %}
+        <div class="alert alert-danger" role="alert">
+          {% for error in form.non_field_errors %} {{ error }} {% endfor %}
+        </div>
+        {% endif %} {% for field in form.visible_fields %}
+        <div class="form-group">
+          {{ field.label_tag }} {% if form.is_bound %} {% if field.errors %} {% render_field field class="form-control is-invalid" %} {% for error in field.errors %}
+          <div class="invalid-feedback">
+            {{ error }}
+          </div>
+          {% endfor %} {% else %} {% render_field field class="form-control is-valid" %} {% endif %} {% else %} {% render_field field class="form-control" %} {% endif %} {% if field.help_text %}
+          <small class="form-text text-muted">{{ field.help_text }}</small> {% endif %}
+        </div>
+        {% endfor %}
 
-             {% for hidden_field in form.hidden_fields %}
-                {{ hidden_field }}
-              {% endfor %}
+      </div>
 
-              {% if form.non_field_errors %}
-              <div class="alert alert-danger" role="alert">
-                {% for error in form.non_field_errors %}
-                  {{ error }}
-                {% endfor %}
-              </div>
-              {% endif %}
 
-              {% for field in form.visible_fields %}
-              <div class="form-group">
-                {{ field.label_tag }}
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <input type="submit" class="btn btn-primary" value="Guardar" />
+      </div>
 
-                {% if form.is_bound %}
-                  {% if field.errors %}
-                    {% render_field field class="form-control is-invalid" %}
-                    {% for error in field.errors %}
-                      <div class="invalid-feedback">
-                        {{ error }}
-                      </div>
-                    {% endfor %}
-                  {% else %}
-                    {% render_field field class="form-control is-valid" %}
-                  {% endif %}
-              {% else %}
-                {% render_field field class="form-control" %}
-              {% endif %}
-
-              {% if field.help_text %}
-                <small class="form-text text-muted">{{ field.help_text }}</small>
-              {% endif %}
-             </div>
-             {% endfor %}
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <input type="submit" class="btn btn-primary" value="Guardar" />
-            </div>
-        </div><!-- /.modal-content -->
-    </form>
-</div><!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal-content -->
+  </form>
+</div>
+<!-- /.modal-dialog -->

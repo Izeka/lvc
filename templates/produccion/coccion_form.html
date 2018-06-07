@@ -25,8 +25,7 @@
     })
 
     {% if receta %}
-      document.getElementById("id_Litros").value = {{receta.Litros}};
-      document.getElementById("id_Temp_Maceracion").value = {{receta.Temp_Maceracion}};
+      document.getElementById("id_litros").value = {{receta.litros}};
     {% endif %}
 
     function abrir_modal(url)
@@ -164,28 +163,28 @@
                       <div class="stepContainer" >
 
                       <div id="step-1" class="content" style="display: block;">
-                        {{form.errors}}
                         <h2 class="StepTitle">Nueva Cocción</h2>
                         <span class="section"></span>
+                         {{form.errors}}
                           <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">{{form.Nombre.label}} <span class="required"></span>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">{{form.nombre.label}} <span class="required"></span>
                             </label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                              {{form.Nombre | append_attr:"class:form-control" }}
+                              {{form.nombre | append_attr:"class:form-control" }}
                             </div>
                           </div>
                           <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">{{form.Fecha.label}} <span class="required"></span>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">{{form.fecha.label}} <span class="required"></span>
                             </label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input   value= "{{hoy|date:'d/m/y' }}{{form.Fecha.value|date:"d/m/Y"}}"  class="form-control" id="id_Fecha" name="Fecha" required="" maxlength="20" type="text">
+                                <input   value= "{{hoy|date:'d/m/y' }}{{form.fecha.value|date:"d/m/Y"}}"  class="form-control" id="id_fecha" name="fecha" required="" maxlength="20" type="text">
                           </div>
                         </div>
 
                           <div class="form-group">
-                            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.Receta.label}}</label>
+                            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.receta.label}}</label>
                             <div class="text-container col-md-6 col-sm-6 col-xs-12">
-                              {{form.Receta | append_attr:"class:form-control"| append_attr:"onchange:this.form.submit()"}}
+                              {{form.receta | append_attr:"class:form-control"| append_attr:"onchange:this.form.submit()"}}
                             </div>
                           </div>
 
@@ -209,10 +208,10 @@
                                {{form.errors}}
                                {{form.id}}
                                {{ forms.media }}
-                                <td>{{ form.Malta| append_attr:"class:form-control" }}</td>
+                                <td>{{ form.malta| append_attr:"class:form-control" }}</td>
                                 <td>
                                   <span class="unidad-malta">kg</span>
-                                  {{ form.Cantidad | append_attr:"class:form-control cantidad " }}
+                                  {{ form.cantidad | append_attr:"class:form-control cantidad " }}
                                 </td>
                                 <td></td>
                              </tr>
@@ -224,10 +223,10 @@
                                {{form.errors}}
                                {{form.id}}
                                {{ forms.media }}
-                                <td>{{ form.Malta| append_attr:"class:form-control" }}</td>
+                                <td>{{ form.malta| append_attr:"class:form-control" }}</td>
                                 <td>
                                   <span class="unidad-malta">kg</span>
-                                  {{ form.Cantidad | append_attr:"class:form-control cantidad " }}
+                                  {{ form.cantidad | append_attr:"class:form-control cantidad " }}
                                 </td>
                                 <td></td>
                              </tr>
@@ -257,14 +256,14 @@
                                     {{form.errors}}
                                     {{form.id}}
                                     {{ forms.media }}
-                                     <td>{{ form.Lupulo| append_attr:"class:form-control" }}</td>
+                                     <td>{{ form.lupulo| append_attr:"class:form-control" }}</td>
                                      <td>
                                        <span class="unidad-lupulo">g</span>
-                                       {{ form.Cantidad | append_attr:"class:form-control cantidad " }}
+                                       {{ form.cantidad | append_attr:"class:form-control cantidad " }}
                                      </td>
                                      <td>
                                        <span class="tiempo-insumo">minutos</span>
-                                       {{ form.Tiempo | append_attr:"class:form-control cantidad " }}
+                                       {{ form.tiempo | append_attr:"class:form-control cantidad " }}
                                      </td>
                                      <td></td>
                                 </tr>
@@ -275,14 +274,14 @@
                                  {{form.errors}}
                                  {{form.id}}
                                  {{ forms.media }}
-                                  <td>{{ form.Lupulo| append_attr:"class:form-control" }}</td>
+                                  <td>{{ form.lupulo| append_attr:"class:form-control" }}</td>
                                   <td>
                                     <span class="unidad-lupulo">g</span>
-                                    {{ form.Cantidad | append_attr:"class:form-control cantidad " }}
+                                    {{ form.cantidad | append_attr:"class:form-control cantidad " }}
                                   </td>
                                   <td>
                                     <span class="tiempo-insumo">minutos</span>
-                                    {{ form.Tiempo | append_attr:"class:form-control cantidad " }}
+                                    {{ form.tiempo | append_attr:"class:form-control cantidad " }}
                                   </td>
                                   <td></td>
                              </tr>
@@ -310,14 +309,14 @@
                                  {{form.errors}}
                                  {{form.id}}
                                  {{ forms.media }}
-                                  <td>{{ form.Agregados| append_attr:"class:form-control" }}</td>
+                                  <td>{{ form.agregado| append_attr:"class:form-control" }}</td>
                                   <td>
                                     <span class="unidad-insumo">g</span>
-                                    {{ form.Cantidad | append_attr:"class:form-control cantidad " }}
+                                    {{ form.cantidad | append_attr:"class:form-control cantidad " }}
                                   </td>
                                   <td>
                                     <span class="tiempo-insumo">minutos</span>
-                                    {{ form.Tiempo | append_attr:"class:form-control cantidad " }}
+                                    {{ form.tiempo | append_attr:"class:form-control cantidad " }}
                                   </td>
                                   <td></td>
                              </tr>
@@ -330,14 +329,14 @@
                                  {{form.errors}}
                                  {{form.id}}
                                  {{ forms.media }}
-                                  <td>{{ form.Agregados| append_attr:"class:form-control" }}</td>
+                                  <td>{{ form.agregado| append_attr:"class:form-control" }}</td>
                                   <td>
                                     <span class="unidad-insumo">g</span>
-                                    {{ form.Cantidad | append_attr:"class:form-control cantidad " }}
+                                    {{ form.cantidad | append_attr:"class:form-control cantidad " }}
                                   </td>
                                   <td>
                                     <span class="tiempo-insumo">minutos</span>
-                                    {{ form.Tiempo | append_attr:"class:form-control cantidad " }}
+                                    {{ form.tiempo | append_attr:"class:form-control cantidad " }}
                                   </td>
                                   <td></td>
                              </tr>
@@ -356,9 +355,9 @@
 
 
                       <div class="form-group">
-                        <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.Litros.label}}</label>
+                        <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.litros.label}}</label>
                         <div class="text-container col-md-6 col-sm-6 col-xs-12">
-                          {{form.Litros | append_attr:"class:form-control" }}
+                          {{form.litros | append_attr:"class:form-control" }}
                         </div>
                       </div>
                       <div class="form-group">
@@ -369,9 +368,9 @@
                       </div>
 
                       <div class="form-group">
-                        <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.Observaciones.label}}</label>
+                        <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.observaciones.label}}</label>
                         <div class="text-container col-md-6 col-sm-6 col-xs-12">
-                          {{form.Observaciones | append_attr:"class:form-control" }}
+                          {{form.observaciones | append_attr:"class:form-control" }}
                         </div>
                       </div>
                     </div>

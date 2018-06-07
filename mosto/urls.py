@@ -21,7 +21,7 @@ from django.contrib.auth.views import login, logout
 from agenda.views import *
 from inventario.views import *
 from contabilidad.views import *
-from produccion.views import get_receta
+#from produccion.views import get_receta
 from produccion.views import *
 
 
@@ -32,11 +32,11 @@ urlpatterns = [
     url(r'^$', RedirectView.as_view(permanent=False, url='/ingredientes/')),
 
     url(r'^ingredientes/$', Ingredientes.as_view()),
-    url(r'^ingredientes/nuevo/(?P<insumo>\w+)/$', Nuevo_insumo.as_view(),name='add_insumo'),
+    url(r'^ingredientes/nuevo/(?P<insumo>\w+)/$', Nuevo_insumo.as_view(),name='add_ingrediente'),
     url(r'^ingredientes/editar/(?P<pk>\d+)/$', Editar_insumo.as_view(),),
 
     url(r'^equipamiento/$', Equipamiento.as_view()),
-    url(r'^equipamiento/nuevo/(?P<insumo>\w+)/$', Nuevo_insumo.as_view()),
+    url(r'^equipamiento/nuevo/(?P<insumo>\w+)/$', Nuevo_insumo.as_view(),name='add_equipamiento'),
     url(r'^equipamiento/editar/(?P<pk>\d+)/$', Editar_insumo.as_view(),),
     url(r'^equipamiento/editar/barril/(?P<pk>\w+)/$', Editar_Barril.as_view(),),
     url(r'^equipamiento/editar/pallet/(?P<pk>\d+)/$', Editar_Pallet.as_view(),),
@@ -44,6 +44,7 @@ urlpatterns = [
 
     url(r'^insumos/$', Insumos.as_view()),
     url(r'^insumos/nuevo/(?P<insumo>\w+)/$', Nuevo_insumo.as_view(), ),
+    url(r'^insumos/editar/(?P<pk>\d+)/$', Editar_insumo.as_view(),),
 
     url(r'^proveedores/$', Proveedores.as_view()),
     url(r'^proveedores/nuevo/$', Nuevo_proveedor.as_view()),
@@ -55,6 +56,7 @@ urlpatterns = [
     url(r'^compras/servicio/$', Compra_servicio.as_view(),name='add_servicio'),
     url(r'^compras/equipamiento/(?P<equipamiento>\w+)$', Compra_equipamiento.as_view(),name='add_equipamiento'),
     url(r'^compras/editar/(?P<pk>\d+)$', Compra_editar.as_view(),name='editar_compra'),
+
     url(r'^recetas/$', Recetas.as_view()),
     url(r'^recetas/editar/(?P<pk>\d+)/$', Editar_receta.as_view()),
     url(r'^recetas/ver/(?P<pk>\d+)/$', Ver_receta.as_view()),
@@ -64,5 +66,8 @@ urlpatterns = [
     url(r'^cocciones/editar/(?P<pk>\d+)/$', Editar_coccion.as_view()),
     url(r'^cocciones/ver/(?P<pk>\d+)/$', Ver_coccion.as_view()),
     url(r'^cocciones/nueva$', Nueva_coccion.as_view(),name='add_coccion'),
-    url(r'^ajax/get_receta/$', get_receta, name='get_receta'),
+#    url(r'^ajax/get_receta/$', get_receta, name='get_receta'),
+
+    url(r'^fermentaciones/$', Fermentaciones.as_view()),
+
 ]

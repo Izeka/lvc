@@ -25,7 +25,7 @@
    <div class="col-md-12 col-sm-12 col-xs-12">
       <div class="x_panel">
         <div class="x_title">
-          <h2>Cocciones <small></small></h2>
+          <h2>Fermentaciones <small></small></h2>
           <ul class="nav navbar-right panel_toolbox">
              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
              <li claps="dropdown">
@@ -50,10 +50,12 @@
                 <input type="checkbox" id="check-all" class="flat">
               </th>
               <th style="text-align:left">Lote </th>
-              <th> Fecha </th>
-              <th >Estilo</th>
+              <th> Fecha Inicio </th>
+              <th> Fermentador </th>
+              <th> Estilo </th>
               <th >Litros </th>
-              <th >DF</th>
+              <th >Fecha Final</th>
+              <th >Observaciones</th>
               <th > </th>
            </thead>
            <tbody>
@@ -62,11 +64,11 @@
                 <td >
                   <input type="checkbox" class="flat" name="table_records">
                 </td>
-                <td >{{dato.id}}</td>
-                <td>{{dato.fecha}}</td>
-                <td >{{dato.receta}} </td>
+                <td >{{dato.lote}}</td>
+                <td>{{dato.fermentador}}</td>
+                <td >{{dato.lote.estilo}} </td>
                 <td >{{dato.litros}}</td>
-                <td >{{dato.DF}}</td>
+                <td >{{dato.observaciones}}</td>
                 <td>
                     <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="ver/{{dato.id}}" title="Ver"><i class="fa fa-eye"></i></a>
                     <a href="editar/{{dato.id}}" title="Editar"><i class="fa fa-edit"></i></a>

@@ -151,7 +151,6 @@ th.active{
                          <tbody>
                               {% for form in inlines.0 %}
                               <tr id="{{ inlines.0.prefix }}" class="form-group">
-                              <input type="hidden" name="producto" value="insumo" />
                                 {{form.errors}}
                                 {{form.id}}
                                 {{ forms.media }}
@@ -163,7 +162,7 @@ th.active{
                                  <td></td>
                               </tr>
                              {% endfor %}
-                             {{ inlines.0.management_form }}
+
 
                          </tbody>
                      </table>

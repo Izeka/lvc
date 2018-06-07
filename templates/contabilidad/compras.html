@@ -1,84 +1,78 @@
-{% extends 'index.html' %}
-{% block extra_js %}
+{% extends 'index.html' %} {% block extra_js %}
 <script src="/static/custom/js/jquery.form.js"></script>
 <script>
-
-
 </script>
-{% endblock %}
-
-{% block content %}
-{% block extra_css %}
+{% endblock %} {% block content %} {% block extra_css %}
 <style type="text/css">
-td{
-  text-align: left;
-}
+  td {
+    text-align: left;
+  }
 </style>
 {% endblock %}
 
-  <!-- page content -->
+<!-- page content -->
 
-  <div class="right_col" role="main">
+<div class="right_col" role="main">
 
-   <div class="col-md-12 col-sm-12 col-xs-12">
-      <div class="x_panel">
-          <div class="modal fade" id="modal"></div>
-        <div class="x_title">
-                    <h2>Lista de Compras <small></small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-shopping-cart"></i></a>
-                      <ul class="dropdown-menu" role="menu">
-                           <li><a href="insumo" >Insumo</a></li>
-                           <li><a href="servicio" >Servicio</a></li>
-                           <li><a href="equipamiento/barril" >Barril</a></li>
-                           <li><a href="equipamiento/fermentador" >Fermentador</a></li>
-                           <li><a href="equipamiento/Palle" >Pallet</a></li>
-                      </ul>
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="modal fade" id="modal"></div>
+      <div class="x_title">
+        <h2>Lista de Compras <small></small></h2>
+        <ul class="nav navbar-right panel_toolbox">
+          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+          </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-shopping-cart"></i></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="insumo">Insumo</a></li>
+              <li><a href="servicio">Servicio</a></li>
+              <li><a href="equipamiento/barril">Barril</a></li>
+              <li><a href="equipamiento/fermentador">Fermentador</a></li>
+              <li><a href="equipamiento/Palle">Pallet</a></li>
+            </ul>
 
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-       <div class="x_content">
-         <div class="table-responsive">
-         <table id="compras" class="table table-striped jambo_table bulk_action">
-           <thead>
-             <tr class="headings">
-              <th >Fecha  </th>
-              <th >Proveedor </th>
-              <th>Comprador </th>
-              <th >Producto </th>
-              <th >Importe Total </th>
-              <th ></th>
-           </thead>
-           <tbody>
-             {% for dato in compras %}
-            <tr class="even pointer">
-                <td >{{dato.fecha_compra}} </td>
-                <td >{{dato.proveedor.Nombre}}</td>
-                <td >{{dato.comprador.get_full_name}}</td>
-                <td >{{dato.producto}}</td>
-                <td >$ {{dato.importe_total}}</td>
+          </li>
+          <li><a class="close-link"><i class="fa fa-close"></i></a>
+          </li>
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+        <div class="table-responsive">
+          <table id="compras" class="table table-striped jambo_table bulk_action">
+            <thead>
+              <tr class="headings">
+                <th>Fecha </th>
+                <th>Proveedor </th>
+                <th>Comprador </th>
+                <th>Producto </th>
+                <th>Importe Total </th>
+                <th></th>
+            </thead>
+            <tbody>
+              {% for dato in compras %}
+              <tr class="even pointer">
+                <td>{{dato.fecha_compra}} </td>
+                <td>{{dato.proveedor.Nombre}}</td>
+                <td>{{dato.comprador.get_full_name}}</td>
+                <td>{{dato.producto}}</td>
+                <td>$ {{dato.importe_total}}</td>
                 <td>
-                  <a >
+                  <a>
                   <a   href="editar/{{dato.id}}" title="editar"><i class="fa fa-edit"></i></a>
                   <a href="eliminar/{{dato.id}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
                 </td>
               </tr>
-            {% endfor %}
+              {% endfor %}
             </tbody>
-         </table>
-        </div>
+          </table>
         </div>
       </div>
-   </div>
-
-
+    </div>
   </div>
-        <!-- /page content -->
+
+
+</div>
+<!-- /page content -->
 {% endblock %}

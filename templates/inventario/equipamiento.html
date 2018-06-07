@@ -1,241 +1,237 @@
-{% extends 'index.html' %}
+{% extends 'index.html' %} {% block extra_js %}
+<!-- bootstrap-progressbar -->
+<script src="/static/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+<script src="/static/custom/js/jquery.form.js"></script>
 
-{% block extra_js %}
-    <!-- bootstrap-progressbar -->
-    <script src="/static/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
-    <script src="/static/custom/js/jquery.form.js"></script>
+<script>
+  $('#modal').on('show.bs.modal', function(event) {
+    var modal = $(this);
+    var url = $(event.relatedTarget).attr('href');
+    $.ajax({
+      url: url,
+      context: document.body
+    }).done(function(response) {
+      modal.html(response);
+    });
+  })
+</script>
 
-    <script>
-    $('#modal').on('show.bs.modal', function (event) {
-        var modal = $(this);
-        var url = $(event.relatedTarget).attr('href');
-        $.ajax({
-            url: url,
-            context: document.body
-        }).done(function(response) {
-            modal.html(response);
-        });
-    })
-    </script>
+{% endblock %} {% block content %}
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="page-title">
+    <div class="title_left">
+      <h3>Equipamiento <small></small></h3>
+    </div>
+  </div>
 
-{% endblock %}
+  <div class="clearfix"></div>
 
-{% block content %}
-  <!-- page content -->
-        <div class="right_col" role="main">
-            <div class="page-title">
-              <div class="title_left">
-                <h3>Equipamiento <small></small></h3>
-              </div>
-            </div>
-
-            <div class="clearfix"></div>
-
-            <div class="row">
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Fermentadores <small></small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li claps="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a data-toggle="modal"  data-target="#modal"  href="nuevo/fermentador" >Nuevo</a>
-                          </li>
-                          </li>
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="modal fade" id="modal"></div>
-                  <div class="x_content">
-
-                    <table class="ingredientes table table-striped">
-                      <thead>
-                        <tr>
-                          <th>N° serie</th>
-                          <th style="text-align: left;" >Lote</th>
-                          <th>Lleno</th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tbody>
-                        {% for dato in fermentadores %}
-                          <tr>
-                            <td >{{dato.Numero_serie}}</td>
-                            <td style="text-align: left;" >{{dato.Lote}}</td>
-                            <td>{{dato.Lleno}}</td>
-                            <td>
-                              <a  data-toggle="modal" data-id="{{data.Numero_serie}}" data-target="#modal" href="editar/fermentador/{{dato.Numero_serie}}" title="editar"><i class="fa fa-edit"></i></a>
-                              <a href="eliminar/{{dato.Numero_serie}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
-                            </td>
-                          </tr>
-                        {% endfor %}
-                        </tbody>
-                       </table>
-
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Barriles <small></small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li claps="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a data-toggle="modal"  data-target="#modal"  href="nuevo/barril" >Nuevo</a>
-                          </li>
-                          </li>
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    <table class="ingredientes table table-striped">
-                      <thead>
-                        <tr>
-                          <th>N° Serie</th>
-                          <th style="text-align: left;" >Lote</th>
-                          <th>Lleno</th>
-                          <th>Carbonatado</th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tbody>
-                        {% for dato in barriles %}
-                          <tr>
-                            <td >{{dato.Numero_serie}}</td>
-                            <td style="text-align: left;" >{{dato.Lote}}</td>
-                            <td>{{dato.Lleno}}</td>
-                            <td>{{dato.Carbonatado}}</td>
-                            <td>
-                              <a  data-toggle="modal" data-id="{{data.Numero_serie}}" data-target="#modal" href="editar/barril/{{dato.Numero_serie}}" title="editar"><i class="fa fa-edit"></i></a>
-                              <a href="eliminar/{{dato.Numero_serie}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
-                            </td>
-                          </tr>
-                        {% endfor %}
-                        </tbody>
-                       </table>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Botellas <small></small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li claps="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a data-toggle="modal"  data-target="#modal"  href="nuevo/botella" >Nuevo</a>
-                          </li>
-                          </li>
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    <table class="ingredientes table table-striped">
-                      <thead>
-                        <tr>
-                          <th>Litros</th>
-                          <th>Cantidad</th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tbody>
-                        {% for dato in botellas %}
-                          <tr>
-                            <td >{{dato.Litros}}</td>
-                            <td>{{dato.Cantidad}}</td>
-                            <td>
-                              <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="editar/botella/{{dato.id}}" title="editar"><i class="fa fa-edit"></i></a>
-                              <a href="eliminar/{{dato.id}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
-                            </td>
-                          </tr>
-                        {% endfor %}
-                        </tbody>
-                       </table>
-
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Varios <small></small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li claps="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a data-toggle="modal"  data-target="#modal"  href="nuevo/insumo" >Nuevo</a>
-                          </li>
-                          </li>
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    <table class="ingredientes table table-striped">
-                      <thead>
-                        <tr>
-                          <th style="text-align: left;" >Nombre</th>
-                          <th>N° Serie</th>
-                          <th>Cantidad</th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tbody>
-                        {% for dato in varios %}
-                          <tr>
-                            <td style="text-align: left;" >{{dato.Nombre}}</td>
-                            <td >{{dato.Numero_serie}}</td>
-                            <td>{{dato.Cantidad}}</td>
-                            <td>
-                              <a >
-                              <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="editar/{{dato.id}}" title="editar"><i class="fa fa-edit"></i></a>
-                              <a href="eliminar/dato.id}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
-                            </td>
-                          </tr>
-                        {% endfor %}
-                        </tbody>
-                       </table>
-                  </div>
-                </div>
-              </div>
-            </div>
+  <div class="row">
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2>Fermentadores <small></small></h2>
+          <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+            <li claps="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a data-toggle="modal" data-target="#modal" href="nuevo/fermentador">Nuevo</a>
+                </li>
+            </li>
+            </ul>
+            </li>
+            <li><a class="close-link"><i class="fa fa-close"></i></a>
+            </li>
+          </ul>
+          <div class="clearfix"></div>
         </div>
-        <!-- /page content -->
+        <div class="modal fade" id="modal"></div>
+        <div class="x_content">
+
+          <table class="ingredientes table table-striped">
+            <thead>
+              <tr>
+                <th>N° serie</th>
+                <th style="text-align: left;">Lote</th>
+                <th>Lleno</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tbody>
+                {% for dato in fermentadores %}
+                <tr>
+                  <td>{{dato.numero_serie}}</td>
+                  <td style="text-align: left;">{{dato.lote}}</td>
+                  <td>{{dato.lleno}}</td>
+                  <td>
+                    <a data-toggle="modal" data-id="{{data.Numero_serie}}" data-target="#modal" href="editar/fermentador/{{dato.Numero_serie}}" title="editar"><i class="fa fa-edit"></i></a>
+                    <a href="eliminar/{{dato.Numero_serie}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2>Barriles <small></small></h2>
+          <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+            <li claps="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a data-toggle="modal" data-target="#modal" href="nuevo/barril">Nuevo</a>
+                </li>
+            </li>
+            </ul>
+            </li>
+            <li><a class="close-link"><i class="fa fa-close"></i></a>
+            </li>
+          </ul>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+          <table class="ingredientes table table-striped">
+            <thead>
+              <tr>
+                <th>N° Serie</th>
+                <th style="text-align: left;">Lote</th>
+                <th>Lleno</th>
+                <th>Carbonatado</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tbody>
+                {% for dato in barriles %}
+                <tr>
+                  <td>{{dato.numero_serie}}</td>
+                  <td style="text-align: left;">{{dato.lote}}</td>
+                  <td>{{dato.lleno}}</td>
+                  <td>{{dato.carbonatado}}</td>
+                  <td>
+                    <a data-toggle="modal" data-id="{{data.Numero_serie}}" data-target="#modal" href="editar/barril/{{dato.Numero_serie}}" title="editar"><i class="fa fa-edit"></i></a>
+                    <a href="eliminar/{{dato.Numero_serie}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2>Botellas <small></small></h2>
+          <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+            <li claps="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a data-toggle="modal" data-target="#modal" href="nuevo/botella">Nuevo</a>
+                </li>
+            </li>
+            </ul>
+            </li>
+            <li><a class="close-link"><i class="fa fa-close"></i></a>
+            </li>
+          </ul>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+          <table class="ingredientes table table-striped">
+            <thead>
+              <tr>
+                <th>Litros</th>
+                <th>Cantidad</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tbody>
+                {% for dato in botellas %}
+                <tr>
+                  <td>{{dato.litros}}</td>
+                  <td>{{dato.cantidad|floatformat:"0"}}</td>
+                  <td>
+                    <a data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="editar/botella/{{dato.id}}" title="editar"><i class="fa fa-edit"></i></a>
+                    <a href="eliminar/{{dato.id}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2>Varios <small></small></h2>
+          <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+            <li claps="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a data-toggle="modal" data-target="#modal" href="nuevo/insumo">Nuevo</a>
+                </li>
+            </li>
+            </ul>
+            </li>
+            <li><a class="close-link"><i class="fa fa-close"></i></a>
+            </li>
+          </ul>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+          <table class="ingredientes table table-striped">
+            <thead>
+              <tr>
+                <th style="text-align: left;">Nombre</th>
+                <th>Cantidad</th>
+                <th>Observaciones</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tbody>
+                {% for dato in varios %}
+                <tr>
+                  <td style="text-align: left;">{{dato.nombre}}</td>
+                  <td>{{dato.cantidad|floatformat:"0"}}</td>
+                  <td>{{dato.observaciones}}</td>
+                  <td>
+                    <a>
+                              <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="editar/{{dato.id}}" title="editar"><i class="fa fa-edit"></i></a>
+                    <a href="eliminar/dato.id}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /page content -->
 {% endblock %}

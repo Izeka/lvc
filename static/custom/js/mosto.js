@@ -25,18 +25,28 @@ $('#id_fecha_compra').daterangepicker({
 
          return sub;
      });
-     calc_total();
+  //   calc_total();
  });
 
-function calc_total() {
-     var sum = 0;
-     $('.subtotal').each(function(){
-       sum += parseInt(this.value);  // Or this.innerHTML, this.innerText
-     });
-     $('#id_importe_total').val(function(){
-         return sum;
-     });
- };
+ $( document ).ready(function() {
+    //calc_total();
+ });
+ function calc_total() {
+      var sum = 0;
+
+      $('.subtotal').each(function(){
+        val = $(this).val();
+        if(!val || isNaN(val) || val == 0) {
+           val;
+       } else{
+          sum += parseInt(val);  // Or this.innerHTML, this.innerText
+        };
+      });
+      $('#id_importe_total').val(function(){
+          return sum;
+      });
+  };
+
 
 
 $('#modal').on('show.bs.modal', function (event) {

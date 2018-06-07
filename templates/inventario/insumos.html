@@ -71,13 +71,13 @@
                         <tbody>
                         {% for dato in acidos %}
                           <tr>
-                            <td style="text-align: left;" >{{dato.Nombre}}</td>
+                            <td style="text-align: left;" >{{dato.nombre}}</td>
                             <td>$ {{dato.acido.EBC}}</td>
                             <td class="project_progress">
                              <div class="progress progress_sm">
-                              <div class="progress-bar  {% if dato.Cantidad < 0.5 %} progress-bar-danger{% else %} progress-bar-info {% endif %}" role="progressbar" data-transitiongoal="{{dato.Cantidad}}" aria-valuemin="0" aria-valuemax="2"></div>
+                              <div class="progress-bar  {% if dato.cantidad < 0.5 %} progress-bar-danger{% else %} progress-bar-info {% endif %}" role="progressbar" data-transitiongoal="{{dato.cantidad}}" aria-valuemin="0" aria-valuemax="2"></div>
                              </div>
-                             <small>{{dato.Cantidad}} Kgs</small>
+                             <small>{{dato.cantidad|floatformat:"0"}} Kgs</small>
                             </td>
                             <td>
                               <a >
@@ -92,60 +92,7 @@
                 </div>
               </div>
 
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Clarificantes <small></small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li claps="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a data-toggle="modal"  data-target="#modal"  href="nuevo/clarificante">Nueva</a>
-                          </li>
-                          </li>
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    <table class="ingredientes table table-striped">
-                      <thead>
-                        <tr>
-                          <th style="text-align: left;" >Nombre</th>
-                          <th>Cantidad</th>
-                          <th>Precio Unitario</th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tbody>
-                        {% for dato in clarificantes %}
-                          <tr>
-                            <td style="text-align: left;" >{{dato.Nombre}}</td>
-                            <td class="project_progress">
-                             <div class="progress progress_sm">
-                              <div class="progress-bar  {% if dato.Cantidad < 2 %} progress-bar-danger{% else %} progress-bar-info {% endif %}" role="progressbar" data-transitiongoal="{{dato.Cantidad}}" aria-valuemin="0" aria-valuemax="50"></div>
-                             </div>
-                             <small>{{dato.Cantidad}} Kgs</small>
-                            </td>
-                            <td>$ {{dato.clarificante.Precio_unidad}}</td>
-                            <td>
-                              <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="editar/{{dato.id}}"  title="editar"><i class="fa fa-edit"></i></a>
-                              <a href="eliminar/{{dato.id}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
-                            </td>
-                          </tr>
-                        {% endfor %}
-                        </tbody>
-                       </table>
-
-                  </div>
-                </div>
-              </div>
+            
 
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="x_panel">
@@ -181,15 +128,15 @@
                         <tbody>
                         {% for dato in accesorios %}
                           <tr>
-                            <td style="text-align: left;" >{{dato.Nombre}}</td>
+                            <td style="text-align: left;" >{{dato.nombre}}</td>
                             <td class="project_progress">
                              <div class="progress progress_sm">
-                              <div class="progress-bar  {% if dato.Cantidad < 200 %} progress-bar-danger{% else %} progress-bar-info {% endif %}" role="progressbar" data-transitiongoal="{{dato.Cantidad}}" aria-valuemin="0" aria-valuemax="1000"></div>
+                              <div class="progress-bar  {% if dato.cantidad < 200 %} progress-bar-danger{% else %} progress-bar-info {% endif %}" role="progressbar" data-transitiongoal="{{dato.cantidad}}" aria-valuemin="0" aria-valuemax="1000"></div>
                              </div>
-                             <small>{{dato.Cantidad}} g</small>
+                             <small>{{dato.cantidad|floatformat:"0"}} g</small>
                             </td>
 
-                            <td>$ {{dato.accesorio.Precio_unidad}}</td>
+                            <td>$ {{dato.accesorio.precio_unidad}}</td>
                             <td>
                               <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="editar/{{dato.id}}" title="editar"><i class="fa fa-edit"></i></a>
                               <a href="eliminar/{{dato.id}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
@@ -236,16 +183,16 @@
                       </thead>
                       <tbody>
                         <tbody>
-                        {% for dato in insumos %}
+                        {% for dato in varios %}
                           <tr>
-                            <td style="text-align: left;" >{{dato.Nombre}}</td>
+                            <td style="text-align: left;" >{{dato.nombre}}</td>
                             <td class="project_progress">
                              <div class="progress progress_sm">
-                              <div class="progress-bar  {% if dato.Cantidad < 200 %} progress-bar-danger{% else %} progress-bar-info {% endif %}" role="progressbar" data-transitiongoal="{{dato.Cantidad}}" aria-valuemin="0" aria-valuemax="500"></div>
+                              <div class="progress-bar  {% if dato.cantidad < 200 %} progress-bar-danger{% else %} progress-bar-info {% endif %}" role="progressbar" data-transitiongoal="{{dato.cantidad}}" aria-valuemin="0" aria-valuemax="500"></div>
                              </div>
-                             <small>{{dato.Cantidad}} g</small>
+                             <small>{{dato.cantidad|floatformat:"0"}}</small>
                             </td>
-                            <td>$ {{dato.insumo.Precio_unidad}}</td>
+                            <td>$ {{dato.insumo.precio_unidad}}</td>
                             <td>
                               <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="editar/{{dato.id}}"  title="editar"><i class="fa fa-edit"></i></a>
                               <a href="eliminar/{{dato.id}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
