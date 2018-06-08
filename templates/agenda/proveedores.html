@@ -22,6 +22,16 @@
     overflow: hidden;
     background: #ffff;
   }
+
+  .receta {
+    margin-top: -15px;
+
+  }
+
+  .receta ul {
+    margin-right: -30px;
+    margin-top: -2px;
+  }
 </style>
 {% endblock %} {% block content %}
 <!-- page content -->
@@ -53,12 +63,20 @@
 
         <div class="col-md-3 col-sm-3 col-xs-3 well profile_view">
           <div class="col-sm-12">
-            <h2 class="brief">{{dato.Nombre}}</h2>
+            <div class="x_title receta">
+              <h2>{{dato.Nombre}} <small></small></h2>
+              <ul class="nav navbar-right panel_toolbox">
+                <li><a class="edit-link"><i class="fa fa-wrench"></i></a></li>
+                <li><a class="close-link"><i class="fa fa-close"></i></a></li>
+              </ul>
+              <div class="clearfix"></div>
+            </div>
             <div class="left col-xs-12">
               <p><strong>Email: </strong> {{dato.Email}} </p>
               <ul class="list-unstyled">
                 <li><i class="fa fa-building"></i> Dirección: {{dato.Direccion}} </li>
                 <li><i class="fa fa-phone"></i> Telefono: {{dato.Telefono}} </li>
+
               </ul>
             </div>
           </div>

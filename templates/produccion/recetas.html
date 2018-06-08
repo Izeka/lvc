@@ -14,9 +14,9 @@
   })
 </script>
 
-{% endblock %}
-{% block extra_css %}
+{% endblock %} {% block extra_css %}
 <style type="text/css">
+
   .well {
     margin: 5px;
     text-overflow: ellipsis;
@@ -25,16 +25,34 @@
     background: #ffff;
     width: 400px;
   }
-  .fa-beer{
+
+  .stacked-bar-graph {
+    width: 100%;
+    height: 38px;
+    color: #414042;
+  }
+
+  .receta {
+    margin-top: -15px;
+  }
+
+  .receta ul {
+    margin-right: -20px;
+    margin-top: -2px;
+  }
+
+  .beer {
+    font-family: "beer-webfont";
     font-size: 55px !important;
     position: absolute;
-    right: 60px !important;
-    bottom: 20px !important;
-
+    left: 25px !important;
+    bottom: 15px !important;
   }
+  .data {
+    margin-left: 65px;
+    }
 </style>
-{% endblock %}
-{% block content %}
+{% endblock %} {% block content %}
 <!-- page content -->
 
 <div class="right_col" role="main">
@@ -60,23 +78,32 @@
       <div class="modal fade" id="modal"></div>
       <div class="x_content">
         {%for dato in recetas %}
-
         <div class="col-md-3 col-sm-3 col-xs-3 well profile_view">
-          <div class="col-sm-12">
-            <h2 class="brief">{{dato.nombre}} </h2>
-            <i style="color:{{dato.Color}} !important" class="fa fa-beer"></i>
+          <div class="x_title receta">
+            <a style="color:{{dato.color}} !important" class="beer">k</a>
+            <h2>{{dato.nombre}} <small></small></h2>
+            <ul class="nav navbar-right panel_toolbox">
+              <li><a class="edit-link"><i class="fa fa-wrench"></i></a></li>
+              <li><a class="close-link"><i class="fa fa-close"></i></a></li>
+            </ul>
+            <div class="clearfix"></div>
+          </div>
+          <div class="col-sm-12 data">
             <div class="left col-xs-12">
               <ul class="list-unstyled">
-                <li></i><b>IBUs:</b> {{dato.IBUs}} </li>
-                <li></i><b> D.F.:</b> {{dato.Telefono}} </li>
+                <li>
+                  <b>IBUs:</b> {{dato.IBUs}} </li>
+                <li>
+                  <b> D.F.:</b> {{dato.DF}}
+                </li>
+                <li>
+                  <b> Litros:</b> {{dato.litros}}
+                </li>
+
               </ul>
             </div>
           </div>
-          <div class="col-xs-12 bottom text-center">
-            <div class="col-xs-12 col-sm-12 emphasis">
 
-            </div>
-          </div>
         </div>
 
         {% endfor %}

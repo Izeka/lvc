@@ -19,7 +19,7 @@ class Receta(models.Model):
         max_length=100, error_messages=my_default_errors, blank=True)
     IBUs = models.CharField(
         max_length=100, error_messages=my_default_errors, blank=True, null=True)
-    Color = models.CharField(
+    color = models.CharField(
         max_length=100, error_messages=my_default_errors, blank=True, null=True)
 #    Temp_Maceracion        = models.IntegerField(error_messages=my_default_errors)
 #    Tiempo_Maceracion      = models.IntegerField(error_messages=my_default_errors)
