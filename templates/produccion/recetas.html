@@ -1,73 +1,88 @@
-{% extends 'index.html' %}
+{% extends 'index.html' %} {% block extra_js %}
+<script src="/static/custom/js/jquery.form.js"></script>
 
-{% block extra_js %}
-    <script src="/static/custom/js/jquery.form.js"></script>
+<script>
+  $('#modal').on('show.bs.modal', function(event) {
+    var modal = $(this);
+    var url = $(event.relatedTarget).attr('href');
+    $.ajax({
+      url: url,
+      context: document.body
+    }).done(function(response) {
+      modal.html(response);
+    });
+  })
+</script>
 
-    <script>
-    $('#modal').on('show.bs.modal', function (event) {
-        var modal = $(this);
-        var url = $(event.relatedTarget).attr('href');
-        $.ajax({
-            url: url,
-            context: document.body
-        }).done(function(response) {
-            modal.html(response);
-        });
-    })
-    </script>
+{% endblock %}
+{% block extra_css %}
+<style type="text/css">
+  .well {
+    margin: 5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    background: #ffff;
+    width: 400px;
+  }
+  .fa-beer{
+    font-size: 55px !important;
+    position: absolute;
+    right: 60px !important;
+    bottom: 20px !important;
 
+  }
+</style>
 {% endblock %}
 {% block content %}
 <!-- page content -->
 
-  <div class="right_col" role="main">
+<div class="right_col" role="main">
 
-   <div class="col-md-12 col-sm-12 col-xs-12">
-      <div class="x_panel">
-        <div class="x_title">
-          <h2>Recetas <small></small></h2>
-            <ul class="nav navbar-right panel_toolbox">
-              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-              <li claps="dropdown">
-                  <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                  <ul class="dropdown-menu" role="menu">
-                     <li><a href="nueva">Nueva</a>
-                     </li>
-                     </li>
-                  </ul>
-               </li>
-              <li><a class="close-link"><i class="fa fa-close"></i></a></li>
-            </ul>
-           <div class="clearfix"></div>
-        </div>
-        <div class="modal fade" id="modal"></div>
-        <div class="x_content">
-          {%for dato in recetas %}
-            <div style="width:30%" class="col-md-4 col-sm-4 col-xs-4 profile_details">
-              <div class="well profile_view">
-                <div class="col-sm-12">
-                  <h3 class="brief"><i>{{dato.nombre}}</i></h3>
-                  <h4 class="brief"><i>{{dato.tipo}}</i></h4>
-                  <div class="left col-xs-12">
-                    <p><strong>D.F.: </strong> {{dato.DF}} </p>
-                    <p><strong>I.B.U: </strong> {{dato.IBUs}} </p>
-                    </ul>
-                  </div>
-                </div>
-                <div class="col-xs-12 bottom text-center">
-                <div class="col-xs-12 col-sm-12 emphasis">
-                   <a href="editar/{{dato.id}}"  class="btn btn-success btn-xs"><i class="fa fa-edit"></i> </a>
-                    <a href="ver/{{dato.id}}" data-toggle="modal" data-id="{{dato.id}}" data-target="#modal"  class="btn btn-primary btn-xs">
-                      <i class="fa fa-eye"> </i>
-                   </a>
-                </div>
-              </div>
-              </div>
-            </div>
-          {% endfor %}
-        </div>
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>Recetas <small></small></h2>
+        <ul class="nav navbar-right panel_toolbox">
+          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+          <li claps="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="nueva">Nueva</a>
+              </li>
+          </li>
+          </ul>
+          </li>
+          <li><a class="close-link"><i class="fa fa-close"></i></a></li>
+        </ul>
+        <div class="clearfix"></div>
       </div>
-   </div>
+      <div class="modal fade" id="modal"></div>
+      <div class="x_content">
+        {%for dato in recetas %}
+
+        <div class="col-md-3 col-sm-3 col-xs-3 well profile_view">
+          <div class="col-sm-12">
+            <h2 class="brief">{{dato.nombre}} </h2>
+            <i style="color:{{dato.Color}} !important" class="fa fa-beer"></i>
+            <div class="left col-xs-12">
+              <ul class="list-unstyled">
+                <li></i><b>IBUs:</b> {{dato.IBUs}} </li>
+                <li></i><b> D.F.:</b> {{dato.Telefono}} </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-xs-12 bottom text-center">
+            <div class="col-xs-12 col-sm-12 emphasis">
+
+            </div>
+          </div>
+        </div>
+
+        {% endfor %}
+      </div>
+    </div>
   </div>
+</div>
 <!-- /page content -->
 {% endblock %}

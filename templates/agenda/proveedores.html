@@ -1,84 +1,79 @@
-{% extends 'index.html' %}
-
-{% block extra_js %}
+{% extends 'index.html' %} {% block extra_js %}
 <script src="/static/custom/js/jquery.form.js"></script>
 
 <script>
-$('#modal').on('show.bs.modal', function (event) {
+  $('#modal').on('show.bs.modal', function(event) {
     var modal = $(this);
     var url = $(event.relatedTarget).attr('href');
     $.ajax({
-        url: url,
-        context: document.body
+      url: url,
+      context: document.body
     }).done(function(response) {
-        modal.html(response);
+      modal.html(response);
     });
-})
+  })
 </script>
-{% endblock %}
-{% block extra_css %}
+{% endblock %} {% block extra_css %}
 <style type="text/css">
-.well{
-  margin: 5px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  background: #ffff;
-}
+  .well {
+    margin: 5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    background: #ffff;
+  }
 </style>
-{% endblock %}
-
-{% block content %}
+{% endblock %} {% block content %}
 <!-- page content -->
 <div class="right_col" role="main">
- <div >
+  <div>
     <div class="x_panel">
-        <div class="x_title">
-                  <h2>Proveedores <small></small></h2>
-                  <ul class="nav navbar-right panel_toolbox">
-                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                    </li>
-                    <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a data-toggle="modal"  data-target="#modal"  href="nuevo" >Nuevo</a>
-                        </li>
+      <div class="x_title">
+        <h2>Proveedores <small></small></h2>
+        <ul class="nav navbar-right panel_toolbox">
+          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+          </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a data-toggle="modal" data-target="#modal" href="nuevo">Nuevo</a>
+              </li>
 
-                    </ul>
+            </ul>
 
-                    </li>
-                    <li><a class="close-link"><i class="fa fa-close"></i></a>
-                    </li>
-                  </ul>
-                  <div class="clearfix"></div>
+          </li>
+          <li><a class="close-link"><i class="fa fa-close"></i></a>
+          </li>
+        </ul>
+        <div class="clearfix"></div>
 
+      </div>
+      <div class="x_content">
+        {%for dato in proveedores %}
+
+        <div class="col-md-3 col-sm-3 col-xs-3 well profile_view">
+          <div class="col-sm-12">
+            <h2 class="brief">{{dato.Nombre}}</h2>
+            <div class="left col-xs-12">
+              <p><strong>Email: </strong> {{dato.Email}} </p>
+              <ul class="list-unstyled">
+                <li><i class="fa fa-building"></i> Dirección: {{dato.Direccion}} </li>
+                <li><i class="fa fa-phone"></i> Telefono: {{dato.Telefono}} </li>
+              </ul>
+            </div>
           </div>
-          <div class="x_content">
-            {%for dato in proveedores %}
+          <div class="col-xs-12 bottom text-center">
+            <div class="col-xs-12 col-sm-12 emphasis">
 
-                <div class="col-md-3 col-sm-3 col-xs-3 well profile_view">
-                  <div class="col-sm-12">
-                    <h2 class="brief">{{dato.Nombre}}</h2>
-                    <div class="left col-xs-12">
-                      <p><strong>Email: </strong> {{dato.Email}} </p>
-                      <ul class="list-unstyled">
-                        <li><i class="fa fa-building"></i> Dirección: {{dato.Direccion}} </li>
-                        <li><i class="fa fa-phone"></i> Telefono: {{dato.Telefono}} </li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div class="col-xs-12 bottom text-center">
-                    <div class="col-xs-12 col-sm-12 emphasis">
-
-                    </div>
-                  </div>
-                </div>
-
-            {% endfor %}
+            </div>
           </div>
+        </div>
+
+        {% endfor %}
+      </div>
     </div>
- </div>
+  </div>
 </div>
 <!-- /page content -->
 
- {% endblock %}
+{% endblock %}
