@@ -1,81 +1,61 @@
 {% extends 'index.html' %}
 {% load i18n widget_tweaks %}
 {% block extra_js %}
-<script src="/static/vendors/jquery-ui/jquery-ui.min.js"></script>
-<script src="/static/custom/js/jquery.formset.js"></script>
-<script src="/static/custom/js/jquery.form.js"></script>
-<script src="/static/custom/js/datepicker-es.js"></script>
+<script src="/static/custom/js/compra_equipamiento.js"></script>
 
-<script >
-      calc_total();
+<script>
 
-      $('#id_Fecha_compra').datepicker({
-        dateFormat: 'dd/mm/yy',
-        regional: 'es'
-      });
-      $('div#{{ inlines.0.prefix }}').formset({
-            prefix: '{{ inlines.0.prefix }}',
-            addText: 'Agregar',
-            deleteText: '',
-            addCssClass: 'add-row fa fa-toggle-down',
-            deleteCssClass: 'delete-row fa fa-times-circle',
-        });
-
-      $('.add-row').addClass("fa fa-toggle-down")
-
-      $(document).on('change', '.precio_unitario', function() {
-          calc_total();
-      });
-
-      function calc_total() {
-           var sum = 0;
-           $('.precio_unitario').each(function(){
-             sum += parseInt(this.value);  // Or this.innerHTML, this.innerText
-           });
-           $('#id_importe_total').val(function(){
-               return sum;
-           });
-       };
-
-      $('#modal').on('show.bs.modal', function (event) {
-          var modal = $(this);
-          var url = $(event.relatedTarget).attr('href');
-          $.ajax({
-              url: url,
-              context: document.body
-          }).done(function(response) {
-              modal.html(response);
-          });
-      });
-
-
+  //defino los parametros de jquery.formset para agergar o quitar inlines
+  $('div#{{ inlines.0.prefix }}').formset({
+    prefix: '{{ inlines.0.prefix }}',
+    addText: 'Agregar',
+    deleteText: '',
+    addCssClass: 'add-row fa fa-toggle-down',
+    deleteCssClass: 'delete-row fa fa-times-circle {{inlines.0.prefix}}',
+  });
 
 </script>
 {% endblock %}
 <!-- Here's an example of how you can style add/delete buttons with CSS -->
 {% block extra_css %}
 <style type="text/css">
-.delete-row{
-  float: right;
-  margin-right: -15px;
-  margin-top: -352px;
-}
-.add-row {
-  font-size: 12px !important;
-  margin-bottom: 15px;
-  margin-top: -15px;
-}
-.fa-plus{
-   position: absolute;
-   color: #ECF0F1 !important;
-   margin-left: 4px;
-   margin-top: 3px;
-   font-size: 8px !important;
-}
-.dynamic-form{
-  background: #EDEDED !important;
-  padding: 10px;
-}
+  .fermentador_set {
+    position:relative;
+    top:-180px;
+    float: right;
+    right: -15px;
+  }
+  .barril_set {
+    position:relative;
+    top:-236px;
+    float: right;
+    right: -15px;
+  }
+  .pallet_set {
+    position:relative;
+    top:-180px;
+    float: right;
+    right: -15px;
+  }
+
+  .add-row {
+    font-size: 12px !important;
+    margin-bottom: 15px;
+    top: -15px;
+  }
+
+  .fa-plus {
+    position: absolute;
+    color: #ECF0F1 !important;
+    margin-left: 4px;
+    margin-top: 3px;
+    font-size: 8px !important;
+  }
+
+  .dynamic-form {
+    background: #EDEDED !important;
+    padding: 10px;
+  }
 </style>
 {% endblock %}
 
@@ -89,6 +69,7 @@
       <div class="x_panel">
         <div class="x_title">
             <h2>Compra de {{equipamiento|title}} <small></small></h2>
+            {{form.errors}}
             <div class="clearfix"></div>
         </div>
       <div class="modal fade" id="modal"></div>
@@ -119,8 +100,9 @@
                 </label>
                   {{ form.comprador |attr:"class:form-control" }}
             </fieldset>
-                   <div id="{{ inlines.0.prefix }}" class="form-group">
+                    {{inlines.errors}}
                      {% for form in inlines.0 %}
+                      <div id="{{ inlines.0.prefix }}" class="form-group">
                      {{form.errors}}
                      {{ form.non_field_errors }}
                        {{form.id}}
@@ -158,8 +140,8 @@
             {{ form.non_field_errors }}
            <a style="background-color: #e6e6e6 !important;"role="button" class="btn "  href="/compras">Cerrar </a>
            <input type="submit" class="btn btn-primary" value="Guardar" />
-           <input type="hidden" name="id_Producto" value="Equipamiento" />
-           {{form.producto| attr:"style:visibility: hidden;"}}
+            {{form.producto| attr:"style:visibility: hidden;"| attr:"value:equipamiento"}}
+
          </form>
         </div>
       </div>

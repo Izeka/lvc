@@ -1,25 +1,45 @@
 {% extends 'index.html' %}
 {% load i18n widget_tweaks %}
 {% block extra_js %}
-<script src="/static/vendors/jquery-ui/jquery-ui.min.js"></script>
-<script src="/static/custom/js/jquery.formset.js"></script>
-<script src="/static/custom/js/jquery.form.js"></script>
-<script src="/static/custom/js/datepicker-es.js"></script>
 
 <script >
-      $('#id_Fecha_compra').datepicker({
-        dateFormat: 'dd/mm/yy',
-          regional: 'es'
-      });
-        $('div#{{ inlines.0.prefix }}').formset({
+      //funcion para calcular el monto total
+      function calc_total() {
+           var sum = 0;
+
+           $('.precio_unitario').each(function(){
+             val = $(this).val();
+             //si el valor del campo unitario es nulo, 0 ó NaN no ignoro
+             if(!val || isNaN(val) || val == 0) {
+                val;
+             //sino los sumo a la variable sum
+            } else{
+               sum += parseInt(val);
+             };
+           });
+           //asigno el valor de sum a id_importe_total
+           $('#id_importe_total').val(function(){
+               return sum;
+           });
+       };
+
+      //Al iniciar llamo a la funcion para calcular el monto total
+      calc_total();
+
+      //uso datepicker en el campo fecha compra
+
+      //defino los parametros de jquery.formset para agergar o quitar inlines
+      $('div#{{ inlines.0.prefix }}').formset({
               prefix: '{{ inlines.0.prefix }}',
               addText: 'Agregar',
               deleteText: '',
               deleteCssClass: 'delete-row fa fa-times-circle',
-          });
+      });
 
+      //agrego clases a el link para agregar inlines formsets
       $('.add-row').addClass("fa fa-toggle-down")
 
+      //muestro el modal
       $('#modal').on('show.bs.modal', function (event) {
           var modal = $(this);
           var url = $(event.relatedTarget).attr('href');
@@ -30,13 +50,20 @@
               modal.html(response);
           });
       });
+      //si cambia el valor de algun precio_unitario vuelvo a culcular el total
+      $(document).on('change', '.precio_unitario', function() {
+          calc_total();
+      });
+
 
 
 </script>
 {% endblock %}
-<!-- Here's an example of how you can style add/delete buttons with CSS -->
+
 {% block extra_css %}
+
 <style type="text/css">
+
 .fa-toggle-down::before{
   margin-right: 5px !important;
 }
@@ -58,7 +85,7 @@ th.active{
 .delete-row{
   float: right;
   margin-right: -15px;
-  margin-top: -352px;
+  margin-top: -120px;
 }
 .dynamic-form{
   background: #EDEDED !important;
@@ -87,39 +114,45 @@ th.active{
              <label for="exampleInputEmail1">
                 N° Factura
              </label>
-               {{ form.Factura |attr:"class:form-control" }}
+               {{ form.factura |attr:"class:form-control" }}
          </fieldset>
            <fieldset class="form-group">
                <label for="exampleInputEmail1">
-                  {{ form.Fecha_compra.label }}
+                  {{ form.fecha_compra.label }}
                </label>
-                 {{ form.Fecha_compra |attr:"class:form-control" }}
+                 {{ form.fecha_compra |attr:"class:form-control" }}
             </fieldset>
 
             <fieldset class="form-group">
                 <label for="exampleInputEmail1">
-                   {{ form.Proveedor.label }}<a title="Agregar Proveedor" style="color: #5A738E !important;" class="fa fa-plus" data-toggle="modal"  data-target="#modal"  href="/proveedores/nuevo"> </a>
+                   {{ form.proveedor.label }}<a title="Agregar Proveedor" style="color: #5A738E !important;" class="fa fa-plus" data-toggle="modal"  data-target="#modal"  href="/proveedores/nuevo"> </a>
                 </label>
-                  {{ form.Proveedor |attr:"class:form-control" }}
+                  {{ form.proveedor |attr:"class:form-control" }}
             </fieldset>
             <fieldset class="form-group">
                 <label for="exampleInputEmail1">
-                   {{ form.Comprador.label }}
+                   {{ form.comprador.label }}
                 </label>
-                  {{ form.Comprador |attr:"class:form-control" }}
+                  {{ form.comprador |attr:"class:form-control" }}
             </fieldset>
-            <div id="{{ inlines.0.prefix }}" class="form-group">
               {% for form in inlines.0 %}
-              {{form.errors}}
-              {{ form.non_field_errors }}
+              <div id="{{ inlines.0.prefix }}" class="form-group">
+                {{form.errors}}
+                {{ form.non_field_errors }}
                 {{form.id}}
                 {{ forms.media }}
+
                 {% for field in form %}
-                {% if field.label not in no_fields %}
+                 {% if field.label not in no_fields %}
                   <label>{{ field.label }}</label>
-                  <div>{{ field |attr:"class:form-control"  }}</div>
-                {% endif %}
+                  {% if field.label == "Precio unitario" %}
+                    <div>{{ field |attr:"class:form-control precio_unitario"  }}</div>
+                  {% else %}
+                    <div>{{ field |attr:"class:form-control"  }}</div>
+                  {% endif %}
+                 {% endif %}
                 {% endfor %}
+
              {% endfor %}
            </div>
           {% for formset in inlines %}
@@ -129,15 +162,15 @@ th.active{
 
             <fieldset class="form-group">
                 <label for="exampleInputEmail1">
-                   {{ form.Importe_Total.label }}
+                   {{ form.importe_total.label }}
                 </label>
-                  {{ form.Importe_Total |attr:"class:form-control" }}
+                  {{ form.importe_total |attr:"class:form-control" }}
             </fieldset>
             <fieldset class="form-group">
                 <label for="exampleInputEmail1">
-                   {{ form.Observaciones.label }}
+                   {{ form.observaciones.label }}
                 </label>
-                  {{ form.Observaciones |attr:"class:form-control" }}
+                  {{ form.observaciones |attr:"class:form-control" }}
             </fieldset>
            <a style="background-color: #e6e6e6 !important;"role="button" class="btn "  href="/compras">Cerrar </a>
            <input type="submit" class="btn btn-primary" value="Guardar" />

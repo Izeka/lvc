@@ -1,9 +1,7 @@
-{% extends 'index.html' %} {% load i18n widget_tweaks %} {% block extra_js %}
+{% extends 'index.html' %} {% load i18n widget_tweaks %}
+ {% block extra_js %}
 
-<script src="/static/custom/js/jquery.formset.js"></script>
-<script src="/static/custom/js/jquery.form.js"></script>
-<script src="/static/custom/js/icheck.min.js"></script>
-
+<script src="/static/custom/js/compra_insumos.js"></script>
 <script>
   $('tr#{{ inlines.0.prefix }}').formset({
     prefix: '{{ inlines.0.prefix }}',
@@ -16,7 +14,6 @@
 {% endblock %}
 <!-- Here's an example of how you can style add/delete buttons with CSS -->
 {% block extra_css %}
-<link href="/static/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 <style type="text/css">
   .fa-toggle-down::before {
     margin-right: 5px !important;

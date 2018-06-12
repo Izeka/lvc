@@ -1,8 +1,7 @@
-{% extends 'index.html' %} {% block extra_js %}
-<script src="/static/custom/js/jquery.form.js"></script>
-<script>
-</script>
-{% endblock %} {% block content %} {% block extra_css %}
+{% extends 'index.html' %}
+
+
+{% block extra_css %}
 <style type="text/css">
   td {
     text-align: left;
@@ -10,6 +9,7 @@
 </style>
 {% endblock %}
 
+{% block content %}
 <!-- page content -->
 
 <div class="right_col" role="main">
@@ -29,7 +29,7 @@
               <li><a href="servicio">Servicio</a></li>
               <li><a href="equipamiento/barril">Barril</a></li>
               <li><a href="equipamiento/fermentador">Fermentador</a></li>
-              <li><a href="equipamiento/Palle">Pallet</a></li>
+              <li><a href="equipamiento/pallet">Pallet</a></li>
             </ul>
 
           </li>

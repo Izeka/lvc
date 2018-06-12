@@ -1,24 +1,23 @@
-{% extends 'index.html' %} {% load widget_tweaks %} {% block extra_js %}
-<!-- jQuery Smart Wizard -->
-<script src="/static/custom/js/jquery.formset.js"></script>
-<script src="/static/custom/js/moment.js"></script>
-<script src="/static/custom/js/countimer.js"></script>
-<script src="/static/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
-<script src="/static/custom/js/jquery.validate.js"></script>
-<script src="/static/custom/js/mosto.js"></script>
-<script src="/static/custom/js/spectrum.js"></script>
+{% extends 'index.html' %} {% load widget_tweaks %}
+
+{% block extra_js %}
+<script src="/static/vendors/js/countimer.js"></script>
+<script src="/static/vendors/js/jquery.smartWizard.js"></script>
+<script src="/static/vendors/js/spectrum.js"></script>
 <script>
-  $(function() {
+    function calc_total(){
+      val=0;
+    };
+
     {% for formset in inlines %}
     $('tr#{{ formset.prefix }}').formset({
       prefix: '{{ formset.prefix }}',
       addText: 'Agregar',
-      deleteText: '',
+      deleteText: ' ',
       addCssClass: 'add-row fa fa-toggle-down',
       deleteCssClass: 'delete-row fa fa-times-circle',
     });
     {% endfor %}
-  })
   $(document).ready(function() {
 
     $('#wizard_verticle').smartWizard({
@@ -30,9 +29,9 @@
 
     function onFinishCallback(objs, context) {
       $('form').submit();
-    }
+    };
 
-    $("#id_Color").spectrum({
+    $("#id_color").spectrum({
       showPaletteOnly: true,
       showPalette:true,
       color: 'D57406',
@@ -47,6 +46,9 @@
 </script>
 {% endblock %}
 {% block extra_css %}
+<!-- Spectrum -->
+<link href="/static/vendors/css/spectrum.css" rel="stylesheet">
+
 <style type="text/css">
   .fa-toggle-down::before {
     margin-right: 5px !important;
@@ -72,8 +74,6 @@
     text-decoration: none;
     text-align: center;
   }
-
-
 
 </style>
 {% endblock %} {% block content %}
@@ -160,9 +160,9 @@
                         </div>
                       </div>
                       <div class="form-group">
-                        <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.Color.label}}</label>
+                        <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.color.label}}</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          {{form.Color | append_attr:"class:form-control" }} {{form.Color.errors}}
+                          {{form.color | append_attr:"class:form-control" }} {{form.Color.errors}}
                         </div>
                        </div>
                      </div>
@@ -180,7 +180,7 @@
                           <tr>
                             <th scope="col">Malta </th>
                             <th scope="col">Cantidad</th>
-                            <th scope="col"> </th>
+                            <th></th>
                           </tr>
                         </thead>
                         <tbody>
@@ -189,20 +189,20 @@
                             {{form.errors}} {{form.id}} {{ forms.media }}
                             <td>{{ form.malta| append_attr:"class:form-control" }}</td>
                             <td>
-                              <span class="unidad">kg</span> {{ form.cantidad | append_attr:"class:form-control cantidad " }}
+                              <span class="unidad">Kg</span> {{ form.cantidad | append_attr:"class:form-control cantidad " }}
                             </td>
                             <td></td>
                           </tr>
                           {% endfor %}
-
                         </tbody>
                       </table>
+                      &nbsp; &nbsp;
                       <h2 class="StepTitle">Lupulos</h2>
                       <span class="section"></span>
                       <table class="table " cellspacing="5">
                         <thead>
                           <tr>
-                            <th scope="col">Lupulo </th>
+                            <th scope="col">Lupulo</th>
                             <th scope="col">Cantidad</th>
                             <th></th>
                           </tr>
@@ -215,9 +215,11 @@
                             <td>
                               <span class="unidad">g</span> {{ form.cantidad | append_attr:"class:form-control cantidad " }}
                             </td>
+
                             <td></td>
                           </tr>
                           {% endfor %}
+
                         </tbody>
                       </table>
                     </div>
@@ -235,7 +237,7 @@
                         </thead>
                         <tbody>
                           {% for form in inlines.2 %}
-                          <tr id="{{ inlines.1.prefix }}">
+                          <tr id="{{ inlines.2.prefix }}">
                             {{form.errors}} {{form.id}} {{ forms.media }}
                             <td>{{ form.levadura| append_attr:"class:form-control" }}</td>
                             <td>
@@ -252,14 +254,14 @@
                       <table class="table " cellspacing="5">
                         <thead>
                           <tr>
-                            <th scope="col">Agregados</th>
+                            <th scope="col">Agregado</th>
                             <th scope="col">Cantidad</th>
                             <th></th>
                           </tr>
                         </thead>
                         <tbody>
                           {% for form in inlines.3 %}
-                          <tr id="{{ inlines.2.prefix }}">
+                          <tr id="{{ inlines.3.prefix }}">
                             {{form.errors}} {{form.id}} {{ forms.media }}
                             <td>{{ form.agregado| append_attr:"class:form-control" }}</td>
                             <td>

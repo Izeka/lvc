@@ -54,8 +54,8 @@ class Compra_servicio(LoginRequiredMixin, CreateWithInlinesView):
     def get_context_data(self, **kwargs):
         context = super(Compra_servicio, self).get_context_data(**kwargs)
         # Envio la variable no_fields al contexto para filtrar los campos del formset de equipamiento
-        context['no_fields'] = ["id", "compra", "lleno",
-                                "carbonatado", "observaciones", "eliminar"]
+        context['no_fields'] = ["Id", "Compra", "lleno",
+                                "carbonatado", "observaciones", "Eliminar", ]
         return context
 
 
@@ -73,9 +73,9 @@ class EquipamientoInline(InlineFormSet):
             if equipamiento == "fermentador":
                 self.model = apps.get_model(
                     app_label="inventario", model_name="Fermentador")
-            elif equipamiento == "botellas":
+            elif equipamiento == "pallet":
                 self.model = apps.get_model(
-                    app_label="inventario", model_name="Botella")
+                    app_label="inventario", model_name="Pallet")
         except:
             pass
         return super(EquipamientoInline, self).__init__(*args, **kwargs)
@@ -92,8 +92,8 @@ class Compra_equipamiento(LoginRequiredMixin, CreateWithInlinesView):
     def get_context_data(self, **kwargs):
         context = super(Compra_equipamiento, self).get_context_data(**kwargs)
         # Envio la variable no_fields al contexto para filtrar los campos del formset de equipamiento
-        context['no_fields'] = ["id", "Compra", "lleno",
-                                "carbonatado", "observaciones", "eliminar"]
+        context['no_fields'] = ["Id", "Compra", "Lleno",
+                                "Carbonatado", "Observaciones", "Eliminar"]
         return context
 
 
@@ -154,6 +154,7 @@ class Compra_editar(LoginRequiredMixin, UpdateWithInlinesView):
         context['servicios'] = ServicioFormSet(instance=compra)
         context['fermentadores'] = FermentadorFormSet(instance=compra)
         context['pallets'] = PalletFormSet(instance=compra)
-        context['no_fields'] = ["id", "compra", "Lleno",
-                                "Carbonatado", "Observaciones", "eliminar"]
+        context['insumos'] = InsumoFormSet(instance=compra)
+        context['no_fields'] = ["id", "Compra", "Lleno",
+                                "Carbonatado", "Observaciones", "Eliminar"]
         return context

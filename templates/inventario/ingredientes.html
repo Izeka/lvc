@@ -1,26 +1,14 @@
-{% extends 'index.html' %} {% block extra_css %}
+{% extends 'index.html' %}
+{% block extra_css %}
 <!-- bootstrap-progressbar -->
-<link href="/static/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet"> {% endblock %} {% block extra_js %}
+{% endblock %}
+{% block extra_js %}
+<!-- bootstrap-progressbar
 <script src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
-<!-- bootstrap-progressbar -->
-<script src="/static/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
-<script src="/static/custom/js/jquery.form.js"></script>
+-->
 
-<script>
-  $('#modal').on('show.bs.modal', function(event) {
-    var modal = $(this);
-    var url = $(event.relatedTarget).attr('href');
-    $.ajax({
-      url: url,
-      context: document.body
-    }).done(function(response) {
-      modal.html(response);
-    });
-
-  })
-</script>
-
-{% endblock %} {% block content %}
+{% endblock %}
+{% block content %}
 <!-- page content -->
 <div class="right_col" role="main">
   <div class="page-title">

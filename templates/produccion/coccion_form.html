@@ -1,359 +1,130 @@
-{% extends 'index.html' %}
-{% load widget_tweaks %}
+{% extends 'index.html' %} {% load widget_tweaks %} {% block extra_js %}
+<!-- jQuery Smart Wizard -->
+<script src="/static/vendors/js/countimer.js"></script>
+<script src="/static/vendors//js/jquery.smartWizard.js"></script>
+<script>
+  function calc_total(){
+    val=0;
+  };
 
-{% block extra_js %}
-  <!-- jQuery Smart Wizard -->
-    <script src="/static/custom/js/jquery.formset.js"></script>
-    <script src="/static/custom/js/moment.js"></script>
-    <script src="/static/custom/js/countimer.js"></script>
-    <script src="/static/custom/js/coundown.js"></script>
-    <script src="/static/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
-    <script src="/static/custom/js/jquery.validate.js"></script>
-    <script>
+    {% for formset in inlines %}
+    $('tr#{{ formset.prefix }}').formset({
+      prefix: '{{ formset.prefix }}',
+      addText: 'Agregar',
+      deleteText: '',
+      addCssClass: 'add-row fa fa-toggle-down',
+      deleteCssClass: 'delete-row fa fa-times-circle',
+    });
+    {% endfor %}
 
-    $(function() {
-        {% for formset in inlines %}
-        $('tr#{{ formset.prefix }}').formset({
-            prefix: '{{ formset.prefix }}',
-            addText: 'Agregar',
-            deleteText: '',
-            addCssClass: 'add-row fa fa-toggle-down',
-            deleteCssClass: 'delete-row fa fa-times-circle',
-            onLeaveStep: abrir_modal,
-        });
-        {% endfor %}
-    })
+  {% if receta %}
+   document.getElementById("id_litros").value = "{{receta.litros}}";
+  {% endif %}
 
-    {% if receta %}
-      document.getElementById("id_litros").value = {{receta.litros}};
-    {% endif %}
 
-    function abrir_modal(url)
-    {
-        $('#popup').load(url, function()
-        {
-                $(this).modal('show');
-        });
-        return false;
-    }
-
-    function cerrar_modal()
-    {
-	      var url      = window.location.href;
-        $('#popup').modal('hide');
-        window.location.replace(url);
-    }
-    $(document).ready(function(){
+  $(document).ready(function() {
 
     $('#wizard_verticle').smartWizard({
-      labelNext:'Siguiente',
-      labelPrevious:'Volver',
-      labelFinish:'Finalizar',
-      onFinish:onFinishCallback
+      labelNext: 'Siguiente',
+      labelPrevious: 'Volver',
+      labelFinish: 'Finalizar',
+      onFinish: onFinishCallback
     });
 
-    function onFinishCallback(objs, context){
-            $('form').submit();
+    function onFinishCallback(objs, context) {
+      $('form').submit();
     }
-    });
-    $('#id_Fecha').datepicker({
-      });
-
-
-    </script>
-{% endblock %}
-
-{% block extra_css %}
+  });
+</script>
+{% endblock %} {% block extra_css %}
 <style type="text/css">
-.fa-toggle-down::before{
-  margin-right: 5px !important;
-}
-.fa-plus{
-   position: absolute;
-   color: #ECF0F1 !important;
-   margin-left: 4px;
-   margin-top: 3px;
-   font-size: 8px !important;
-}
-.add-row {
-  font-size: 12px !important;
-}
-.delete-row {
-  position: absolute;
-  right: 20px;
-  padding: 6px 8px;
-  border-left: 0;
-  text-decoration: none;
-  text-align: center;
-}
-.unidad-malta{
-    position: absolute;
-    right: 90px;
-    padding-top: 5px;
-    text-decoration: none;
-    text-align: center;
-}
-.unidad-insumo{
-    position: absolute;
-    right: 470px;
-    padding-top: 5px;
-    text-decoration: none;
-    text-align: center;
-}
-.unidad-lupulo{
-    position: absolute;
-    right: 460px;
-    padding-top: 5px;
-    text-decoration: none;
-    text-align: center;
-}
-.tiempo-insumo{
-    position: absolute;
-    right: 85px;
-    padding-top: 5px;
-    text-decoration: none;
-    text-align: center;
-}
+  .fa-toggle-down::before {
+    margin-right: 5px !important;
+  }
 
+  .fa-plus {
+    position: absolute;
+    color: #ECF0F1 !important;
+    margin-left: 4px;
+    margin-top: 3px;
+    font-size: 8px !important;
+  }
 
+  .add-row {
+    font-size: 12px !important;
+  }
+
+  .delete-row {
+    position: absolute;
+    right: 20px;
+    padding: 6px 8px;
+    border-left: 0;
+    text-decoration: none;
+    text-align: center;
+  }
 </style>
-{% endblock %}
+{% endblock %} {% block content %}
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="">
+    <div class="clearfix"></div>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
 
-{% block content %}
-    <!-- page content -->
-    <div class="right_col" role="main">
-      <div class="">
-        <div class="clearfix"></div>
-        <div class="row">
-          <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="x_panel">
+          <!-- top tiles -->
 
-            <!-- top tiles -->
+          <div class="x_content">
 
-            <div class="x_content">
-
-                <!-- Smart Wizard -->
-                   <form action="" method="post" class="form-horizontal form-label-left">{% csrf_token %}
-                    <!-- SmartWizard html -->
-                    <div id="wizard_verticle" class="form_wizard wizard_verticle">
-                      <ul class="list-unstyled wizard_steps anchor">
-                        <li>
-                          <a href="#step-1">
+            <!-- Smart Wizard -->
+            <form action="" method="post" class="form-horizontal form-label-left">{% csrf_token %}
+              <!-- SmartWizard html -->
+              <div id="wizard_verticle" class="form_wizard wizard_verticle">
+                <ul class="list-unstyled wizard_steps anchor">
+                  <li>
+                    <a href="#step-1">
                             <span class="step_no">1</span>
                           </a>
-                        </li>
-                        <li>
-                          <a href="#step-2">
+                  </li>
+                  <li>
+                    <a href="#step-2">
                             <span class="step_no">2</span>
                          </a>
-                        </li>
-                        <li>
-                          <a href="#step-3">
+                  </li>
+                  <li>
+                    <a href="#step-3">
                             <span class="step_no">3</span>
                           </a>
-                        </li>
-                        <li>
-                          <a href="#step-4">
-                            <span class="step_no">3</span>
-                          </a>
-                        </li>
+                  </li>
 
-                      </ul>
-                     <form class="form-horizontal form-label-left">
-                      <div class="stepContainer" >
+                </ul>
+                <form class="form-horizontal form-label-left">
+                  <div class="stepContainer">
 
-                      <div id="step-1" class="content" style="display: block;">
-                        <h2 class="StepTitle">Nueva Cocción</h2>
-                        <span class="section"></span>
-                         {{form.errors}}
-                          <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">{{form.nombre.label}} <span class="required"></span>
+                    <div id="step-1" class="content" style="display: block;">
+                      <h2 class="StepTitle">Nueva Cocción</h2>
+                      <span class="section"></span>
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">{{form.nombre.label}} <span class="required"></span>
                             </label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                              {{form.nombre | append_attr:"class:form-control" }}
-                            </div>
-                          </div>
-                          <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">{{form.fecha.label}} <span class="required"></span>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          {{form.nombre | append_attr:"class:form-control" }}
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">{{form.fecha.label}} <span class="required"></span>
                             </label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input   value= "{{hoy|date:'d/m/y' }}{{form.fecha.value|date:"d/m/Y"}}"  class="form-control" id="id_fecha" name="fecha" required="" maxlength="20" type="text">
-                          </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input value="{{hoy|date:'d/m/y' }}{{form.fecha.value|date:" d/m/Y "}}" class="form-control" id="id_fecha" name="fecha" required="" maxlength="20" type="text">
                         </div>
-
-                          <div class="form-group">
-                            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.receta.label}}</label>
-                            <div class="text-container col-md-6 col-sm-6 col-xs-12">
-                              {{form.receta | append_attr:"class:form-control"| append_attr:"onchange:this.form.submit()"}}
-                            </div>
-                          </div>
-
                       </div>
 
-                      <div id="step-2">
-                        <h2 class="StepTitle">Maltas</h2>
-                        <span class="section"></span>
-                        <table  class="table " cellspacing="5">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Malta </th>
-                                    <th scope="col">Cantidad</th>
-                                    <th scope="col"> </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                             {% if maltas %}
-                             {% for form in maltas %}
-                             <tr id="{{ maltas.prefix }}">
-                               {{form.errors}}
-                               {{form.id}}
-                               {{ forms.media }}
-                                <td>{{ form.malta| append_attr:"class:form-control" }}</td>
-                                <td>
-                                  <span class="unidad-malta">kg</span>
-                                  {{ form.cantidad | append_attr:"class:form-control cantidad " }}
-                                </td>
-                                <td></td>
-                             </tr>
-                            {% endfor %}
-                            {% else %}
-
-                             {% for form in inlines.0 %}
-                             <tr id="{{ inlines.0.prefix }}">
-                               {{form.errors}}
-                               {{form.id}}
-                               {{ forms.media }}
-                                <td>{{ form.malta| append_attr:"class:form-control" }}</td>
-                                <td>
-                                  <span class="unidad-malta">kg</span>
-                                  {{ form.cantidad | append_attr:"class:form-control cantidad " }}
-                                </td>
-                                <td></td>
-                             </tr>
-                             {{ form.management_form }}
-                            {% endfor %}
-                           {% endif %}
-                        </tbody>
-                      </table>
-                      </div>
-
-                     <div id="step-3">
-                        <h2 class="StepTitle">Lupulos</h2>
-                        <span class="section"></span>
-                        <table  class="table " cellspacing="5">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Lupulo </th>
-                                    <th scope="col">Cantidad</th>
-                                    <th scope="col">Tiempo de Cocción</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                              {% if lupulos %}
-                                {% for form in lupulos %}
-                                <tr id="{{ inlines.1.prefix }}">
-                                    {{form.errors}}
-                                    {{form.id}}
-                                    {{ forms.media }}
-                                     <td>{{ form.lupulo| append_attr:"class:form-control" }}</td>
-                                     <td>
-                                       <span class="unidad-lupulo">g</span>
-                                       {{ form.cantidad | append_attr:"class:form-control cantidad " }}
-                                     </td>
-                                     <td>
-                                       <span class="tiempo-insumo">minutos</span>
-                                       {{ form.tiempo | append_attr:"class:form-control cantidad " }}
-                                     </td>
-                                     <td></td>
-                                </tr>
-                             {% endfor %}
-                           {% else %}
-                             {% for form in inlines.1 %}
-                             <tr id="{{ inlines.1.prefix }}">
-                                 {{form.errors}}
-                                 {{form.id}}
-                                 {{ forms.media }}
-                                  <td>{{ form.lupulo| append_attr:"class:form-control" }}</td>
-                                  <td>
-                                    <span class="unidad-lupulo">g</span>
-                                    {{ form.cantidad | append_attr:"class:form-control cantidad " }}
-                                  </td>
-                                  <td>
-                                    <span class="tiempo-insumo">minutos</span>
-                                    {{ form.tiempo | append_attr:"class:form-control cantidad " }}
-                                  </td>
-                                  <td></td>
-                             </tr>
-                            {% endfor %}
-                        {% endif %}
-                      </tbody>
-                    </table>
-                        &nbsp;
-                        &nbsp;
-                  <h2 class="StepTitle">Agregados</h2>
-                  <span class="section"></span>
-                  <table  class="table "  cellspacing="5">
-                      <thead>
-                          <tr>
-                              <th scope="col">Agregados</th>
-                              <th scope="col">Cantidad</th>
-                              <th scope="col">Tiempo de Cocción</th>
-                              <th></th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                        {% if agregrados %}
-                             {% for form in Agregados%}
-                             <tr id="{{ inlines.2.prefix }}">
-                                 {{form.errors}}
-                                 {{form.id}}
-                                 {{ forms.media }}
-                                  <td>{{ form.agregado| append_attr:"class:form-control" }}</td>
-                                  <td>
-                                    <span class="unidad-insumo">g</span>
-                                    {{ form.cantidad | append_attr:"class:form-control cantidad " }}
-                                  </td>
-                                  <td>
-                                    <span class="tiempo-insumo">minutos</span>
-                                    {{ form.tiempo | append_attr:"class:form-control cantidad " }}
-                                  </td>
-                                  <td></td>
-                             </tr>
-                             {% endfor %}
+                      <div class="form-group">
+                        <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.receta.label}}</label>
+                        <div class="text-container col-md-6 col-sm-6 col-xs-12">
+                          {{form.receta | append_attr:"class:form-control"| append_attr:"onchange:this.form.submit()"}}
                         </div>
-                        {% else %}
-                        <div id="{{ inlines.2.prefix }}" >
-                             {% for form in inlines.2 %}
-                             <tr id="{{ inlines.2.prefix }}">
-                                 {{form.errors}}
-                                 {{form.id}}
-                                 {{ forms.media }}
-                                  <td>{{ form.agregado| append_attr:"class:form-control" }}</td>
-                                  <td>
-                                    <span class="unidad-insumo">g</span>
-                                    {{ form.cantidad | append_attr:"class:form-control cantidad " }}
-                                  </td>
-                                  <td>
-                                    <span class="tiempo-insumo">minutos</span>
-                                    {{ form.tiempo | append_attr:"class:form-control cantidad " }}
-                                  </td>
-                                  <td></td>
-                             </tr>
-                             {% endfor %}
-
-                            {{ inlines.0.management_form }}
-                            {{ inlines.1.management_form }}
-                            {{ inlines.2.management_form }}
-                        {% endif %}
-                      </tbody>
-                    </table>
                       </div>
-
-                      <div id="step-4">
-                         <h2 class="StepTitle">Valores Finales</h2>
-
-
                       <div class="form-group">
                         <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.litros.label}}</label>
                         <div class="text-container col-md-6 col-sm-6 col-xs-12">
@@ -373,18 +144,168 @@
                           {{form.observaciones | append_attr:"class:form-control" }}
                         </div>
                       </div>
+
                     </div>
+
+                    <div id="step-2">
+                      <h2 class="StepTitle">Maltas</h2>
+                      <span class="section"></span>
+                      <table class="table " cellspacing="5">
+                        <thead>
+                          <tr>
+                            <th scope="col">Malta </th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col"> </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% if maltas %} {% for form in maltas %}
+                          <tr id="{{ maltas.prefix }}">
+                            {{form.errors}} {{ forms.media }}
+                            <td>{{ form.malta| append_attr:"class:form-control" }}</td>
+                            <td>
+                              <span class="unidad">kg</span> {{ form.cantidad | append_attr:"class:form-control cantidad " }}
+                            </td>
+                            <td></td>
+                          </tr>
+                          {% endfor %} {{ maltas.management_form}} {% else %} {% for form in inlines.0 %}
+                          <tr id="{{ inlines.0.prefix }}">
+                            {{form.errors}} {{form.id}} {{ forms.media }}
+                            <td>{{ form.malta| append_attr:"class:form-control" }}</td>
+                            <td>
+                              <span class="unidad">kg</span> {{ form.cantidad | append_attr:"class:form-control cantidad " }}
+                            </td>
+                            <td></td>
+                          </tr>
+                          {% endfor %} {% endif %}
+                        </tbody>
+                      </table>
+                      &nbsp; &nbsp;
+                      <h2 class="StepTitle">Lupulos</h2>
+                      <span class="section"></span>
+                      <table class="table " cellspacing="5">
+                        <thead>
+                          <tr>
+                            <th scope="col">Lupulo </th>
+                            <th scope="col">Cantidad</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% if lupulos %} {% for form in lupulos %}
+                          <tr id="{{ lupulos.prefix }}">
+                            {{form.errors}} {{ forms.media }}
+                            <td>{{ form.lupulo| append_attr:"class:form-control" }}</td>
+                            <td>
+                              <span class="unidad">g</span> {{ form.cantidad | append_attr:"class:form-control cantidad " }}
+                            </td>
+                            <td></td>
+                          </tr>
+                          {% endfor %} {{lupulos.management_form}} {% else %} {% for form in inlines.1 %}
+                          <tr id="{{ inlines.1.prefix }}">
+                            {{form.errors}} {{form.id}} {{ forms.media }}
+                            <td>{{ form.lupulo| append_attr:"class:form-control" }}</td>
+                            <td>
+                              <span class="unidad">g</span> {{ form.cantidad | append_attr:"class:form-control cantidad " }}
+                            </td>
+                            <td></td>
+                          </tr>
+                          {% endfor %} {% endif %}
+                        </tbody>
+                      </table>
+
+                    </div>
+
+                    <div id="step-3">
+                      <h2 class="StepTitle">Levaduras</h2>
+                      <span class="section"></span>
+                      <table class="table " cellspacing="5">
+                        <thead>
+                          <tr>
+                            <th scope="col">Levadura </th>
+                            <th scope="col">Cantidad</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% if levaduras %} {% for form in levaduras %}
+                          <tr id="{{ levaduras.prefix }}">
+                            {{form.errors}} {{ forms.media }}
+                            <td>{{ form.levadura| append_attr:"class:form-control" }}</td>
+                            <td>
+                              <span class="unidad">g</span> {{ form.cantidad | append_attr:"class:form-control cantidad " }}
+                            </td>
+                            <td></td>
+                          </tr>
+                          {% endfor %} {{levaduras.management_form}} {% else %} {% for form in inlines.2 %}
+                          <tr id="{{ inlines.2.prefix }}">
+                            {{form.errors}} {{form.id}} {{ forms.media }}
+                            <td>{{ form.levadura| append_attr:"class:form-control" }}</td>
+                            <td>
+                              <span class="unidad">g</span> {{ form.cantidad | append_attr:"class:form-control cantidad " }}
+                            </td>
+                            <td></td>
+                          </tr>
+                          {% endfor %} {% endif %}
+                        </tbody>
+                      </table>
+                      &nbsp; &nbsp;
+                      <h2 class="StepTitle">Agregados</h2>
+                      <span class="section"></span>
+                      <table class="table " cellspacing="5">
+                        <thead>
+                          <tr>
+                            <th scope="col">Agregados</th>
+                            <th scope="col">Cantidad</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% if agregrados %} {% for form in Agregados %}
+                          <tr id="{{ agregados.prefix }}">
+                            {{form.errors}} {{ forms.media }}
+                            <td>{{ form.agregado| append_attr:"class:form-control" }}</td>
+                            <td>
+                              <span class="unidad">g</span> {{ form.cantidad | append_attr:"class:form-control cantidad " }}
+                            </td>
+                            <td></td>
+                          </tr>
+                          {% endfor %} {{agregados.management_form}} {% else %}
+                            {% for form in inlines.3 %}
+                            <tr id="{{ inlines.3.prefix }}">
+
+                              {{form.errors}} {{form.id}} {{ forms.media }}
+                              <td>{{ form.agregado| append_attr:"class:form-control" }}</td>
+                              <td>
+                                <span class="unidad">g</span> {{ form.cantidad | append_attr:"class:form-control cantidad " }}
+                              </td>
+                              <td></td>
+                            </tr>
+                            {% endfor %} {% endif %}
+
+                            <br/>
+                        </tbody>
+                      </table>
+                      {% for formset in inlines %}
+                        {{formset.management_form}}
+                        {% for error in formset.errors %}
+                         {{ error }}
+                        {% endfor %}
+                      {% endfor %}
+
                       </div>
+
                     </div>
-                    </form>
                   </div>
-                <!-- End SmartWizard Content -->
+                </form>
               </div>
-            </div>
+              <!-- End SmartWizard Content -->
           </div>
         </div>
       </div>
     </div>
-        <!-- /page content -->
+  </div>
+</div>
+<!-- /page content -->
 
 {% endblock %}

@@ -72,6 +72,7 @@ class Agregado_x_Receta(models.Model):
 
 
 class Coccion(models.Model):
+    lote = models.CharField(max_length=20,error_messages=my_default_errors,primary_key=True)
     fecha = models.DateField(error_messages=my_default_errors, default=None)
     receta = models.ForeignKey(
         Receta, error_messages=my_default_errors, related_name="recetas")
@@ -88,20 +89,9 @@ class Coccion(models.Model):
         max_length=100, error_messages=my_default_errors, blank=True, null=True)
 
     def __str__(self):
-        return unicode(self.id)
+        return unicode(self.lote)
 
 
-class Fermentacion(models.Model):
-    lote = models.ForeignKey(Coccion, error_messages=my_default_errors)
-    fermentador = models.ForeignKey(
-        Fermentador, error_messages=my_default_errors)
-    fecha_inicio = models.DateField(
-        error_messages=my_default_errors, default=None)
-    fecha_final = models.DateField(
-        error_messages=my_default_errors, default=None)
-    litros = models.IntegerField(error_messages=my_default_errors)
-    observaciones = models.TextField(
-        max_length=100, error_messages=my_default_errors)
 
 
 class Malta_x_Coccion(models.Model):
@@ -159,12 +149,78 @@ class Levadura_x_Coccion(models.Model):
     def __str__(self):
         return str(self.id)
 
+    def save(self, *args, **kwargs):
+        levadura = Insumo.objects.get(pk=self.levadura.id)
+        # Si la receta existe, actualizo la cantidad de insumo
+        try:
+            # busco la cantidad de levadura actual en la coccion
+            levadura_coccion = Levadura_x_Coccion.objects.get(pk=self.id)
+            # resto a la nueva cantidad la cantidad anterior de levadura
+            nueva_cantidad_coccion = self.cantidad - levadura_coccion.cantidad
+            # actualizo la cantidad del levadura en el inventario
+            levadura.cantidad = levadura.cantidad - nueva_cantidad_coccion
+        except:
+            # si no existe, resto la cantidad de levadura en la reseta en el inventario
+            levadura.cantidad = levadura.cantidad - int(self.cantidad)
+        # guardo la instancia del levadura
+        levadura.save()
+        return super(Levadura_x_Coccion, self).save(*args, **kwargs)
+
 
 class Agregado_x_Coccion(models.Model):
-    agregados = models.ForeignKey(Agregado, error_messages=my_default_errors)
+    agregado = models.ForeignKey(Agregado, error_messages=my_default_errors)
     coccion = models.ForeignKey(Coccion, error_messages=my_default_errors)
     cantidad = models.FloatField(error_messages=my_default_errors)
     #tiempo        = models.IntegerField(error_messages=my_default_errors)
 
     def __str__(self):
         return str(self.id)
+
+    def save(self, *args, **kwargs):
+        agregado = Insumo.objects.get(pk=self.agregado.id)
+        # Si la receta existe, actualizo la cantidad de insumo
+        try:
+            # busco la cantidad de agregado actual en la coccion
+            agregado_coccion = Agregado_x_Coccion.objects.get(pk=self.id)
+            # resto a la nueva cantidad la cantidad anterior de agregado
+            nueva_cantidad_coccion = self.cantidad - agregado_coccion.cantidad
+            # actualizo la cantidad del agregado en el inventario
+            agregado.cantidad = agregado.cantidad - nueva_cantidad_coccion
+        except:
+            # si no existe, resto la cantidad de agregado en la reseta en el inventario
+            agregado.cantidad = agregado.cantidad - int(self.cantidad)
+        # guardo la instancia del agregado
+        agregado.save()
+        return super(Agregado_x_Coccion, self).save(*args, **kwargs)
+
+class Fermentacion(models.Model):
+    lote = models.ForeignKey(Coccion, error_messages=my_default_errors)
+    fermentador = models.ForeignKey(
+        Fermentador, error_messages=my_default_errors)
+    fecha_inicio = models.DateField(
+        error_messages=my_default_errors, default=None)
+    fecha_final = models.DateField(
+        error_messages=my_default_errors, default=None)
+    litros = models.IntegerField(error_messages=my_default_errors)
+    observaciones = models.TextField(
+        max_length=100, error_messages=my_default_errors)
+
+class Embarrilado(models.Model):
+    lote = models.ForeignKey(Fermentacion, error_messages=my_default_errors)
+    barril = models.ForeignKey(
+        Barril, error_messages=my_default_errors)
+    fecha = models.DateField(
+        error_messages=my_default_errors, default=None)
+    litros = models.IntegerField(error_messages=my_default_errors)
+    observaciones = models.TextField(
+        max_length=100, error_messages=my_default_errors)
+
+class Embotellado(models.Model):
+    lote = models.ForeignKey(Fermentacion, error_messages=my_default_errors)
+    pallet = models.ForeignKey(
+        Pallet, error_messages=my_default_errors)
+    fecha = models.DateField(
+        error_messages=my_default_errors, default=None)
+    cantidad = models.IntegerField(error_messages=my_default_errors)
+    observaciones = models.TextField(
+        max_length=100, error_messages=my_default_errors)

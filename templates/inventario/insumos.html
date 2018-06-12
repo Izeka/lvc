@@ -1,30 +1,5 @@
 {% extends 'index.html' %}
 
-{% block extra_css %}
-  <!-- bootstrap-progressbar -->
-    <link href="/static/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.css" rel="stylesheet">
-{% endblock %}
-
-{% block extra_js %}
-    <!-- bootstrap-progressbar -->
-    <script src="/static/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
-    <script src="/static/custom/js/jquery.form.js"></script>
-
-    <script>
-    $('#modal').on('show.bs.modal', function (event) {
-        var modal = $(this);
-        var url = $(event.relatedTarget).attr('href');
-        $.ajax({
-            url: url,
-            context: document.body
-        }).done(function(response) {
-            modal.html(response);
-        });
-    })
-    </script>
-
-{% endblock %}
-
 {% block content %}
   <!-- page content -->
         <div class="right_col" role="main">
@@ -77,7 +52,7 @@
                              <div class="progress progress_sm">
                               <div class="progress-bar  {% if dato.cantidad < 0.5 %} progress-bar-danger{% else %} progress-bar-info {% endif %}" role="progressbar" data-transitiongoal="{{dato.cantidad}}" aria-valuemin="0" aria-valuemax="2"></div>
                              </div>
-                             <small>{{dato.cantidad|floatformat:"0"}} Kgs</small>
+                             <small>{{dato.cantidad|floatformat:"0"}} Lts</small>
                             </td>
                             <td>
                               <a >
@@ -92,7 +67,7 @@
                 </div>
               </div>
 
-            
+
 
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="x_panel">

@@ -1,4 +1,4 @@
-from django.views.generic import ListView, UpdateView
+from django.views.generic import ListView, UpdateView, CreateView
 from extra_views import InlineFormSet, CreateWithInlinesView, UpdateWithInlinesView, ModelFormSetView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms.models import model_to_dict
@@ -25,7 +25,7 @@ class LevaduraInline(InlineFormSet):
 class LupuloInline(InlineFormSet):
     model = Lupulo_x_Receta
     fields = "__all__"
-    factory_kwargs = {'extra': 1}
+    factory_kwargs = {'extra': 1, 'max_num':10}
 
 
 class AgregadoInline(InlineFormSet):
@@ -123,6 +123,10 @@ class Nueva_coccion(LoginRequiredMixin, CreateWithInlinesView):
         formset.save()
         return HttpResponseRedirect("/cocciones")
 
+    def form_invalid(self, form):
+        message = "form invalid"
+        return HttpResponseRedirect("/cocciones/nueva/", form)
+
     def get_context_data(self, **kwargs):
         context = super(Nueva_coccion, self).get_context_data(**kwargs)
         receta_id = self.request.POST.get('receta', False)
@@ -133,6 +137,8 @@ class Nueva_coccion(LoginRequiredMixin, CreateWithInlinesView):
                 receta=receta), prefix="malta_x_coccion_set")
             context['lupulos'] = lupuloFormSet(queryset=Lupulo_x_Receta.objects.filter(
                 receta=receta), prefix="lupulo_x_coccion_set")
+            context['levaduras'] = levaduraFormSet(queryset=Levadura_x_Receta.objects.filter(
+                receta=receta), prefix="levadura_x_coccion_set")
             context['agregados'] = agregadoFormSet(queryset=Agregado_x_Receta.objects.filter(
                 receta=receta), prefix="agregado_x_coccion_set")
             context['receta'] = receta
@@ -143,7 +149,8 @@ class Nueva_coccion(LoginRequiredMixin, CreateWithInlinesView):
 class Editar_coccion(LoginRequiredMixin, UpdateWithInlinesView):
     model = Coccion
     login_url = "/login/"
-    inlines = [MaltaCoccionInline, LupuloCoccionInline, LevaduraCoccionInline, AgregadoCoccionInline]
+    inlines = [MaltaCoccionInline, LupuloCoccionInline,
+               LevaduraCoccionInline, AgregadoCoccionInline]
     fields = "__all__"
     success_url = "/cocciones"
 
@@ -160,3 +167,9 @@ class Fermentaciones(LoginRequiredMixin, ListView):
     login_url = "/login/"
     template_name = "produccion/fermentaciones.html"
     context_object_name = 'fermentaciones'
+
+class Nueva_fermentacion(LoginRequiredMixin, CreateView):
+    model = Fermentacion
+    login_url = "/login/"
+    fields = "__all__"
+    success_url = "/fermentaciones"

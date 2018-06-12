@@ -174,7 +174,7 @@ class Nuevo_insumo(LoginRequiredMixin, CreateView):
             url="equipamiento"
         else:
             form_class = InsumoForm
-            url="insumos"
+            url="insumo"
         form = self.get_form(form_class)
         if form.is_valid():
             return self.form_valid(form, insumo, url)

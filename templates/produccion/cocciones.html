@@ -1,22 +1,5 @@
 {% extends 'index.html' %}
 
-{% block extra_js %}
-    <script src="/static/custom/js/jquery.form.js"></script>
-
-    <script>
-    $('#modal').on('show.bs.modal', function (event) {
-        var modal = $(this);
-        var url = $(event.relatedTarget).attr('href');
-        $.ajax({
-            url: url,
-            context: document.body
-        }).done(function(response) {
-            modal.html(response);
-        });
-    })
-    </script>
-
-{% endblock %}
 {% block content %}
   <!-- page content -->
 
@@ -46,9 +29,6 @@
          <table id="compras" class="table table-striped jambo_table bulk_action">
            <thead>
              <tr class="headings">
-               <th>
-                <input type="checkbox" id="check-all" class="flat">
-              </th>
               <th style="text-align:left">Lote </th>
               <th> Fecha </th>
               <th >Estilo</th>
@@ -59,9 +39,6 @@
            <tbody>
              {% for dato in cocciones %}
             <tr class="even pointer">
-                <td >
-                  <input type="checkbox" class="flat" name="table_records">
-                </td>
                 <td >{{dato.id}}</td>
                 <td>{{dato.fecha}}</td>
                 <td >{{dato.receta}} </td>

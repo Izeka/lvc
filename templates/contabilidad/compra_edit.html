@@ -1,47 +1,34 @@
 {% extends 'index.html' %}
 {% load i18n widget_tweaks %}
 {% block extra_js %}
-<script src="/static/vendors/jquery-ui/jquery-ui.min.js"></script>
-<script src="/static/custom/js/jquery.formset.js"></script>
-<script src="/static/custom/js/jquery.form.js"></script>
-<script src="/static/custom/js/datepicker-es.js"></script>
 
+<script src="/static/custom/js/compra_insumos.js"></script>
+<script src="/static/custom/js/compra_equipamiento.js"></script>
 <script >
-      $('#id_Fecha_compra').datepicker({
-        dateFormat: 'dd/mm/yy',
-        regional: 'es'
-      });
-      $('#modal').on('show.bs.modal', function (event) {
-          var modal = $(this);
-          var url = $(event.relatedTarget).attr('href');
-          $.ajax({
-              url: url,
-              context: document.body
-          }).done(function(response) {
-              modal.html(response);
-          });
-      });
-      $('tr#{{ inlines.0.prefix }}').formset({
-             prefix: '{{ inlines.0.prefix }}',
-             addText: 'Agregar',
-             deleteText: '',
-             addCssClass: 'add-row fa fa-toggle-down',
-             deleteCssClass: 'delete-row fa fa-times-circle',
-         });
+{% with 'barril_set fermentador_set pallet_set servicio_set' as list %}
+  {% for value in list.split %}
+  $('div#{{ value }}').formset({
+    prefix: '{{ value }}',
+    addText: 'Agregar',
+    deleteText: '',
+    addCssClass: 'add-row fa fa-toggle-down',
+    deleteCssClass: 'delete-row fa fa-times-circle {{value}}',
+  });
+  {% endfor %}
+{% endwith %}
 
-      $('.precio_unitario').each(function(){
-          $(this).change(function(){
-            calculate_subtotal();
-          });
-      });
-
-      function calculate_subtotal(){
-        $('.subtotal').val(function() {
-          return $(this).closest('tr').find('.precio_unitario').val();
-        });
-      };
+{% if insumos %}
+$('div#{{ insumos.prefix }}').formset({
+  prefix: '{{ insumos.prefix }}',
+  addText: 'Agregar',
+  deleteText: '',
+  addCssClass: 'add-row fa fa-toggle-down',
+  deleteCssClass: 'delete-row fa fa-times-circle {{insumos.prefix}}',
+});
+{% endif %}
 
 </script>
+
 {% endblock %}
 <!-- Here's an example of how you can style add/delete buttons with CSS -->
 {% block extra_css %}
@@ -63,13 +50,23 @@ th.active{
 .add-row {
   font-size: 12px !important;
 }
-.delete-row {
-  position: absolute;
-  right: 15px;
-  padding: 6px 8px;
-  border-left: 0;
-  text-decoration: none;
-  text-align: center;
+.fermentador_set {
+  position:relative;
+  top:-180px;
+  float: right;
+  right: -15px;
+}
+.barril_set {
+  position:relative;
+  top:-236px;
+  float: right;
+  right: -15px;
+}
+.pallet_set {
+  position:relative;
+  top:-180px;
+  float: right;
+  right: -15px;
 }
 .dynamic-form{
   background: #EDEDED !important;
@@ -120,9 +117,8 @@ th.active{
                 </label>
                   {{ form.comprador |attr:"class:form-control" }}
             </fieldset>
-
                   {% for form in barriles %}
-                   <div id="{{ form.prefix }}" class="form-group dynamic-form">
+                   <div id="{{ barriles.prefix }}" class="form-group dynamic-form">
                         <input type="hidden" name="producto" value="barril" />
                       {{form.errors}}
                       {{ form.non_field_errors }}
@@ -137,6 +133,8 @@ th.active{
                   </div>
                      {% endfor %}
                      {{ barriles.management_form }}
+
+                     {% if insumos.forms %}
                      <table  class="table table-striped jambo_table bulk_action" id="id_contact_info_table" border="0" cellpadding="0" cellspacing="5">
                          <thead>
                              <tr>
@@ -149,8 +147,9 @@ th.active{
                              </tr>
                          </thead>
                          <tbody>
-                              {% for form in inlines.0 %}
-                              <tr id="{{ inlines.0.prefix }}" class="form-group">
+
+                              {% for form in insumos %}
+                              <tr id="{{ insumos.prefix }}" class="form-group">
                               <input type="hidden" name="producto" value="insumo" />
                                 {{form.errors}}
                                 {{form.id}}
@@ -163,10 +162,11 @@ th.active{
                                  <td></td>
                               </tr>
                              {% endfor %}
-                             {{ inlines.0.management_form }}
+                             {{ insumos.management_form }}
 
                          </tbody>
                      </table>
+                     {% endif %}
 
                         {% for form in servicios %}
                          <div id="{{ form.prefix }}" class="form-group dynamic-form">

@@ -1,31 +1,16 @@
-{% load i18n widget_tweaks %} {% block extra_css %}
-
-<!-- Bootstrap -->
-<link href="/static/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-<!-- Font Awesome -->
-<link href="/static/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-
-<!-- Custom Theme Style -->
-<link href="/static/custom/css/custom.css" rel="stylesheet">
-<link href="/static/custom/css/mosto.css" rel="stylesheet">
-<link href="/static/custom/css/blue.css" rel="stylesheet">
-
-
+{% block extra_css %}
 <style type="text/css">
   .qr {
     float: left;
     background-color: #e6e6e6 !important;
-    "
-
   }
 </style>
+{% endblock %}
 
-{% endblock %} {% block extra_js %}
-
+{% block extra_js %}
 <script>
   $('#id_Lleno,#id_Carbonatado').addClass("icheckbox_flat-blue");
 </script>
-
 {% endblock %}
 
 <div class="modal-dialog modal-lg" role="document">

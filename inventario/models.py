@@ -109,8 +109,8 @@ class Barril(models.Model):
 class Pallet(models.Model):
     compra = models.ForeignKey(Compra, error_messages=my_default_errors)
     litros = models.FloatField(error_messages=my_default_errors)
-    precio = models.FloatField(error_messages=my_default_errors)
     cantidad = models.FloatField(error_messages=my_default_errors)
+    precio_unitario = models.FloatField(error_messages=my_default_errors)
     observaciones = models.TextField(
         max_length=300, error_messages=my_default_errors, blank=True)
 

@@ -4,16 +4,12 @@
   var en_gramos = ["lupulo", "levadura", "agregado", "clarificante"];
 
   //Al iniciar Cambio el valor de tipo y unidad segun el insumo
-  $(document).ready(function() {
-    $("#id_insumo").val("{{insumo}}");
-    insumo_values($("#id_insumo").val());
-  });
+  $("#id_insumo").val("{{insumo}}");
+  insumo_values($("{{insumo}}"));
 
   //al modificar el insumo vuelvo a cambiar los valores de tipo y unidad
   $("#id_insumo").change(function() {
     insumo_values($(this).val());
-
-
   });
 
   //funcion para seleccionar tipo y unidad segun el valor de insumo
@@ -21,21 +17,23 @@
     if (jQuery.inArray(insumo, en_gramos) != -1) { //chequea si insumo esta en la lista
       $("#id_tipo").val("INGREDIENTE").prop('selected', true);
       $("#id_unidad_de_medida").val("g").prop('selected', true)
-    } else if (insumo = "malta") {
+    } else if (insumo == "malta") {
       $("#id_tipo").val("INGREDIENTE").prop('selected', true);
       $("#id_unidad_de_medida").val("Kg").prop('selected', true)
     } else {
       $("#id_tipo").val("INSUMO").prop('selected', true);
       $("#id_unidad_de_medida").val("l").prop('selected', true);
     };
+
   };
 
+  //oculto el campo tipo
   $("#id_tipo").hide();
   $('label[for="id_tipo"]').hide();
 
   //esconde el modal despues de enviarlo
   $('#nuevo_insumo').submit(function() {
-     $('#modal').modal('hide');
+    $('#modal').modal('hide');
   });
 </script>
 {% endblock %}
@@ -79,9 +77,7 @@
           <small class="form-text text-muted">{{ field.help_text }}</small> {% endif %}
         </div>
         {% endfor %}
-
       </div>
-
 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
