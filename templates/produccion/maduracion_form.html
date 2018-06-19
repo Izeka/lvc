@@ -1,0 +1,139 @@
+{% extends 'index.html' %} {% load i18n widget_tweaks %} {% block extra_js %}
+<script>
+  $('#id_fecha_inicio,#id_fecha_final').daterangepicker({
+    singleDatePicker: true,
+    locale: {
+      format: 'DD/MM/YYYY'
+ },
+    regional: 'es'
+ });
+
+  $('div#{{ inlines.0.prefix }}').formset({
+    prefix: '{{ inlines.0.prefix }}',
+    addText: 'Agregar',
+    deleteText: '',
+    addCssClass: 'add-row fa fa-toggle-down',
+    deleteCssClass: 'delete-row fa fa-times-circle {{inlines.0.prefix}}',
+  });
+
+  document.getElementById("id_lote").value = "{{lote}}";
+
+</script>
+{% endblock %}
+
+{% block extra_css %}
+<style type="text/css">
+  .lote_x_madurador_set {
+    position:relative;
+    top:-65px;
+    float: right;
+    right: -15px;
+  }
+  .add-row {
+    font-size: 12px !important;
+    margin-bottom: 15px;
+    top: -15px;
+  }
+
+  .fa-plus {
+    position: absolute;
+    color: #ECF0F1 !important;
+    margin-left: 4px;
+    margin-top: 3px;
+    font-size: 8px !important;
+  }
+
+  .dynamic-form {
+    background: #EDEDED !important;
+    padding: 10px;
+  }
+</style>
+{% endblock %}
+
+ {% block content %}
+
+<div class="right_col" role="main">
+  <div class="clearfix"></div>
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>Nueva Maduracion <small></small></h2>
+        <ul class="nav navbar-right panel_toolbox">
+          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+          </li>
+          <li class="dropdown">
+            <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+          </li>
+          <li><a class="close-link"><i class="fa fa-close"></i></a>
+          </li>
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+        <form action="{{ request.path }}" method="post" id="editar_insumo" class="form">{% csrf_token %}
+          {{form.errors}}
+          <fieldset class="form-group">
+            <label for="{{ form.lote.label}}">
+                {{form.lote.label}}
+             </label> {{ form.lote |attr:"class:form-control" }}
+          </fieldset>
+
+          <fieldset class="form-group">
+            <label for="{{ form.madurador.label}}">
+                {{form.madurador.label}}
+             </label> {{ form.madurador |attr:"class:form-control" }}
+          </fieldset>
+
+          <fieldset class="form-group">
+            <label for="{{ form.fecha_inicio.label}}">
+                {{form.fecha_inicio.label}}
+             </label> {{ form.fecha_inicio |attr:"class:form-control" }}
+          </fieldset>
+
+          <fieldset class="form-group">
+            <label for="{{ form.fecha_final.label}}">
+                {{form.fecha_final.label}}
+             </label> {{ form.fecha_final |attr:"class:form-control" }}
+          </fieldset>
+
+          {% for form in inlines.0 %}
+           <div id="{{ inlines.0.prefix }}" class="form-group">
+          {{form.errors}}
+          {{ form.non_field_errors }}
+            {{form.id}}
+            {{ forms.media }}
+            {% for field in form %}
+             {% if field.label not in no_fields %}
+              <label>{{ field.label }}</label>
+              <div>{{ field |attr:"class:form-control"  }}</div>
+             {% endif %}
+            {% endfor %}
+          </div>
+         {% endfor %}
+         {{ inlines.0.management_form }}
+
+          <fieldset class="form-group">
+            <label for="{{ form.litros.label}}">
+                {{form.litros.label}}
+             </label> {{ form.litros |attr:"class:form-control" }}
+          </fieldset>
+
+          <fieldset class="form-group">
+            <label for="{{ form.observaciones.label}}">
+                {{form.observaciones.label}}
+             </label> {{ form.observaciones |attr:"class:form-control" }}
+          </fieldset>
+
+          <!-- Guardo la direccion en la variable url y genero el codigo QR-->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            <input type="submit" class="btn btn-primary" value="Guardar" />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- End SmartWizard Content -->
+</div>
+<!-- /.modal-content -->
+{% endblock %}

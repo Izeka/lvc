@@ -132,7 +132,13 @@ class Nueva_coccion(LoginRequiredMixin, CreateWithInlinesView):
         receta_id = self.request.POST.get('receta', False)
         context['hoy'] = date.today()
         if receta_id:
-            receta = Receta.objects.get(id=receta_id)
+            receta = Receta.objects.get(ID=receta_id)
+            ultimas = Coccion.objects.all().order_by('fecha')[:5]
+            try:
+                lote = Coccion.objects.latest('fecha')
+                context['lote'] = ''.join(n for n in ultima if n.isdigit())
+            except:
+                context['lote'] = "0001"
             context['maltas'] = maltaFormSet(queryset=Malta_x_Receta.objects.filter(
                 receta=receta), prefix="malta_x_coccion_set")
             context['lupulos'] = lupuloFormSet(queryset=Lupulo_x_Receta.objects.filter(
@@ -142,7 +148,7 @@ class Nueva_coccion(LoginRequiredMixin, CreateWithInlinesView):
             context['agregados'] = agregadoFormSet(queryset=Agregado_x_Receta.objects.filter(
                 receta=receta), prefix="agregado_x_coccion_set")
             context['receta'] = receta
-    #       context['inlines'] = list([maltas, lupulos, agregados])
+            context['ultimas'] = ultimas
         return context
 
 
@@ -151,16 +157,14 @@ class Editar_coccion(LoginRequiredMixin, UpdateWithInlinesView):
     login_url = "/login/"
     inlines = [MaltaCoccionInline, LupuloCoccionInline,
                LevaduraCoccionInline, AgregadoCoccionInline]
-    fields = "__all__"
+    fields = ["lote","fecha","DF","litros","observaciones"]
     success_url = "/cocciones"
-
 
 class Ver_coccion(LoginRequiredMixin, UpdateView):
     model = Coccion
     login_url = "/login/"
     template_name = "produccion/view_coccion.html"
     fields = "__all__"
-
 
 class Fermentaciones(LoginRequiredMixin, ListView):
     model = Fermentacion
@@ -171,5 +175,34 @@ class Fermentaciones(LoginRequiredMixin, ListView):
 class Nueva_fermentacion(LoginRequiredMixin, CreateView):
     model = Fermentacion
     login_url = "/login/"
+    template_name = "produccion/fermentacion_form.html"
     fields = "__all__"
     success_url = "/fermentaciones"
+
+class Maduraciones(LoginRequiredMixin, ListView):
+    model = Maduracion
+    login_url = "/login/"
+    template_name = "produccion/maduraciones.html"
+    context_object_name = 'maduraciones'
+
+class LoteInline(InlineFormSet):
+    model = lote_x_madurador
+    fields = "__all__"
+    factory_kwargs = {'extra': 1}
+
+class Nueva_maduracion(LoginRequiredMixin, CreateWithInlinesView):
+    model = Maduracion
+    login_url = "/login/"
+    inlines = [LoteInline,]
+    fields = "__all__"
+    success_url = "/maduraciones"
+
+    def get_context_data(self, **kwargs):
+        context = super(Nueva_maduracion, self).get_context_data(**kwargs)
+        try:
+            ultima_fermentacion = Fermentacion.objects.latest('fecha_inicio')
+            context['lote'] = ultima_fermentacion.lote[:7]
+        except:
+            pass
+        context['no_fields'] = ["Id", "Eliminar", "Maduracion"]
+        return context

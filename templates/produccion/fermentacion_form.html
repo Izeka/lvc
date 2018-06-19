@@ -1,35 +1,74 @@
-{% load i18n widget_tweaks %}
+{% load widget_tweaks %}
+{% block extra_css %}
+
+<style type="text/css">
+  .qr {
+    float: left;
+    background-color: #e6e6e6 !important;
+  }
+</style>
+{% endblock %}
+
+{% block extra_js %}
 <script>
-  $('#id_fecha_inicio,#id_fecha_final').daterangepicker({
-    singleDatePicker: true,
-    dateFormat: 'dd/mm/yy',
-    regional: 'es'
-  });
+//asigno el valor de coccion al lote
+$("#id_lote").val( $("#id_coccion").val());
+
+//al seleccionar el fermentador autocompleto los litros
+$("#id_fermentador").on('change', function() {
+   var litros = this.value.replace(/[^0-9]/g, '').slice(0,3);
+   $("#id_litros").val(litros);
+})
+
+//al modificar la coccion, modifico el lote
+$("#id_coccion").on('change', function() {
+  $("#id_lote").val( $("#id_coccion").val())
+});
+
+$('#id_fecha_inicio,#id_fecha_final').daterangepicker({
+   singleDatePicker: true,
+   locale: {
+     format: 'DD/MM/YYYY'
+},
+   regional: 'es'
+});
+
 </script>
+{% endblock %}
 
 <div class="modal-dialog modal-lg" role="document">
-  <form action="{{ request.path }}" method="post" id="editar_insumo" class="form">{% csrf_token %}
+  <form action="{{ request.path }}" method="post" id="fermentacion" class="form">{% csrf_token %}
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">×</span>
-                  <span class="sr-only">Cerrar</span>
-              </button>
-        <h4 class="modal-title">Editar {{form.Nombre.value}}</h4>
+                    <span aria-hidden="true">×</span>
+                    <span class="sr-only">Cerrar</span>
+                </button>
+        <h4 class="modal-title">Nueva Fermentacion</h4>
       </div>
       <div class="modal-body">
-        <form action="" method="post" id="nueva_compra">{% csrf_token %} {% for field in form %}
-          <fieldset class="form-group">
-            <label>{{ field.label }}</label> {{ field |attr:"class:form-control" }}
-          </fieldset>
-          {% endfor %}
-          <!-- Guardo la direccion en la variable url y genero el codigo QR-->
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-            <input type="submit" class="btn btn-primary" value="Guardar" />
+        {% for hidden_field in form.hidden_fields %} {{ hidden_field }} {% endfor %} {% if form.non_field_errors %}
+        <div class="alert alert-danger" role="alert">
+          {% for error in form.non_field_errors %} {{ error }} {% endfor %}
+        </div>
+        {% endif %} {% for field in form.visible_fields %}
+        <div class="form-group">
+          {{ field.label_tag }} {% if form.is_bound %} {% if field.errors %} {% render_field field class="form-control is-invalid" %} {% for error in field.errors %}
+          <div class="invalid-feedback">
+            {{ error }}
           </div>
-        </form>
+          {% endfor %} {% else %} {% render_field field class="form-control is-valid" %} {% endif %} {% else %} {% render_field field class="form-control" %} {% endif %} {% if field.help_text %}
+          <small class="form-text text-muted">{{ field.help_text }}</small> {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      <!-- Guardo la direccion en la variable url y genero el codigo QR-->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <input type="submit" class="btn btn-primary" value="Guardar" />
       </div>
     </div>
+    <!-- /.modal-content -->
+  </form>
 </div>
-<!-- /.modal-content -->
+<!-- /.modal-dialog -->

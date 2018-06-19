@@ -5,9 +5,6 @@
 <script src="/static/vendors/js/jquery.smartWizard.js"></script>
 <script src="/static/vendors/js/spectrum.js"></script>
 <script>
-    function calc_total(){
-      val=0;
-    };
 
     {% for formset in inlines %}
     $('tr#{{ formset.prefix }}').formset({
@@ -18,7 +15,6 @@
       deleteCssClass: 'delete-row fa fa-times-circle',
     });
     {% endfor %}
-  $(document).ready(function() {
 
     $('#wizard_verticle').smartWizard({
       labelNext: 'Siguiente',
@@ -41,7 +37,7 @@
           ['9F3A08', '8D2603', '761701', '4A0707', '36080B'],
       ]
      });
-  });
+
 
 </script>
 {% endblock %}
@@ -91,7 +87,7 @@
               <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
               </li>
               <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
               </li>
               <li><a class="close-link"><i class="fa fa-close"></i></a>
               </li>
@@ -127,9 +123,17 @@
                   <div class="stepContainer">
 
                     <div id="step-1" class="content" style="display: block;">
-                      {{form.errors}}
+                     {{form.errors}}
                       <h2 class="StepTitle">Valores Generales</h2>
                       <span class="section"></span>
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">{{form.ID.label}} <span class="required"></span>
+                            </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          {{form.ID | append_attr:"class:form-control" }} {{form.nombre.errors}}
+                        </div>
+                      </div>
+
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">{{form.nombre.label}} <span class="required"></span>
                             </label>
@@ -279,7 +283,6 @@
                        {{ formset.management_form }}
                      {% endfor %}
                     </div>
-
                   </div>
                 </form>
               </div>

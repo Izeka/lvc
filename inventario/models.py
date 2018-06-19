@@ -132,6 +132,17 @@ class Fermentador(models.Model):
     def __unicode__(self):
         return unicode(self.numero_serie)
 
+class Madurador(models.Model):
+    numero_serie = models.CharField(
+        max_length=10, error_messages=my_default_errors, primary_key=True)
+    litros = models.FloatField(error_messages=my_default_errors)
+    lleno = models.BooleanField(
+        error_messages=my_default_errors, default=False)
+    observaciones = models.TextField(
+        max_length=300, error_messages=my_default_errors, blank=True)
+
+    def __unicode__(self):
+        return unicode(self.numero_serie)
 
 class CompraInsumo(models.Model):
     compra = models.ForeignKey(Compra, error_messages=my_default_errors)

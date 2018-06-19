@@ -7,6 +7,7 @@ from .models import *
 admin.site.register(Malta_x_Receta)
 admin.site.register(Lupulo_x_Receta)
 admin.site.register(Agregado_x_Receta)
-admin.site.register(Levadura_x_Receta)
 admin.site.register(Receta)
 admin.site.register(Coccion)
+admin.site.register(Fermentacion)
+admin.site.register(Maduracion)

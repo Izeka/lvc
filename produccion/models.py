@@ -12,6 +12,7 @@ my_default_errors = {
 
 
 class Receta(models.Model):
+    ID = models.CharField(max_length=3, error_messages=my_default_errors,primary_key=True)
     nombre = models.CharField(max_length=100, error_messages=my_default_errors)
     litros = models.IntegerField(error_messages=my_default_errors)
 #    DI                     = models.CharField(max_length=100,error_messages=my_default_errors)
@@ -194,7 +195,8 @@ class Agregado_x_Coccion(models.Model):
         return super(Agregado_x_Coccion, self).save(*args, **kwargs)
 
 class Fermentacion(models.Model):
-    lote = models.ForeignKey(Coccion, error_messages=my_default_errors)
+    lote = models.CharField(max_length=20,error_messages=my_default_errors,primary_key=True)
+    coccion = models.ForeignKey(Coccion, error_messages=my_default_errors,default=1)
     fermentador = models.ForeignKey(
         Fermentador, error_messages=my_default_errors)
     fecha_inicio = models.DateField(
@@ -203,14 +205,33 @@ class Fermentacion(models.Model):
         error_messages=my_default_errors, default=None)
     litros = models.IntegerField(error_messages=my_default_errors)
     observaciones = models.TextField(
-        max_length=100, error_messages=my_default_errors)
+        max_length=100, error_messages=my_default_errors,blank=True)
+
+    def __str__(self):
+        return str(self.lote)
+
+class Maduracion(models.Model):
+    lote = models.CharField(max_length=20,error_messages=my_default_errors,primary_key=True)
+    madurador = models.ForeignKey(
+        Madurador, error_messages=my_default_errors)
+    fecha_inicio = models.DateField(
+        error_messages=my_default_errors, default=None)
+    fecha_final = models.DateField(
+        error_messages=my_default_errors, default=None)
+    litros = models.IntegerField(error_messages=my_default_errors)
+    observaciones = models.TextField(
+        max_length=100, error_messages=my_default_errors,blank=True)
+
+class lote_x_madurador(models.Model):
+    maduracion = models.ForeignKey(Maduracion, error_messages=my_default_errors)
+    fermentacion = models.ForeignKey(Fermentacion, error_messages=my_default_errors)
 
 class Embarrilado(models.Model):
-    lote = models.ForeignKey(Fermentacion, error_messages=my_default_errors)
-    barril = models.ForeignKey(
-        Barril, error_messages=my_default_errors)
     fecha = models.DateField(
         error_messages=my_default_errors, default=None)
+    lote = models.ForeignKey(Maduracion, error_messages=my_default_errors)
+    barril = models.ForeignKey(
+        Barril, error_messages=my_default_errors)
     litros = models.IntegerField(error_messages=my_default_errors)
     observaciones = models.TextField(
         max_length=100, error_messages=my_default_errors)

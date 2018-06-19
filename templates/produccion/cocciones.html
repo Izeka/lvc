@@ -39,14 +39,14 @@
            <tbody>
              {% for dato in cocciones %}
             <tr class="even pointer">
-                <td >{{dato.id}}</td>
+                <td >{{dato.lote}}</td>
                 <td>{{dato.fecha}}</td>
                 <td >{{dato.receta}} </td>
                 <td >{{dato.litros}}</td>
                 <td >{{dato.DF}}</td>
                 <td>
-                    <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="ver/{{dato.id}}" title="Ver"><i class="fa fa-eye"></i></a>
-                    <a href="editar/{{dato.id}}" title="Editar"><i class="fa fa-edit"></i></a>
+                    <a  data-toggle="modal" data-id="{{data.}}" data-target="#modal" href="ver/{{dato.id}}" title="Ver"><i class="fa fa-eye"></i></a>
+                    <a href="editar/{{dato.lote}}" title="Editar"><i class="fa fa-edit"></i></a>
                     <a href="eliminar/dato.id}}" title="Eliminar"><i class="fa fa-trash-o"></i></a>
                 </td>
               </tr>
@@ -57,6 +57,7 @@
         </div>
       </div>
    </div>
+
 
 
   </div>

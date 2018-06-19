@@ -63,17 +63,20 @@ urlpatterns = [
         Compra_editar.as_view(), name='editar_compra'),
 
     url(r'^recetas/$', Recetas.as_view()),
-    url(r'^recetas/editar/(?P<pk>\d+)/$', Editar_receta.as_view()),
+    url(r'^recetas/editar/(?P<pk>\w+)/$', Editar_receta.as_view()),
     url(r'^recetas/ver/(?P<pk>\d+)/$', Ver_receta.as_view()),
     url(r'^recetas/nueva$', Nueva_receta.as_view(), name='add_receta'),
 
     url(r'^cocciones/$', Cocciones.as_view()),
-    url(r'^cocciones/editar/(?P<pk>\d+)/$', Editar_coccion.as_view()),
+    url(r'^cocciones/editar/(?P<pk>\w+)/$', Editar_coccion.as_view()),
     url(r'^cocciones/ver/(?P<pk>\d+)/$', Ver_coccion.as_view()),
     url(r'^cocciones/nueva$', Nueva_coccion.as_view(), name='add_coccion'),
     #    url(r'^ajax/get_receta/$', get_receta, name='get_receta'),
 
     url(r'^fermentaciones/$', Fermentaciones.as_view()),
     url(r'^fermentaciones/nueva$', Nueva_fermentacion.as_view(), name='add_fermentacion'),
+
+    url(r'^maduraciones/$', Maduraciones.as_view()),
+    url(r'^maduraciones/nueva$', Nueva_maduracion.as_view(), name='add_fermentacion'),
 
 ]

@@ -2,10 +2,10 @@
 
 <script>
   var en_gramos = ["lupulo", "levadura", "agregado", "clarificante"];
-
+  var equipamiento = ["fermentador", "barril", "pallet"]
   //Al iniciar Cambio el valor de tipo y unidad segun el insumo
   $("#id_insumo").val("{{insumo}}");
-  insumo_values($("{{insumo}}"));
+  insumo_values("{{insumo}}");
 
   //al modificar el insumo vuelvo a cambiar los valores de tipo y unidad
   $("#id_insumo").change(function() {
@@ -20,7 +20,9 @@
     } else if (insumo == "malta") {
       $("#id_tipo").val("INGREDIENTE").prop('selected', true);
       $("#id_unidad_de_medida").val("Kg").prop('selected', true)
-    } else {
+    } else if (jQuery.inArray(insumo, equipamiento) != -1)  {
+      $("#id_insumo").val("equipamiento").prop('selected', true);
+    } else{
       $("#id_tipo").val("INSUMO").prop('selected', true);
       $("#id_unidad_de_medida").val("l").prop('selected', true);
     };
@@ -48,12 +50,12 @@
     </button>
         <h4 class="modal-title">Nuevo {{insumo|title }}</h4>
       </div>
-
       <div class="modal-body">
         <div class="form-group">
           <label for="id_insumo">Tipo: </label>
           <select id="id_insumo" class="form-control" name="insumo">
                 <option value="insumo">Insumo</option>
+                <option value="equipamiento">Equipamiento</option>
                 <option value="malta">Malta</option>
                 <option value="levadura">Levadura</option>
                 <option value="lupulo">Lupulo</option>
