@@ -1,12 +1,24 @@
 {% extends 'index.html' %} {% load i18n widget_tweaks %} {% block extra_js %}
 <script>
-  $('#id_fecha_inicio,#id_fecha_final').daterangepicker({
+  $('#id_fecha_inicio').daterangepicker({
     singleDatePicker: true,
     locale: {
       format: 'DD/MM/YYYY'
- },
-    regional: 'es'
- });
+    },
+  });
+  //calculo una semana desde hoy y los guardo en end_day
+  var today = new Date();
+  var end_day = new Date();
+  end_day.setDate(today.getDate()+7);
+
+  //asigno el valor de end_day a fecha_final
+  $('#id_fecha_final').daterangepicker({
+      singleDatePicker: true,
+       "startDate": end_day,
+       locale: {
+         format: 'DD/MM/YYYY'
+       },
+  });
 
   $('div#{{ inlines.0.prefix }}').formset({
     prefix: '{{ inlines.0.prefix }}',
@@ -23,7 +35,7 @@
 
 {% block extra_css %}
 <style type="text/css">
-  .lote_x_madurador_set {
+  .fermentacion_x_madurador_set {
     position:relative;
     top:-65px;
     float: right;

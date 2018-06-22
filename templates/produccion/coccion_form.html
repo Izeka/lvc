@@ -3,25 +3,19 @@
 <script src="/static/vendors/js/countimer.js"></script>
 <script src="/static/vendors//js/jquery.smartWizard.js"></script>
 <script>
-  { %
-    for formset in inlines %
-  }
+  {% for formset in inlines %}
   $('tr#{{ formset.prefix }}').formset({
     prefix: '{{ formset.prefix }}',
     addText: 'Agregar',
     deleteText: '',
     addCssClass: 'add-row fa fa-toggle-down',
     deleteCssClass: 'delete-row fa fa-times-circle',
-  }); { % endfor %
-  }
+  });
+  {% endfor %}
 
-  { %
-    if receta %
-  }
-  document.getElementById("id_lote").value = "{{receta.ID}}{{lote}}";
-
-  { % endif %
-  }
+  {% if receta %}
+     document.getElementById("id_lote").value = "{{receta.ID}}{{lote}}";
+  {% endif %}
 
   $('#wizard_verticle').smartWizard({
     labelNext: 'Siguiente',
@@ -33,6 +27,15 @@
   function onFinishCallback(objs, context) {
     $('form').submit();
   }
+
+
+
+if ($('id_litros').val().length == 0) {
+      $(this).parents('div').addClass('warning');
+}
+
+
+
 </script>
 {% endblock %} {% block extra_css %}
 <style type="text/css">
@@ -143,8 +146,6 @@
                         </div>
                       </div>
 
-
-
                       <div class="form-group">
                         <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">{{form.litros.label}}</label>
                         <div class="text-container col-md-6 col-sm-6 col-xs-12">
@@ -166,7 +167,7 @@
                       </div>
 
                     </div>
-
+                      <!--  LOS INGREDIENTES DE LOS PASOS 2 Y 3, SE CARGAN DINAMICAMENTE POR AJAX (FUNCION CHANGE DE ID_RECETA)-->
                     <div id="step-2">
                       <h2 class="StepTitle">Maltas</h2>
                       <span class="section"></span>
@@ -178,29 +179,29 @@
                             <th scope="col"> </th>
                           </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="table_body">
                           {% if maltas %} {% for form in maltas %}
-                          <tr id="{{ maltas.prefix }}">
+                          <tr id="{{ lupulos.prefix }}">
                             {{form.errors}} {{ forms.media }}
                             <td>{{ form.malta| append_attr:"class:form-control" }}</td>
                             <td>
-                              <span class="unidad">kg</span> {{ form.cantidad | append_attr:"class:form-control cantidad " }}
+                              <span class="unidad">g</span> {{ form.cantidad | append_attr:"class:form-control cantidad " }}
                             </td>
                             <td></td>
                           </tr>
-                          {% endfor %} {{ maltas.management_form}} {% else %} {% for form in inlines.0 %}
-                          <tr id="{{ inlines.0.prefix }}">
+                          {% endfor %} {{maltas.management_form}} {% else %} {% for form in inlines.1 %}
+                          <tr id="{{ inlines.1.prefix }}">
                             {{form.errors}} {{form.id}} {{ forms.media }}
-                            <td>{{ form.malta| append_attr:"class:form-control" }}</td>
+                            <td>{{ form.lupulo| append_attr:"class:form-control" }}</td>
                             <td>
-                              <span class="unidad">kg</span> {{ form.cantidad | append_attr:"class:form-control cantidad " }}
+                              <span class="unidad">g</span> {{ form.cantidad | append_attr:"class:form-control cantidad " }}
                             </td>
                             <td></td>
                           </tr>
                           {% endfor %} {% endif %}
                         </tbody>
                       </table>
-                      &nbsp; &nbsp;
+
                       <h2 class="StepTitle">Lupulos</h2>
                       <span class="section"></span>
                       <table class="table " cellspacing="5">
@@ -233,7 +234,6 @@
                           {% endfor %} {% endif %}
                         </tbody>
                       </table>
-
                     </div>
 
                     <div id="step-3">
@@ -281,7 +281,7 @@
                           </tr>
                         </thead>
                         <tbody>
-                          {% if agregrados %} {% for form in Agregados %}
+                          {% if agregados %} {% for form in agregados %}
                           <tr id="{{ agregados.prefix }}">
                             {{form.errors}} {{ forms.media }}
                             <td>{{ form.agregado| append_attr:"class:form-control" }}</td>
@@ -306,7 +306,6 @@
                         </tbody>
                       </table>
                       {% for formset in inlines %} {{formset.management_form}} {% for error in formset.errors %} {{ error }} {% endfor %} {% endfor %}
-
                     </div>
 
                   </div>
@@ -320,7 +319,7 @@
           <div class="x_title">
             <h2>Ultimas Cocciones <small></small></h2>
             <div class="clearfix"></div>
-            <div style="margin-top:10px;"class="x_content">
+            <div style="margin-top:10px;" class="x_content">
               {% for coccion in ultimas %} {{coccion}} {% endfor %}
             </div>
           </div>

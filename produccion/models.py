@@ -15,7 +15,6 @@ class Receta(models.Model):
     ID = models.CharField(max_length=3, error_messages=my_default_errors,primary_key=True)
     nombre = models.CharField(max_length=100, error_messages=my_default_errors)
     litros = models.IntegerField(error_messages=my_default_errors)
-#    DI                     = models.CharField(max_length=100,error_messages=my_default_errors)
     DF = models.CharField(
         max_length=100, error_messages=my_default_errors, blank=True)
     IBUs = models.CharField(
@@ -47,7 +46,6 @@ class Lupulo_x_Receta(models.Model):
     lupulo = models.ForeignKey(Lupulo, error_messages=my_default_errors)
     receta = models.ForeignKey(Receta, error_messages=my_default_errors)
     cantidad = models.FloatField(error_messages=my_default_errors)
-#    tiempo         = models.IntegerField(error_messages=my_default_errors)
 
     def __str__(self):
         return str(self.id)
@@ -66,7 +64,6 @@ class Agregado_x_Receta(models.Model):
     agregado = models.ForeignKey(Agregado, error_messages=my_default_errors)
     receta = models.ForeignKey(Receta, error_messages=my_default_errors)
     cantidad = models.FloatField(error_messages=my_default_errors)
-#    tiempo        = models.IntegerField(error_messages=my_default_errors)
 
     def __str__(self):
         return str(self.id)
@@ -77,23 +74,21 @@ class Coccion(models.Model):
     fecha = models.DateField(error_messages=my_default_errors, default=None)
     receta = models.ForeignKey(
         Receta, error_messages=my_default_errors, related_name="recetas")
+    DF = models.CharField(
+        max_length=100, error_messages=my_default_errors, blank=True)
+    litros = models.IntegerField(error_messages=my_default_errors)
+    fermentado = models.BooleanField(error_messages=my_default_errors, default=False)
+    observaciones = models.TextField(
+        max_length=100, error_messages=my_default_errors, blank=True, null=True)
 #    Temp_Maceracion        = models.IntegerField(error_messages=my_default_errors)
 #    Tiempo_Maceracion      = models.IntegerField(error_messages=my_default_errors)
 #    Tiempo_Filtrado        = models.IntegerField(error_messages=my_default_errors)
 #    Tiempo_Lavado          = models.IntegerField(error_messages=my_default_errors)
 #    Tiempo_Coccion         = models.IntegerField(error_messages=my_default_errors)
 #    Temp_Final             = models.IntegerField(error_messages=my_default_errors)
-    DF = models.CharField(
-        max_length=100, error_messages=my_default_errors, blank=True)
-    litros = models.IntegerField(error_messages=my_default_errors)
-    observaciones = models.TextField(
-        max_length=100, error_messages=my_default_errors, blank=True, null=True)
 
     def __str__(self):
-        return unicode(self.lote)
-
-
-
+        return str(self.lote)
 
 class Malta_x_Coccion(models.Model):
     malta = models.ForeignKey(Malta, error_messages=my_default_errors)
@@ -114,12 +109,10 @@ class Malta_x_Coccion(models.Model):
         malta.save()
         return super(Malta_x_Coccion, self).save(*args, **kwargs)
 
-
 class Lupulo_x_Coccion(models.Model):
     lupulo = models.ForeignKey(Lupulo, error_messages=my_default_errors)
     coccion = models.ForeignKey(Coccion, error_messages=my_default_errors)
     cantidad = models.FloatField(error_messages=my_default_errors)
-#    tiempo         = models.IntegerField(error_messages=my_default_errors)
 
     def __str__(self):
         return str(self.id)
@@ -140,7 +133,6 @@ class Lupulo_x_Coccion(models.Model):
         # guardo la instancia del lupulo
         lupulo.save()
         return super(Lupulo_x_Coccion, self).save(*args, **kwargs)
-
 
 class Levadura_x_Coccion(models.Model):
     levadura = models.ForeignKey(Levadura, error_messages=my_default_errors)
@@ -167,12 +159,10 @@ class Levadura_x_Coccion(models.Model):
         levadura.save()
         return super(Levadura_x_Coccion, self).save(*args, **kwargs)
 
-
 class Agregado_x_Coccion(models.Model):
     agregado = models.ForeignKey(Agregado, error_messages=my_default_errors)
     coccion = models.ForeignKey(Coccion, error_messages=my_default_errors)
     cantidad = models.FloatField(error_messages=my_default_errors)
-    #tiempo        = models.IntegerField(error_messages=my_default_errors)
 
     def __str__(self):
         return str(self.id)
@@ -204,11 +194,21 @@ class Fermentacion(models.Model):
     fecha_final = models.DateField(
         error_messages=my_default_errors, default=None)
     litros = models.IntegerField(error_messages=my_default_errors)
+    madurado = models.BooleanField(error_messages=my_default_errors, default=False)
     observaciones = models.TextField(
         max_length=100, error_messages=my_default_errors,blank=True)
 
     def __str__(self):
         return str(self.lote)
+
+    def save(self, *args, **kwargs):
+        coccion = Coccion.objects.get(lote=self.lote)
+        coccion.fermentado = True
+        coccion.save()
+        fermentador = Fermentador.objects.get(numero_serie=self.fermentador)
+        fermentador.lleno =True
+        fermentador.save()
+        return super(Fermentacion, self).save(*args, **kwargs)
 
 class Maduracion(models.Model):
     lote = models.CharField(max_length=20,error_messages=my_default_errors,primary_key=True)
@@ -219,22 +219,52 @@ class Maduracion(models.Model):
     fecha_final = models.DateField(
         error_messages=my_default_errors, default=None)
     litros = models.IntegerField(error_messages=my_default_errors)
+    embarrilados = models.IntegerField(error_messages=my_default_errors, blank=True, null=True)
     observaciones = models.TextField(
-        max_length=100, error_messages=my_default_errors,blank=True)
+        max_length=100, error_messages=my_default_errors, blank=True)
 
-class lote_x_madurador(models.Model):
+    def __str__(self):
+        return str(self.lote)
+
+
+
+class fermentacion_x_madurador(models.Model):
     maduracion = models.ForeignKey(Maduracion, error_messages=my_default_errors)
     fermentacion = models.ForeignKey(Fermentacion, error_messages=my_default_errors)
+
+    def save(self, *args, **kwargs):
+
+        fermentacion = Fermentacion.objects.get(lote=self.fermentacion.lote)
+        fermentacion.madurado = True
+        fermentacion.save()
+
+        madurador = Madurador.objects.get(numero_serie=self.maduracion.madurador)
+        if self.maduracion.litros == madurador.litros:
+            madurador.lleno = True
+            madurador.save()
+        fermentador = Fermentador.objects.get(numero_serie=self.fermentacion.fermentador)
+        fermentador.lleno =False
+        fermentador.save()
+        return super(lote_x_madurador, self).save(*args, **kwargs)
 
 class Embarrilado(models.Model):
     fecha = models.DateField(
         error_messages=my_default_errors, default=None)
     lote = models.ForeignKey(Maduracion, error_messages=my_default_errors)
-    barril = models.ForeignKey(
+    barril = models.ManyToManyField(
         Barril, error_messages=my_default_errors)
-    litros = models.IntegerField(error_messages=my_default_errors)
+    litros = models.IntegerField(error_messages=my_default_errors, blank=True,null=True)
     observaciones = models.TextField(
-        max_length=100, error_messages=my_default_errors)
+        max_length=100, error_messages=my_default_errors, blank=True)
+
+    def __str__(self):
+        return str(self.lote)
+
+    def save(self, *args, **kwargs):
+        maduracion = Maduracion.objects.get(lote=self.lote)
+        maduracion.embarrilados = self.litros
+        maduracion.save()
+        return super(Embarrilado, self).save(*args, **kwargs)
 
 class Embotellado(models.Model):
     lote = models.ForeignKey(Fermentacion, error_messages=my_default_errors)

@@ -8,14 +8,15 @@
 
    <div class="col-md-12 col-sm-12 col-xs-12">
       <div class="x_panel">
+        <div class="modal fade" id="modal"></div>
         <div class="x_title">
-          <h2>Fermentaciones <small></small></h2>
+          <h2>Embarrilados <small></small></h2>
           <ul class="nav navbar-right panel_toolbox">
              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
              <li claps="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
                 <ul class="dropdown-menu" role="menu">
-                  <li><a data-toggle="modal"  data-target="#modal" href="/fermentaciones/nueva">Nueva</a></li>
+                  <li><a data-toggle="modal" data-id="{{data.id}}" data-target="#modal"  href="/embarrilados/nuevo">Nuevo</a></li>
                 </ul>
               </li>
               <li><a class="close-link"><i class="fa fa-close"></i></a></li>
@@ -30,30 +31,28 @@
            <thead>
              <tr class="headings">
               <th style="text-align:left">Lote </th>
-              <th> Fecha Inicio </th>
-              <th> Fermentador </th>
-              <th> Estilo </th>
-              <th >Litros </th>
-              <th >Fecha Final</th>
-              <th >Madurado </th>
+              <th> Fecha </th>
+              <th> Lote </th>
+              <th >Barriles </th>
+              <th >Litros</th>
               <th >Observaciones</th>
               <th > </th>
            </thead>
            <tbody>
-             {% for dato in fermentaciones %}
+             {% for dato in embarrilados %}
             <tr class="even pointer">
+                <td >{{dato.fecha}}</td>
                 <td >{{dato.lote}}</td>
-                <td>{{dato.fecha_inicio}}</td>
-                <td>{{dato.fermentador}}</td>
-                <td >{{dato.coccion.receta}} </td>
+                <td>{% for barril in dato.barril.all %}
+                     {{ barril }},
+                    {% endfor %}
+                </td>
                 <td >{{dato.litros}}</td>
-                <td>{{dato.fecha_final}}</td>
-                <td>{{dato.madurado}}</td>
                 <td >{{dato.observaciones}}</td>
                 <td>
-                    <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="ver/{{dato.id}}" title="Ver"><i class="fa fa-eye"></i></a>
-                    <a href="editar/{{dato.id}}" title="Editar"><i class="fa fa-edit"></i></a>
-                    <a href="eliminar/dato.id}}" title="Eliminar"><i class="fa fa-trash-o"></i></a>
+                    <a  data-toggle="modal" data-id="{{data.lote}}" data-target="#modal" href="ver/{{dato.lote}}" title="Ver"><i class="fa fa-eye"></i></a>
+                    <a href="editar/{{dato.lote}}" title="Editar"><i class="fa fa-edit"></i></a>
+                    <a href="eliminar/dato.lote}}" title="Eliminar"><i class="fa fa-trash-o"></i></a>
                 </td>
               </tr>
             {% endfor %}

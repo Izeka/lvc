@@ -71,12 +71,15 @@ urlpatterns = [
     url(r'^cocciones/editar/(?P<pk>\w+)/$', Editar_coccion.as_view()),
     url(r'^cocciones/ver/(?P<pk>\d+)/$', Ver_coccion.as_view()),
     url(r'^cocciones/nueva$', Nueva_coccion.as_view(), name='add_coccion'),
-    #    url(r'^ajax/get_receta/$', get_receta, name='get_receta'),
+    #url(r'^ajax/get_receta/(?P<receta_id>\w+)/$', get_receta, name='get_receta'),
 
     url(r'^fermentaciones/$', Fermentaciones.as_view()),
     url(r'^fermentaciones/nueva$', Nueva_fermentacion.as_view(), name='add_fermentacion'),
 
     url(r'^maduraciones/$', Maduraciones.as_view()),
-    url(r'^maduraciones/nueva$', Nueva_maduracion.as_view(), name='add_fermentacion'),
+    url(r'^maduraciones/nueva$', Nueva_maduracion.as_view(), name='add_maduracion'),
+
+    url(r'^embarrilados/$', Embarrilados.as_view()),
+    url(r'^embarrilados/nuevo$', Nuevo_embarrilado.as_view(), name='add_embarrilado'),
 
 ]
