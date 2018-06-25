@@ -1,19 +1,6 @@
-{% extends 'index.html' %} {% block extra_js %}
-<script src="/static/custom/js/jquery.form.js"></script>
+{% extends 'index.html' %} 
 
-<script>
-  $('#modal').on('show.bs.modal', function(event) {
-    var modal = $(this);
-    var url = $(event.relatedTarget).attr('href');
-    $.ajax({
-      url: url,
-      context: document.body
-    }).done(function(response) {
-      modal.html(response);
-    });
-  })
-</script>
-{% endblock %} {% block extra_css %}
+{% block extra_css %}
 <style type="text/css">
   .well {
     margin: 5px;
@@ -39,6 +26,7 @@
   <div>
     <div class="x_panel">
       <div class="x_title">
+        <div class="modal fade" id="modal"></div>
         <h2>Proveedores <small></small></h2>
         <ul class="nav navbar-right panel_toolbox">
           <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
