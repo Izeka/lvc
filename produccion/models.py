@@ -219,7 +219,7 @@ class Maduracion(models.Model):
     fecha_final = models.DateField(
         error_messages=my_default_errors, default=None)
     litros = models.IntegerField(error_messages=my_default_errors)
-    embarrilados = models.IntegerField(error_messages=my_default_errors, blank=True, null=True)
+    embarrilados = models.IntegerField(error_messages=my_default_errors, default=0)
     observaciones = models.TextField(
         max_length=100, error_messages=my_default_errors, blank=True)
 
@@ -245,7 +245,7 @@ class fermentacion_x_madurador(models.Model):
         fermentador = Fermentador.objects.get(numero_serie=self.fermentacion.fermentador)
         fermentador.lleno =False
         fermentador.save()
-        return super(lote_x_madurador, self).save(*args, **kwargs)
+        return super(fermentacion_x_madurador, self).save(*args, **kwargs)
 
 class Embarrilado(models.Model):
     fecha = models.DateField(
@@ -258,11 +258,11 @@ class Embarrilado(models.Model):
         max_length=100, error_messages=my_default_errors, blank=True)
 
     def __str__(self):
-        return str(self.lote)
+        return str(self.id)
 
     def save(self, *args, **kwargs):
         maduracion = Maduracion.objects.get(lote=self.lote)
-        maduracion.embarrilados = self.litros
+        maduracion.embarrilados += self.litros
         maduracion.save()
         return super(Embarrilado, self).save(*args, **kwargs)
 
@@ -274,4 +274,16 @@ class Embotellado(models.Model):
         error_messages=my_default_errors, default=None)
     cantidad = models.IntegerField(error_messages=my_default_errors)
     observaciones = models.TextField(
-        max_length=100, error_messages=my_default_errors)
+            max_length=100, error_messages=my_default_errors)
+
+    def __str__(self):
+        return str(self.lote)
+
+    def save(self, *args, **kwargs):
+        maduracion = Maduracion.objects.get(lote=self.lote)
+        maduracion.embotellados += self.litros
+        maduracion.save()
+
+        return super(Embarrilado, self).save(*args, **kwargs)
+
+

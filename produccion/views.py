@@ -259,3 +259,11 @@ class Nuevo_embarrilado(LoginRequiredMixin, CreateView):
     template_name = 'produccion/embarrilado_form.html'
     login_url = "/login/"
     success_url = "/embarrilados"
+
+    def form_valid(self, form):
+        self.object = form.save()
+        for b in form.cleaned_data['barril']:
+            barril= Barril.objects.get(numero_serie=b.numero_serie)
+            barril.lleno=True
+            barril.save()
+        return HttpResponseRedirect("/embarrilados")
