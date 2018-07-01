@@ -48,7 +48,7 @@
                 <td >{{dato.coccion.receta}} </td>
                 <td >{{dato.litros}}</td>
                 <td>{{dato.fecha_final}}</td>
-                <td>{{dato.madurado}}</td>
+                <td>{{dato.madurado|yesno:"Si,No" }}</td>
                 <td >{{dato.observaciones}}</td>
                 <td>
                     <a  data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="ver/{{dato.id}}" title="Ver"><i class="fa fa-eye"></i></a>

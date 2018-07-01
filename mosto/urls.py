@@ -42,7 +42,7 @@ urlpatterns = [
     url(r'^equipamiento/editar/(?P<pk>\d+)/$', Editar_insumo.as_view(),),
     url(r'^equipamiento/editar/barril/(?P<pk>[-\w]+)/$', Editar_Barril.as_view(),),
     url(r'^equipamiento/editar/pallet/(?P<pk>\d+)/$', Editar_Pallet.as_view(),),
-    url(r'^equipamiento/editar/fermentador/(?P<pk>\w+)/$',
+    url(r'^equipamiento/editar/fermentador/(?P<pk>[-\w]+)/$',
         Editar_Fermentador.as_view(),),
 
     url(r'^insumos/$', Insumos.as_view()),

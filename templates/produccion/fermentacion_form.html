@@ -15,24 +15,36 @@
 $("#id_lote").val( $("#id_coccion").val());
 
 //al seleccionar el fermentador autocompleto los litros
-$("#id_fermentador").on('change', function() {
-   var litros = this.value.replace(/[^0-9]/g, '').slice(0,3);
-   $("#id_litros").val(litros);
-})
+//$("#id_fermentador").on('change', function() {
+//   var litros = this.value.replace(/[^0-9]/g, '').slice(0,3);
+//   $("#id_litros").val(litros);
+//})
 
 //al modificar la coccion, modifico el lote
 $("#id_coccion").on('change', function() {
   $("#id_lote").val( $("#id_coccion").val())
 });
 
-$('#id_fecha_inicio,#id_fecha_final').daterangepicker({
+$('#id_fecha_inicio').daterangepicker({
    singleDatePicker: true,
    locale: {
      format: 'DD/MM/YYYY'
 },
    regional: 'es'
 });
+//calculo una semana desde hoy y los guardo en end_day
+var today = new Date();
+var end_day = new Date();
+end_day.setDate(today.getDate()+7);
 
+//asigno el valor de end_day a fecha_final
+$('#id_fecha_final').daterangepicker({
+    singleDatePicker: true,
+     "startDate": end_day,
+     locale: {
+       format: 'DD/MM/YYYY'
+     },
+});
 </script>
 {% endblock %}
 

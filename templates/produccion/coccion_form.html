@@ -14,7 +14,7 @@
   {% endfor %}
 
   {% if receta %}
-     document.getElementById("id_lote").value = "{{receta.ID}}{{lote}}";
+    document.getElementById("id_lote").value = "{{receta.ID}}{{lote}}";
   {% endif %}
 
   $('#wizard_verticle').smartWizard({
@@ -28,17 +28,23 @@
     $('form').submit();
   }
 
+  if (!$('#id_litros').val()) {
+    $('#id_litros').addClass('warning');
+  }
 
-
-if ($('id_litros').val().length == 0) {
-      $(this).parents('div').addClass('warning');
-}
-
-
-
+  $('#id_litros').blur(function() {
+    if ($('#id_litros').is(":empty")) {
+      $('#id_litros').removeClass('warning');
+    }
+  });
 </script>
-{% endblock %} {% block extra_css %}
+{% endblock %}
+{% block extra_css %}
 <style type="text/css">
+  .warning {
+    border: 1px solid red;
+  }
+
   .fa-toggle-down::before {
     margin-right: 5px !important;
   }
@@ -117,11 +123,12 @@ if ($('id_litros').val().length == 0) {
                   </li>
 
                 </ul>
-                <form class="form-horizontal form-label-left">
                   <div class="stepContainer">
 
                     <div id="step-1" class="content" style="display: block;">
-                      {{form.pk}}
+                      {{form.id}}
+                      {{form.errors}}
+
 
                       <h2 class="StepTitle">Nueva Cocción</h2>
                       <span class="section"></span>
@@ -167,7 +174,7 @@ if ($('id_litros').val().length == 0) {
                       </div>
 
                     </div>
-                      <!--  LOS INGREDIENTES DE LOS PASOS 2 Y 3, SE CARGAN DINAMICAMENTE POR AJAX (FUNCION CHANGE DE ID_RECETA)-->
+                    <!--  LOS INGREDIENTES DE LOS PASOS 2 Y 3, SE CARGAN DINAMICAMENTE POR AJAX (FUNCION CHANGE DE ID_RECETA)-->
                     <div id="step-2">
                       <h2 class="StepTitle">Maltas</h2>
                       <span class="section"></span>
@@ -180,25 +187,35 @@ if ($('id_litros').val().length == 0) {
                           </tr>
                         </thead>
                         <tbody class="table_body">
-                          {% if maltas %} {% for form in maltas %}
-                          <tr id="{{ lupulos.prefix }}">
-                            {{form.errors}} {{ forms.media }}
+                          {% if maltas %}
+                          {% for form in maltas %}
+                          <tr id="{{ maltas.prefix }}">
+                            {{form.errors}}
+			    {{form.id}}
+                            {{ forms.media }}
                             <td>{{ form.malta| append_attr:"class:form-control" }}</td>
                             <td>
                               <span class="unidad">g</span> {{ form.cantidad | append_attr:"class:form-control cantidad " }}
                             </td>
                             <td></td>
                           </tr>
-                          {% endfor %} {{maltas.management_form}} {% else %} {% for form in inlines.1 %}
-                          <tr id="{{ inlines.1.prefix }}">
-                            {{form.errors}} {{form.id}} {{ forms.media }}
-                            <td>{{ form.lupulo| append_attr:"class:form-control" }}</td>
+                          {% endfor %}
+                          {{maltas.management_form}}
+                          {% else %}
+                          {% for form in inlines.0 %}
+                          <tr id="{{ inlines.0.prefix }}">
+                            {{form.errors}}
+                            {{form.id}}
+                            {{ forms.media }}
+                            <td>{{ form.malta| append_attr:"class:form-control" }}</td>
                             <td>
                               <span class="unidad">g</span> {{ form.cantidad | append_attr:"class:form-control cantidad " }}
                             </td>
                             <td></td>
                           </tr>
-                          {% endfor %} {% endif %}
+                          {% endfor %}
+                          {{ inlines.0.management_form}}
+                          {% endif %}
                         </tbody>
                       </table>
 
@@ -213,25 +230,35 @@ if ($('id_litros').val().length == 0) {
                           </tr>
                         </thead>
                         <tbody>
-                          {% if lupulos %} {% for form in lupulos %}
+                          {% if lupulos %}
+                          {% for form in lupulos %}
                           <tr id="{{ lupulos.prefix }}">
-                            {{form.errors}} {{ forms.media }}
+                            {{form.errors}}
+			    {{form.id}}
+                            {{ forms.media }}
                             <td>{{ form.lupulo| append_attr:"class:form-control" }}</td>
                             <td>
                               <span class="unidad">g</span> {{ form.cantidad | append_attr:"class:form-control cantidad " }}
                             </td>
                             <td></td>
                           </tr>
-                          {% endfor %} {{lupulos.management_form}} {% else %} {% for form in inlines.1 %}
+                          {% endfor %}
+                          {{lupulos.management_form}}
+                          {% else %}
+                          {% for form in inlines.1 %}
                           <tr id="{{ inlines.1.prefix }}">
-                            {{form.errors}} {{form.id}} {{ forms.media }}
+                            {{form.errors}}
+                             {{form.id}}
+                             {{ forms.media }}
                             <td>{{ form.lupulo| append_attr:"class:form-control" }}</td>
                             <td>
                               <span class="unidad">g</span> {{ form.cantidad | append_attr:"class:form-control cantidad " }}
                             </td>
                             <td></td>
                           </tr>
-                          {% endfor %} {% endif %}
+                          {% endfor %}
+                          {{ inlines.1.management_form}}
+                          {% endif %}
                         </tbody>
                       </table>
                     </div>
@@ -248,16 +275,22 @@ if ($('id_litros').val().length == 0) {
                           </tr>
                         </thead>
                         <tbody>
-                          {% if levaduras %} {% for form in levaduras %}
+                          {% if levaduras %}
+                          {% for form in levaduras %}
                           <tr id="{{ levaduras.prefix }}">
-                            {{form.errors}} {{ forms.media }}
+                            {{form.errors}}
+			    {{form.id}}
+                            {{ forms.media }}
                             <td>{{ form.levadura| append_attr:"class:form-control" }}</td>
                             <td>
                               <span class="unidad">g</span> {{ form.cantidad | append_attr:"class:form-control cantidad " }}
                             </td>
                             <td></td>
                           </tr>
-                          {% endfor %} {{levaduras.management_form}} {% else %} {% for form in inlines.2 %}
+                          {% endfor %}
+                          {{levaduras.management_form}}
+                          {% else %}
+                          {% for form in inlines.2 %}
                           <tr id="{{ inlines.2.prefix }}">
                             {{form.errors}} {{form.id}} {{ forms.media }}
                             <td>{{ form.levadura| append_attr:"class:form-control" }}</td>
@@ -266,7 +299,9 @@ if ($('id_litros').val().length == 0) {
                             </td>
                             <td></td>
                           </tr>
-                          {% endfor %} {% endif %}
+                          {% endfor %}
+                          {{ inlines.2.management_form}}
+                          {% endif %}
                         </tbody>
                       </table>
                       &nbsp; &nbsp;
@@ -281,16 +316,22 @@ if ($('id_litros').val().length == 0) {
                           </tr>
                         </thead>
                         <tbody>
-                          {% if agregados %} {% for form in agregados %}
+                          {% if agregados %}
+                          {% for form in agregados %}
                           <tr id="{{ agregados.prefix }}">
-                            {{form.errors}} {{ forms.media }}
+                            {{form.errors}}
+			    {{form.id}}
+                            {{forms.media }}
                             <td>{{ form.agregado| append_attr:"class:form-control" }}</td>
                             <td>
                               <span class="unidad">g</span> {{ form.cantidad | append_attr:"class:form-control cantidad " }}
                             </td>
                             <td></td>
                           </tr>
-                          {% endfor %} {{agregados.management_form}} {% else %} {% for form in inlines.3 %}
+                          {% endfor %}
+                          {{agregados.management_form}}
+                          {% else %}
+                          {% for form in inlines.3 %}
                           <tr id="{{ inlines.3.prefix }}">
 
                             {{form.errors}} {{form.id}} {{ forms.media }}
@@ -300,14 +341,15 @@ if ($('id_litros').val().length == 0) {
                             </td>
                             <td></td>
                           </tr>
-                          {% endfor %} {% endif %}
+                          {% endfor %}
+                          {{ inlines.3.management_form}}
+                          {% endif %}
 
                           <br/>
                         </tbody>
                       </table>
-                      {% for formset in inlines %} {{formset.management_form}} {% for error in formset.errors %} {{ error }} {% endfor %} {% endfor %}
                     </div>
-
+ {% for formset in inlines %} {% for error in formset.errors %} {{ error }} {% endfor %} {% endfor %}
                   </div>
               </div>
               </form>
@@ -320,7 +362,9 @@ if ($('id_litros').val().length == 0) {
             <h2>Ultimas Cocciones <small></small></h2>
             <div class="clearfix"></div>
             <div style="margin-top:10px;" class="x_content">
-              {% for coccion in ultimas %} {{coccion}} {% endfor %}
+              {% for coccion in ultimas %}
+              <div>{{coccion}}</div>
+               {% endfor %}
             </div>
           </div>
         </div>

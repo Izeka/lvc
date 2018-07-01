@@ -49,7 +49,7 @@
                 <tr>
                   <td>{{dato.numero_serie}}</td>
                   <td style="text-align: left;">{{dato.lote}}</td>
-                  <td>{{dato.lleno}}</td>
+                  <td>{{dato.lleno|yesno:"Si,No" }}</td>
                   <td>
                     <a data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="editar/fermentador/{{dato.numero_serie}}" title="editar"><i class="fa fa-edit"></i></a>
                     <a href="eliminar/{{dato.numero_serie}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
@@ -99,9 +99,9 @@
                 {% for dato in barriles %}
                 <tr>
                   <td>{{dato.numero_serie}}</td>
-                  <td style="text-align: left;">{{dato.lote}}</td>
-                  <td>{{dato.lleno}}</td>
-                  <td>{{dato.carbonatado}}</td>
+                  <td style="text-align: left;">{{dato.embarrilado_set.latest.lote}}</td>
+                  <td>{{dato.lleno|yesno:"Si,No" }}</td>
+                  <td>{{dato.carbonatado|yesno:"Si,No" }}</td>
                   <td>
                     <a data-toggle="modal" data-id="{{data.numero_serie}}" data-target="#modal" href="editar/barril/{{dato.numero_serie}}" title="editar"><i class="fa fa-edit"></i></a>
                     <a href="eliminar/{{dato.numero_serie}}" title="eliminar"><i class="fa fa-trash-o"></i></a>

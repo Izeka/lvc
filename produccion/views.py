@@ -2,7 +2,7 @@ from django.views.generic import ListView, UpdateView, CreateView
 from extra_views import InlineFormSet, CreateWithInlinesView, UpdateWithInlinesView, ModelFormSetView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms.models import model_to_dict
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
 
 from .models import *
@@ -76,25 +76,24 @@ class Ver_receta(LoginRequiredMixin, UpdateView):
 
 class MaltaCoccionInline(InlineFormSet):
     model = Malta_x_Coccion
-    fields = "__all__"
+    exclude = ("id",)
     factory_kwargs = {'extra': 1}
-
 
 class LevaduraCoccionInline(InlineFormSet):
     model = Levadura_x_Coccion
-    fields = "__all__"
+    exclude = ("id",)
     factory_kwargs = {'extra': 1}
 
 
 class LupuloCoccionInline(InlineFormSet):
     model = Lupulo_x_Coccion
-    fields = "__all__"
+    exclude = ("id",)
     factory_kwargs = {'extra': 1}
 
 
 class AgregadoCoccionInline(InlineFormSet):
     model = Agregado_x_Coccion
-    fields = "__all__"
+    exclude = ("id",)
     factory_kwargs = {'extra': 1}
 
 
@@ -119,7 +118,6 @@ def get_receta(request, receta_id):
     return render(request, 'produccion/ingredientes.html', {'receta':receta, 'maltas': maltas, 'levaduras': levaduras, 'lupulos': lupulos,'agregados': agregados})
 """
 
-
 class Nueva_coccion(LoginRequiredMixin, CreateWithInlinesView):
     model = Coccion
     login_url = "/login/"
@@ -136,7 +134,8 @@ class Nueva_coccion(LoginRequiredMixin, CreateWithInlinesView):
 
     def form_invalid(self, form):
         message = "form invalid"
-        return HttpResponseRedirect("/cocciones/nueva/", form)
+        return HttpResponseRedirect("/cocciones/nueva/", formset)
+
 
     def get_context_data(self, **kwargs):
         context = super(Nueva_coccion, self).get_context_data(**kwargs)
@@ -158,16 +157,11 @@ class Nueva_coccion(LoginRequiredMixin, CreateWithInlinesView):
             """si ya tengo el valor de la receta, obtengo los valores de cada ingrediente
             y genero los formsets para cada uno"""
             context['receta'] = Receta.objects.get(ID=receta)
-            context['maltas'] = maltaFormSet(queryset=Malta_x_Receta.objects.filter(
-                receta=receta), prefix="malta_x_coccion_set")
-            context['lupulos'] = lupuloFormSet(queryset=Lupulo_x_Receta.objects.filter(
-                receta=receta), prefix="lupulo_x_coccion_set")
-            context['levaduras'] = levaduraFormSet(queryset=Levadura_x_Receta.objects.filter(
-                receta=receta), prefix="levadura_x_coccion_set")
-            context['agregados'] = agregadoFormSet(queryset=Agregado_x_Receta.objects.filter(
-                receta=receta), prefix="agregado_x_coccion_set")
+            context['maltas'] = maltaFormSet(queryset=Malta_x_Receta.objects.filter(receta=receta), prefix="malta_x_coccion_set")
+            context['lupulos'] = lupuloFormSet( queryset=Lupulo_x_Receta.objects.filter(receta=receta),prefix="lupulo_x_coccion_set")
+            context['levaduras'] = levaduraFormSet(queryset=Levadura_x_Receta.objects.filter(receta=receta),prefix="levadura_x_coccion_set")
+            context['agregados'] = agregadoFormSet(queryset=Agregado_x_Receta.objects.filter(receta=receta),prefix="agregado_x_coccion_set")
         return context
-
 
 class Editar_coccion(LoginRequiredMixin, UpdateWithInlinesView):
     model = Coccion
@@ -196,7 +190,7 @@ class Nueva_fermentacion(LoginRequiredMixin, CreateView):
     model = Fermentacion
     login_url = "/login/"
     template_name = "produccion/fermentacion_form.html"
-    fields = "__all__"
+    fields = ["lote", "coccion", "fermentador","fecha_inicio","fecha_final","litros","observaciones"]
     success_url = "/fermentaciones"
 
     def get_context_data(self, **kwargs):

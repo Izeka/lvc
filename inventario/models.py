@@ -89,7 +89,7 @@ class Accesorio(Insumo):
 class Barril(models.Model):
     numero_serie = models.CharField(
         max_length=10, error_messages=my_default_errors, primary_key=True)
-    compra = models.ForeignKey(Compra, error_messages=my_default_errors)
+    compra = models.ForeignKey(Compra, error_messages=my_default_errors, blank=True,null=True)
     litros = models.IntegerField(error_messages=my_default_errors)
     ubicacion = models.CharField(
         max_length=100, error_messages=my_default_errors, default="Keñua")

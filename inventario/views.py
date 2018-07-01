@@ -153,16 +153,16 @@ class Nuevo_insumo(LoginRequiredMixin, CreateView):
         insumo = request.POST["insumo"]
         if insumo == "lupulo":
             form_class = LupuloForm
-            url="ingrediente"
+            url="ingredientes"
         elif insumo == "malta":
             form_class = MaltaForm
-            url="ingrediente"
+            url="ingredientes"
         elif insumo == "levadura":
             form_class = LevaduraForm
-            url="ingrediente"
+            url="ingredientes"
         elif insumo == "agregado":
             form_class = AgregadoForm
-            url="ingrediente"
+            url="ingredientes"
         elif insumo == "fermentador":
             form_class = FermentadorForm
             url="equipamiento"
@@ -174,7 +174,7 @@ class Nuevo_insumo(LoginRequiredMixin, CreateView):
             url="equipamiento"
         else:
             form_class = InsumoForm
-            url="insumo"
+            url="insumos"
         form = self.get_form(form_class)
         if form.is_valid():
             return self.form_valid(form, insumo, url)

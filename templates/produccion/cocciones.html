@@ -44,7 +44,7 @@
                 <td>{{dato.fecha}}</td>
                 <td >{{dato.receta}} </td>
                 <td >{{dato.litros}}</td>
-                <td >{{dato.fermentado}}</td>
+                <td >{{dato.fermentado|yesno:"Si,No" }}</td>
                 <td >{{dato.DF}}</td>
                 <td>
                     <a  data-toggle="modal" data-id="{{data.}}" data-target="#modal" href="ver/{{dato.id}}" title="Ver"><i class="fa fa-eye"></i></a>

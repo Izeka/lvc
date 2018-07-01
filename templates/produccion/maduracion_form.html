@@ -59,6 +59,9 @@
     background: #EDEDED !important;
     padding: 10px;
   }
+  .hidden{
+    visibility: hidden;
+  }
 </style>
 {% endblock %}
 
@@ -107,7 +110,6 @@
                 {{form.fecha_final.label}}
              </label> {{ form.fecha_final |attr:"class:form-control" }}
           </fieldset>
-
           {% for form in inlines.0 %}
            <div id="{{ inlines.0.prefix }}" class="form-group">
           {{form.errors}}
@@ -135,6 +137,8 @@
                 {{form.observaciones.label}}
              </label> {{ form.observaciones |attr:"class:form-control" }}
           </fieldset>
+
+             {{form.embarrilados |attr:"class:hidden" }}
 
           <!-- Guardo la direccion en la variable url y genero el codigo QR-->
           <div class="modal-footer">

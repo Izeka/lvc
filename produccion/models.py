@@ -94,10 +94,13 @@ class Malta_x_Coccion(models.Model):
     malta = models.ForeignKey(Malta, error_messages=my_default_errors)
     coccion = models.ForeignKey(Coccion, error_messages=my_default_errors)
     cantidad = models.FloatField(error_messages=my_default_errors)
+    
+    class Meta:
+        get_latest_by = "id"
 
     def __str__(self):
         return str(self.id)
-
+"""
     def save(self, *args, **kwargs):
         malta = Insumo.objects.get(pk=self.malta.id)
         try:
@@ -108,7 +111,7 @@ class Malta_x_Coccion(models.Model):
             malta.cantidad = malta.cantidad - int(self.cantidad)
         malta.save()
         return super(Malta_x_Coccion, self).save(*args, **kwargs)
-
+"""
 class Lupulo_x_Coccion(models.Model):
     lupulo = models.ForeignKey(Lupulo, error_messages=my_default_errors)
     coccion = models.ForeignKey(Coccion, error_messages=my_default_errors)
@@ -141,7 +144,7 @@ class Levadura_x_Coccion(models.Model):
 
     def __str__(self):
         return str(self.id)
-
+"""
     def save(self, *args, **kwargs):
         levadura = Insumo.objects.get(pk=self.levadura.id)
         # Si la receta existe, actualizo la cantidad de insumo
@@ -158,7 +161,7 @@ class Levadura_x_Coccion(models.Model):
         # guardo la instancia del levadura
         levadura.save()
         return super(Levadura_x_Coccion, self).save(*args, **kwargs)
-
+"""
 class Agregado_x_Coccion(models.Model):
     agregado = models.ForeignKey(Agregado, error_messages=my_default_errors)
     coccion = models.ForeignKey(Coccion, error_messages=my_default_errors)
@@ -166,7 +169,7 @@ class Agregado_x_Coccion(models.Model):
 
     def __str__(self):
         return str(self.id)
-
+"""
     def save(self, *args, **kwargs):
         agregado = Insumo.objects.get(pk=self.agregado.id)
         # Si la receta existe, actualizo la cantidad de insumo
@@ -183,7 +186,7 @@ class Agregado_x_Coccion(models.Model):
         # guardo la instancia del agregado
         agregado.save()
         return super(Agregado_x_Coccion, self).save(*args, **kwargs)
-
+"""
 class Fermentacion(models.Model):
     lote = models.CharField(max_length=20,error_messages=my_default_errors,primary_key=True)
     coccion = models.ForeignKey(Coccion, error_messages=my_default_errors,default=1)
@@ -219,7 +222,7 @@ class Maduracion(models.Model):
     fecha_final = models.DateField(
         error_messages=my_default_errors, default=None)
     litros = models.IntegerField(error_messages=my_default_errors)
-    embarrilados = models.IntegerField(error_messages=my_default_errors, default=0)
+    embarrilados = models.IntegerField(error_messages=my_default_errors,default=0)
     observaciones = models.TextField(
         max_length=100, error_messages=my_default_errors, blank=True)
 
@@ -257,14 +260,17 @@ class Embarrilado(models.Model):
     observaciones = models.TextField(
         max_length=100, error_messages=my_default_errors, blank=True)
 
+    class Meta:
+        get_latest_by = "fecha"
+
     def __str__(self):
         return str(self.id)
 
     def save(self, *args, **kwargs):
         maduracion = Maduracion.objects.get(lote=self.lote)
-        maduracion.embarrilados += self.litros
-        maduracion.save()
+        maduracion.embarrilados  += self.litros
         return super(Embarrilado, self).save(*args, **kwargs)
+
 
 class Embotellado(models.Model):
     lote = models.ForeignKey(Fermentacion, error_messages=my_default_errors)
@@ -285,5 +291,3 @@ class Embotellado(models.Model):
         maduracion.save()
 
         return super(Embarrilado, self).save(*args, **kwargs)
-
-
