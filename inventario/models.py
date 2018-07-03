@@ -36,6 +36,15 @@ PRESENTACIONES = (
     ('5L', '5 Litros'),
 )
 
+ESTADOS = (
+           ('Disponible', 'Disponible'),
+           ('Lleno', 'Lleno'),
+           ('Carbonatado', 'Carbonatado'),
+           ('Transito', 'Transito'),
+           ('Entregado', 'Entregado'),
+           ('Devuelto', 'Devuelto'),
+)
+
 
 class Insumo(models.Model):
     nombre = models.CharField(max_length=100, error_messages=my_default_errors)
@@ -93,12 +102,10 @@ class Barril(models.Model):
     litros = models.IntegerField(error_messages=my_default_errors)
     ubicacion = models.CharField(
         max_length=100, error_messages=my_default_errors, default="Keñua")
+    estado = models.CharField(
+        max_length=20, choices=ESTADOS, error_messages=my_default_errors, default="disponible")
     precio_unitario = models.FloatField(
         error_messages=my_default_errors, default=1)
-    lleno = models.BooleanField(
-        error_messages=my_default_errors, default=False)
-    carbonatado = models.BooleanField(
-        error_messages=my_default_errors, default=False)
     observaciones = models.TextField(
         max_length=300, error_messages=my_default_errors, blank=True)
 

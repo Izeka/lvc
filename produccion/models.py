@@ -199,6 +199,9 @@ class Fermentacion(models.Model):
     observaciones = models.TextField(
         max_length=100, error_messages=my_default_errors, blank=True)
 
+    class Meta:
+        get_latest_by = "fecha_inicio"
+
     def __str__(self):
         return str(self.lote)
 
@@ -226,6 +229,9 @@ class Maduracion(models.Model):
         error_messages=my_default_errors, default=0)
     observaciones = models.TextField(
         max_length=100, error_messages=my_default_errors, blank=True)
+
+    class Meta:
+        get_latest_by = "fecha_inicio"
 
     def __str__(self):
         return str(self.lote)
@@ -274,7 +280,9 @@ class Embarrilado(models.Model):
 
     def save(self, *args, **kwargs):
         maduracion = Maduracion.objects.get(lote=self.lote)
-        maduracion.embarrilados += self.litros
+        if maduracion.litros >= self.litros:
+           maduracion.embarrilados += +self.litros
+           maduracion.save()
         return super(Embarrilado, self).save(*args, **kwargs)
 
 

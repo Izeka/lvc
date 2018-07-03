@@ -38,6 +38,7 @@ class Equipamiento(LoginRequiredMixin, ListView):
         context['fermentadores'] = Fermentador.objects.all()
         context['pallet'] = Pallet.objects.all()
         context['varios'] = Insumo.objects.filter(tipo="EQUIPAMIENTO")
+        context['maduradores'] = Madurador.objects.all()
 
         return context
 
@@ -61,7 +62,7 @@ class Insumos(LoginRequiredMixin, ListView):
 class Editar_Barril(LoginRequiredMixin, UpdateView):
     model = Barril
     login_url = "/login/"
-    fields = '__all__'
+    fields = ["numero_serie","litros","estado","ubicacion","observaciones"]
     template_name = "inventario/insumo_form.html"
 
     def form_valid(self, form):
@@ -70,7 +71,6 @@ class Editar_Barril(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(Editar_Barril, self).get_context_data(**kwargs)
-        context['no_fields'] = ["compra"]
         return context
 
 

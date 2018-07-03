@@ -48,7 +48,11 @@
                 {% for dato in fermentadores %}
                 <tr>
                   <td>{{dato.numero_serie}}</td>
-                  <td style="text-align: left;">{{dato.lote}}</td>
+                  <td style="text-align: left;">
+                    {%if dato.lleno == True %}
+                       {{dato.fermentacion_set.latest.lote}}
+                    {% endif %}
+                  </td>
                   <td>{{dato.lleno|yesno:"Si,No" }}</td>
                   <td>
                     <a data-toggle="modal" data-id="{{data.id}}" data-target="#modal" href="editar/fermentador/{{dato.numero_serie}}" title="editar"><i class="fa fa-edit"></i></a>
@@ -89,8 +93,8 @@
               <tr>
                 <th>N° Serie</th>
                 <th style="text-align: left;">Lote</th>
-                <th>Lleno</th>
-                <th>Carbonatado</th>
+                <th>Estado</th>
+                <th>Ubicacion</th>
                 <th></th>
               </tr>
             </thead>
@@ -99,9 +103,13 @@
                 {% for dato in barriles %}
                 <tr>
                   <td>{{dato.numero_serie}}</td>
-                  <td style="text-align: left;">{{dato.embarrilado_set.latest.lote}}</td>
-                  <td>{{dato.lleno|yesno:"Si,No" }}</td>
-                  <td>{{dato.carbonatado|yesno:"Si,No" }}</td>
+                  <td style="text-align: left;">
+                    {% if dato.estado != "disponible" and dato.estado != "devuelto" %}
+                       {{dato.embarrilado_set.latest.lote}}
+                    {% endif %}
+                  </td>
+                  <td>{{dato.estado|title }}</td>
+                  <td>{{dato.ubicacion }}</td>
                   <td>
                     <a data-toggle="modal" data-id="{{data.numero_serie}}" data-target="#modal" href="editar/barril/{{dato.numero_serie}}" title="editar"><i class="fa fa-edit"></i></a>
                     <a href="eliminar/{{dato.numero_serie}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
@@ -163,6 +171,60 @@
 
         </div>
       </div>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2>Maduradores <small></small></h2>
+          <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+            <li claps="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a data-toggle="modal" data-target="#modal" href="nuevo/madurador">Nuevo</a>
+                </li>
+            </li>
+            </ul>
+            </li>
+            <li><a class="close-link"><i class="fa fa-close"></i></a>
+            </li>
+          </ul>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+          <table class="ingredientes table table-striped">
+            <thead>
+              <tr>
+                <th>N° Serie</th>
+                <th style="text-align: left;">Lote</th>
+                <th>Lleno</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tbody>
+                {% for dato in maduradores %}
+                <tr>
+                  <td>{{dato.numero_serie}}</td>
+                  <td style="text-align: left;">
+                    {% if lleno == True %}
+                       {{dato.embarrilado_set.latest.lote}}
+                    {% endif %}
+                  </td>
+                  <td>{{dato.lleno }}</td>
+                  <td>
+                    <a data-toggle="modal" data-id="{{data.numero_serie}}" data-target="#modal" href="editar/barril/{{dato.numero_serie}}" title="editar"><i class="fa fa-edit"></i></a>
+                    <a href="eliminar/{{dato.numero_serie}}" title="eliminar"><i class="fa fa-trash-o"></i></a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
     </div>
 
     <div class="col-md-6 col-sm-6 col-xs-12">

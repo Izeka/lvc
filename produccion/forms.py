@@ -11,7 +11,7 @@ class EmbarriladoForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(EmbarriladoForm, self).__init__(*args, **kwargs)
-        self.fields["barril"].queryset = Barril.objects.filter(lleno=False)
+        self.fields["barril"].queryset = Barril.objects.filter(estado="disponible")
         self.fields["lote"].queryset = Maduracion.objects.filter(
             litros__gt=F('embarrilados'))
 
@@ -20,8 +20,13 @@ class EmbarriladoForm(forms.ModelForm):
         litros = 0
         for barril in self.cleaned_data['barril']:
             litros += barril.litros
-        self.cleaned_data['litros'] = litros
+
+        if self.cleaned_data['lote'].litros >= (litros+ self.cleaned_data['lote'].embarrilados):
+            self.cleaned_data['litros'] = litros
+        else:
+            raise forms.ValidationError("No hay esa cantidad de litros!")
         return self.cleaned_data
+
 
 
 class FermentacionInlineForm(forms.ModelForm):

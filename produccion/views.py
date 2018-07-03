@@ -295,6 +295,6 @@ class Nuevo_embarrilado(LoginRequiredMixin, CreateView):
         self.object = form.save()
         for b in form.cleaned_data['barril']:
             barril = Barril.objects.get(numero_serie=b.numero_serie)
-            barril.lleno = True
+            barril.estado = "lleno"
             barril.save()
         return HttpResponseRedirect("/embarrilados")

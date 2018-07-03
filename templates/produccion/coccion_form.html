@@ -3,6 +3,7 @@
 <script src="/static/vendors/js/countimer.js"></script>
 <script src="/static/vendors//js/jquery.smartWizard.js"></script>
 <script>
+
   {% for formset in inlines %}
   $('tr#{{ formset.prefix }}').formset({
     prefix: '{{ formset.prefix }}',
@@ -128,9 +129,6 @@
 
                     <div id="step-1" class="content" style="display: block;">
                       {{form.id}}
-                      {{form.errors}}
-
-			  {{form.non_field_errors}}
 
                       <h2 class="StepTitle">Nueva Cocción</h2>
                       <span class="section"></span>
@@ -190,9 +188,7 @@
                         </thead>
                         <tbody class="table_body">
                           {% if maltas %}
-			  {{maltas.errors}}
-			  {{maltas.non_field_errors}}
-			  {% for form in maltas %}
+			                    {% for form in maltas %}
                           <tr id="{{ maltas.prefix }}">
                             {{form.errors}}
                             {{form.id}}
@@ -203,7 +199,7 @@
                             </td>
                             <td></td>
                           </tr>
-			  {% endfor %}
+			                    {% endfor %}
                           {{maltas.management_form}}
                           {% else %}
                           {% for form in inlines.0 %}
@@ -283,7 +279,8 @@
                           {% for form in levaduras %}
                           <tr id="{{ levaduras.prefix }}">
                             {{form.errors}}
-                          {{form.id}}                           {{ forms.media }}
+                            {{form.id}}
+                            {{ forms.media }}
                             <td>{{ form.levadura| append_attr:"class:form-control" }}</td>
                             <td>
                               <span class="unidad">g</span> {{ form.cantidad | append_attr:"class:form-control cantidad " }}
@@ -336,7 +333,6 @@
                           {% else %}
                           {% for form in inlines.3 %}
                           <tr id="{{ inlines.3.prefix }}">
-
                             {{form.errors}} {{form.id}} {{ forms.media }}
                             <td>{{ form.agregado| append_attr:"class:form-control" }}</td>
                             <td>
@@ -347,12 +343,11 @@
                           {% endfor %}
                           {{ inlines.3.management_form}}
                           {% endif %}
-
                           <br/>
                         </tbody>
                       </table>
                     </div>
- {% for formset in inlines %} {% for error in formset.errors %} {{ error }} {% endfor %} {% endfor %}
+
                   </div>
               </div>
               </form>
