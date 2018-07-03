@@ -37,6 +37,7 @@
       $('#id_litros').removeClass('warning');
     }
   });
+
 </script>
 {% endblock %}
 {% block extra_css %}
@@ -129,6 +130,7 @@
                       {{form.id}}
                       {{form.errors}}
 
+			  {{form.non_field_errors}}
 
                       <h2 class="StepTitle">Nueva Cocción</h2>
                       <span class="section"></span>
@@ -188,10 +190,12 @@
                         </thead>
                         <tbody class="table_body">
                           {% if maltas %}
-                          {% for form in maltas %}
+			  {{maltas.errors}}
+			  {{maltas.non_field_errors}}
+			  {% for form in maltas %}
                           <tr id="{{ maltas.prefix }}">
                             {{form.errors}}
-			    {{form.id}}
+                            {{form.id}}
                             {{ forms.media }}
                             <td>{{ form.malta| append_attr:"class:form-control" }}</td>
                             <td>
@@ -199,7 +203,7 @@
                             </td>
                             <td></td>
                           </tr>
-                          {% endfor %}
+			  {% endfor %}
                           {{maltas.management_form}}
                           {% else %}
                           {% for form in inlines.0 %}
@@ -234,7 +238,7 @@
                           {% for form in lupulos %}
                           <tr id="{{ lupulos.prefix }}">
                             {{form.errors}}
-			    {{form.id}}
+                            {{form.id}}
                             {{ forms.media }}
                             <td>{{ form.lupulo| append_attr:"class:form-control" }}</td>
                             <td>
@@ -279,8 +283,7 @@
                           {% for form in levaduras %}
                           <tr id="{{ levaduras.prefix }}">
                             {{form.errors}}
-			    {{form.id}}
-                            {{ forms.media }}
+                          {{form.id}}                           {{ forms.media }}
                             <td>{{ form.levadura| append_attr:"class:form-control" }}</td>
                             <td>
                               <span class="unidad">g</span> {{ form.cantidad | append_attr:"class:form-control cantidad " }}
@@ -320,7 +323,7 @@
                           {% for form in agregados %}
                           <tr id="{{ agregados.prefix }}">
                             {{form.errors}}
-			    {{form.id}}
+                            {{form.id}}
                             {{forms.media }}
                             <td>{{ form.agregado| append_attr:"class:form-control" }}</td>
                             <td>

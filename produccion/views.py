@@ -79,6 +79,7 @@ class MaltaCoccionInline(InlineFormSet):
     exclude = ("id",)
     factory_kwargs = {'extra': 1}
 
+
 class LevaduraCoccionInline(InlineFormSet):
     model = Levadura_x_Coccion
     exclude = ("id",)
@@ -107,35 +108,64 @@ class Cocciones(LoginRequiredMixin, ListView):
 """
 def get_receta(request, receta_id):
     receta = Receta.objects.get(ID=receta_id)
-    maltas = maltaFormSet(queryset=Malta_x_Receta.objects.filter(
-        receta=receta), prefix="malta_x_coccion_set")
-    lupulos = lupuloFormSet(queryset=Lupulo_x_Receta.objects.filter(
-        receta=receta), prefix="lupulo_x_coccion_set")
-    levaduras = levaduraFormSet(queryset=Levadura_x_Receta.objects.filter(
-        receta=receta), prefix="levadura_x_coccion_set")
-    agregados = agregadoFormSet(queryset=Agregado_x_Receta.objects.filter(
-        receta=receta), prefix="agregado_x_coccion_set")
-    return render(request, 'produccion/ingredientes.html', {'receta':receta, 'maltas': maltas, 'levaduras': levaduras, 'lupulos': lupulos,'agregados': agregados})
+    maltas = Malta_x_Receta.objects.filter(
+        receta=receta).values("malta","cantidad")
+#    lupulos = lupuloFormSet(queryset=Lupulo_x_Receta.objects.filter(
+#        receta=receta), prefix="lupulo_x_coccion_set")
+#    levaduras = levaduraFormSet(queryset=Levadura_x_Receta.objects.filter(
+#        receta=receta), prefix="levadura_x_coccion_set")
+#    agregados = agregadoFormSet(queryset=Agregado_x_Receta.objects.filter(
+#        receta=receta), prefix="agregado_x_coccion_set")
+    # 'maltas': maltas, 'levaduras': levaduras, 'lupulos': lupulos,'agregados': agregados})
+    return JsonResponse({'maltas': list(maltas)})
 """
 
-class Nueva_coccion(LoginRequiredMixin, CreateWithInlinesView):
+
+class Nueva_coccion(LoginRequiredMixin, CreateView):
     model = Coccion
     login_url = "/login/"
-    inlines = [MaltaCoccionInline, LupuloCoccionInline,
-               LevaduraCoccionInline, AgregadoCoccionInline]
     fields = "__all__"
     success_url = "/cocciones"
 
-    def form_valid(self, form, formset):
+    def post(self, request, *args, **kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        #cargo los formsets con los datos de Post
+        maltas_form = maltaFormSet(self.request.POST)
+        lupulos_form = lupuloFormSet(self.request.POST)
+        levaduras_form = levaduraFormSet(self.request.POST)
+        agregados_form = agregadoFormSet(self.request.POST)
+        #compruebo si el formulario principal y los formsets son validos
+        if (form.is_valid() and maltas_form.is_valid() and
+            lupulos_form.is_valid() and levaduras_form.is_valid()
+                and agregados_form.is_valid()):
+            return self.form_valid(form, maltas_form, levaduras_form, lupulos_form, agregados_form)
+        else:
+            return self.form_invalid(form, maltas_form, levaduras_form, lupulos_form, agregados_form)
+
+    def form_valid(self, form, maltas_form, levaduras_form, lupulos_form, agregados_form):
+        #guardo el formulario principal
         self.object = form.save()
-        formset.instance = self.object
-        formset.save()
-        return HttpResponseRedirect("/cocciones")
+        #asigno a cada formset la instancia del form principal, despues lo guardo
+        maltas_form.instance = self.object
+        maltas_form.save()
+        lupulos_form.instance = self.object
+        lupulos_form.save()
+        levaduras_form.instance = self.object
+        levaduras_form.save()
+        agregados_form.instance = self.object
+        agregados_form.save()
+        return HttpResponseRedirect(self.get_success_url())
 
-    def form_invalid(self, form):
-        message = "form invalid"
-        return HttpResponseRedirect("/cocciones/nueva/", formset)
-
+    def form_invalid(self, form, maltas_form, levaduras_form, lupulos_form, agregados_form):
+        return self.render_to_response(
+            self.get_context_data(form=form,
+                                  maltas=maltas_form,
+                                  lupulos=lupulos_form,
+                                  levaduras=levaduras_form,
+                                  agregados=agregados_form,
+                                  ))
 
     def get_context_data(self, **kwargs):
         context = super(Nueva_coccion, self).get_context_data(**kwargs)
@@ -157,11 +187,16 @@ class Nueva_coccion(LoginRequiredMixin, CreateWithInlinesView):
             """si ya tengo el valor de la receta, obtengo los valores de cada ingrediente
             y genero los formsets para cada uno"""
             context['receta'] = Receta.objects.get(ID=receta)
-            context['maltas'] = maltaFormSet(queryset=Malta_x_Receta.objects.filter(receta=receta), prefix="malta_x_coccion_set")
-            context['lupulos'] = lupuloFormSet( queryset=Lupulo_x_Receta.objects.filter(receta=receta),prefix="lupulo_x_coccion_set")
-            context['levaduras'] = levaduraFormSet(queryset=Levadura_x_Receta.objects.filter(receta=receta),prefix="levadura_x_coccion_set")
-            context['agregados'] = agregadoFormSet(queryset=Agregado_x_Receta.objects.filter(receta=receta),prefix="agregado_x_coccion_set")
+            context['maltas'] = maltaFormSet(initial=Malta_x_Receta.objects.filter(
+                receta=receta).values("malta", "cantidad"), prefix="malta_x_coccion_set")
+            context['lupulos'] = lupuloFormSet(initial=Lupulo_x_Receta.objects.filter(
+                receta=receta).values("lupulo", "cantidad"), prefix="lupulo_x_coccion_set")
+            context['levaduras'] = levaduraFormSet(initial=Levadura_x_Receta.objects.filter(
+                receta=receta).values("levadura", "cantidad"), prefix="levadura_x_coccion_set")
+            context['agregados'] = agregadoFormSet(initial=Agregado_x_Receta.objects.filter(
+                receta=receta).values("agregado", "cantidad"), prefix="agregado_x_coccion_set")
         return context
+
 
 class Editar_coccion(LoginRequiredMixin, UpdateWithInlinesView):
     model = Coccion
@@ -190,15 +225,16 @@ class Nueva_fermentacion(LoginRequiredMixin, CreateView):
     model = Fermentacion
     login_url = "/login/"
     template_name = "produccion/fermentacion_form.html"
-    fields = ["lote", "coccion", "fermentador","fecha_inicio","fecha_final","litros","observaciones"]
+    fields = ["lote", "coccion", "fermentador", "fecha_inicio",
+              "fecha_final", "litros", "observaciones"]
     success_url = "/fermentaciones"
 
     def get_context_data(self, **kwargs):
         context = super(Nueva_fermentacion, self).get_context_data(**kwargs)
-        #obtengo solo las cocciones que no estan fermentadas
+        # obtengo solo las cocciones que no estan fermentadas
         context['form'].fields['coccion'].queryset = Coccion.objects.filter(
             fermentado=False)
-        #obtengo solo los fermentadores vacios
+        # obtengo solo los fermentadores vacios
         context['form'].fields['fermentador'].queryset = Fermentador.objects.filter(
             lleno=False)
         return context
@@ -213,7 +249,7 @@ class Maduraciones(LoginRequiredMixin, ListView):
 
 class FermentacionInline(InlineFormSet):
     model = fermentacion_x_madurador
-    #especifico el form personalizado en form.py
+    # especifico el form personalizado en form.py
     form_class = FermentacionInlineForm
     fields = "__all__"
     factory_kwargs = {'extra': 1}
@@ -229,14 +265,15 @@ class Nueva_maduracion(LoginRequiredMixin, CreateWithInlinesView):
     def get_context_data(self, **kwargs):
         context = super(Nueva_maduracion, self).get_context_data(**kwargs)
         try:
-            #obtengo el valor de la ultima Fermentacion
-            ultima_fermentacion = Fermentacion.objects.filter(madurado=False).latest('fecha_inicio')
-            #asigno a lote los primeros siete valores de la ultima Fermentacion
+            # obtengo el valor de la ultima Fermentacion
+            ultima_fermentacion = Fermentacion.objects.filter(
+                madurado=False).latest('fecha_inicio')
+            # asigno a lote los primeros siete valores de la ultima Fermentacion
             context['lote'] = ultima_fermentacion.lote[:7]
         except:
-            #si no hay fermentaciones paso
+            # si no hay fermentaciones paso
             pass
-        #fields que no quiero mostrar en el template
+        # fields que no quiero mostrar en el template
         context['no_fields'] = ["Id", "Eliminar", "Maduracion"]
         return context
 
@@ -257,7 +294,7 @@ class Nuevo_embarrilado(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         self.object = form.save()
         for b in form.cleaned_data['barril']:
-            barril= Barril.objects.get(numero_serie=b.numero_serie)
-            barril.lleno=True
+            barril = Barril.objects.get(numero_serie=b.numero_serie)
+            barril.lleno = True
             barril.save()
         return HttpResponseRedirect("/embarrilados")

@@ -71,7 +71,6 @@ urlpatterns = [
     url(r'^cocciones/editar/(?P<pk>\w+)/$', Editar_coccion.as_view()),
     url(r'^cocciones/ver/(?P<pk>\d+)/$', Ver_coccion.as_view()),
     url(r'^cocciones/nueva$', Nueva_coccion.as_view(), name='add_coccion'),
-    #url(r'^ajax/get_receta/(?P<receta_id>\w+)/$', get_receta, name='get_receta'),
 
     url(r'^fermentaciones/$', Fermentaciones.as_view()),
     url(r'^fermentaciones/nueva$', Nueva_fermentacion.as_view(), name='add_fermentacion'),
