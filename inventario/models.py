@@ -128,7 +128,7 @@ class Pallet(models.Model):
 class Fermentador(models.Model):
     numero_serie = models.CharField(
         max_length=10, error_messages=my_default_errors, primary_key=True)
-    compra = models.ForeignKey(Compra, error_messages=my_default_errors)
+    compra = models.ForeignKey(Compra, error_messages=my_default_errors, null=True, blank=True)
     litros = models.FloatField(error_messages=my_default_errors)
     precio_unitario = models.FloatField(error_messages=my_default_errors, null=True,blank=True)
     lleno = models.BooleanField(
